@@ -3,5 +3,5 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   vite: { plugins: [tailwindcss()] },
-  build: { inlineStylesheets: 'auto' },
+  build: { inlineStylesheets: 'always' },
 });
