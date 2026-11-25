@@ -1,0 +1,75 @@
+{
+  "_nota": "Datos del distrito. Fuentes indicadas en cada bloque. Lo que dice PENDIENTE no se publica hasta confirmar con la municipalidad.",
+  "sitio": {
+    "titulo": "42.° Aniversario del Distrito de Pólvora · Programa del 2 al 6 de diciembre de 2026",
+    "descripcion": "Programa completo del 42.° aniversario del distrito de Pólvora, Tocache, San Martín: actividades del 2 al 6 de diciembre de 2026, historia y cómo llegar.",
+    "url": "PENDIENTE: poner la dirección final de Vercel"
+  },
+  "nombre": "Pólvora",
+  "nombreCompleto": "Distrito de Pólvora",
+  "aniversario": 42,
+  "aniversarioRomano": "XLII",
+  "fechaCentral": "2026-12-06",
+  "fechaInicio": "2026-12-02",
+  "textoFechas": "Del 2 al 6 de diciembre de 2026",
+  "zonaHoraria": "-05:00",
+  "municipalidad": {
+    "nombre": "Municipalidad Distrital de Pólvora",
+    "alcalde": "Hugo Ventura Sánchez"
+  },
+  "datos": [
+    { "etiqueta": "Creación", "valor": "Ley 24016, del 6 de diciembre de 1984" },
+    { "etiqueta": "Provincia", "valor": "Tocache" },
+    { "etiqueta": "Departamento", "valor": "San Martín" },
+    { "etiqueta": "Capital", "valor": "Pólvora" },
+    { "etiqueta": "Población", "valor": "10 994 habitantes", "nota": "Censo 2017, INEI" },
+    { "etiqueta": "Gentilicio", "valor": "polvorino, polvorina" }
+  ],
+  "pendientes": {
+    "superficie": "PENDIENTE: Wikipedia dice 2 174,48 km² y el plan ambiental municipal 2 180,44 km². Confirmar con la municipalidad.",
+    "altitud": "PENDIENTE: Wikipedia da 540 y 450 m s. n. m. Confirmar."
+  },
+  "historia": {
+    "titulo": "De Pacota a Pólvora",
+    "parrafos": [
+      "Pólvora nace en 1970, cuando se abre la trocha de la Carretera Marginal de la Selva. El Ministerio de Transportes instala campamentos a orillas de los ríos para alojar a los trabajadores, y el lugar se llama al principio Pacota.",
+      "El nombre de hoy viene de una quebrada que se forma de la unión de otras dos. Sus aguas tenían un olor que recordaba a la pólvora, y así quedó el pueblo.",
+      "A inicios de 1973 empiezan a llegar las primeras familias, atraídas por las tierras fértiles para sembrar. En 1974 el lugar es reconocido como caserío del distrito de Tocache, entonces en la provincia de Mariscal Cáceres.",
+      "El 6 de diciembre de 1984, con la Ley 24016, Pólvora se convierte en distrito. Es la misma ley que crea la provincia de Tocache."
+    ],
+    "fuentes": "Wikipedia (Distrito de Pólvora) y tríptico del 31.° aniversario de la municipalidad (2015). El texto de la ley está en el Congreso de la República."
+  },
+  "galeria": [
+    {
+      "archivo": "plaza",
+      "alt": "Vista aérea de la Plaza de Armas de Pólvora, con sus senderos, jardines y la pileta al centro",
+      "pie": "La Plaza de Armas de Pólvora vista desde arriba"
+    },
+    {
+      "archivo": "gastronomia",
+      "alt": "Afiche del concurso gastronómico Platos Típicos 2026, con premios de 350, 200 y 100 soles",
+      "pie": "Afiche del concurso Platos Típicos 2026, jueves 3 de diciembre"
+    }
+  ],
+  "invitados": [],
+  "ubicacion": {
+    "lat": -7.9074376,
+    "lng": -76.6703278,
+    "fuenteCoordenadas": "Wikipedia (Distrito de Pólvora). Confirmar sobre el mapa.",
+    "mapsUrl": "https://maps.app.goo.gl/aaQxAdU4dLoo7od2A",
+    "texto": "Pólvora está en la provincia de Tocache, departamento de San Martín."
+  },
+  "contacto": {
+    "whatsapp": [
+      { "etiqueta": "Concurso gastronómico", "numero": "916 476 214", "wa": "51916476214" },
+      { "etiqueta": "Gerencia de Desarrollo Social", "numero": "931 595 106", "wa": "51931595106" }
+    ],
+    "redes": [
+      { "etiqueta": "Facebook de la Municipalidad", "url": "https://www.facebook.com/municipalidaddepolvora.gob.pe/" }
+    ]
+  },
+  "desarrollador": {
+    "nombre": "José",
+    "url": "https://github.com/joseantoniohg26"
+  }
+}
