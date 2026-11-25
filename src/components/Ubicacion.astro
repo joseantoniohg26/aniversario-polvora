@@ -1,0 +1,64 @@
+---
+import distrito from '../data/distrito.json';
+const { ubicacion, contacto } = distrito;
+const d = 0.045;
+const bbox = [ubicacion.lng - d, ubicacion.lat - d * 0.7, ubicacion.lng + d, ubicacion.lat + d * 0.7].join('%2C');
+const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${ubicacion.lat}%2C${ubicacion.lng}`;
+---
+<section id="ubicacion" class="bg-verde-900 px-4 py-14 text-white">
+  <div class="mx-auto grid max-w-5xl gap-10 md:grid-cols-2">
+    <div>
+      <h2 class="text-4xl text-oro-300 sm:text-5xl">Cómo llegar</h2>
+      <p class="mt-4 text-lg">{ubicacion.texto}</p>
+      <a
+        href={ubicacion.mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-5 inline-block rounded-full bg-oro-300 px-6 py-3 font-bold text-verde-950 hover:bg-white"
+      >Abrir en Google Maps</a>
+
+      <details class="mt-6 rounded-2xl border border-oro-500/60 bg-verde-950/60">
+        <summary class="cursor-pointer list-none px-5 py-4 text-lg font-bold">
+          Ver el mapa aquí <span class="font-normal text-white/80">(carga al abrirlo)</span>
+        </summary>
+        <iframe
+          title="Mapa de Pólvora, Tocache"
+          src={osm}
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          class="h-72 w-full rounded-b-2xl border-0 bg-white"
+        ></iframe>
+      </details>
+    </div>
+
+    <div>
+      <h2 class="text-4xl text-oro-300 sm:text-5xl">Contacto</h2>
+      <p class="mt-4 text-lg">Para consultas, escribe a la municipalidad:</p>
+      <ul class="mt-4 space-y-3">
+        {contacto.whatsapp.map((w) => (
+          <li>
+            <a
+              href={`https://wa.me/${w.wa}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block rounded-2xl border border-white/30 px-5 py-3 hover:bg-white/10"
+            >
+              <span class="block text-sm text-white/80">{w.etiqueta}</span>
+              <span class="text-xl font-bold">WhatsApp {w.numero}</span>
+            </a>
+          </li>
+        ))}
+        {contacto.redes.map((r) => (
+          <li>
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block rounded-2xl border border-white/30 px-5 py-3 text-xl font-bold hover:bg-white/10"
+            >{r.etiqueta}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

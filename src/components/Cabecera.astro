@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import escudo from '../assets/escudo.webp';
+import distrito from '../data/distrito.json';
+
+const enlaces = [
+  { href: '#programa', texto: 'Programa' },
+  { href: '#historia', texto: 'Historia' },
+  { href: '#galeria', texto: 'Fotos' },
+  { href: '#ubicacion', texto: 'Cómo llegar' },
+];
+---
+<header class="sticky top-0 z-40 border-b border-oro-500/40 bg-verde-950 text-white">
+  <div class="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2">
+    <a href="#inicio" class="flex shrink-0 items-center gap-2" aria-label={`${distrito.municipalidad.nombre}, ir al inicio`}>
+      <Image src={escudo} alt="" width={44} height={36} class="h-9 w-auto rounded bg-white p-0.5" loading="eager" />
+    </a>
+    <nav aria-label="Secciones" class="ml-auto">
+      <ul class="flex gap-1 text-[0.95rem] font-bold">
+        {enlaces.map((e) => (
+          <li>
+            <a href={e.href} class="block rounded px-2.5 py-2 hover:bg-white/10">{e.texto}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,15 @@
+---
+// Banderines de fiesta hechos en SVG: no pesan nada y no usan imágenes.
+const { class: clase = '' } = Astro.props;
+---
+<svg class={clase} width="100%" height="34" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="banderines" width="108" height="34" patternUnits="userSpaceOnUse">
+      <path d="M0 0H108" stroke="#c79d31" stroke-width="3" />
+      <path d="M4 3 L32 3 L18 32 Z" fill="#149668" />
+      <path d="M40 3 L68 3 L54 32 Z" fill="#c79d31" />
+      <path d="M76 3 L104 3 L90 32 Z" fill="#ae3232" />
+    </pattern>
+  </defs>
+  <rect width="100%" height="34" fill="url(#banderines)" />
+</svg>

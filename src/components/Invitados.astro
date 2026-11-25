@@ -1,0 +1,16 @@
+---
+import distrito from '../data/distrito.json';
+const invitados = distrito.invitados as { nombre: string; detalle?: string }[];
+---
+{invitados.length > 0 && (
+  <section id="invitados" class="bg-verde-900 px-4 py-14 text-white">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-4xl text-oro-300 sm:text-5xl">Invitados</h2>
+      <ul class="mt-6 space-y-3 text-lg">
+        {invitados.map((i) => (
+          <li><strong>{i.nombre}</strong>{i.detalle && <span> · {i.detalle}</span>}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

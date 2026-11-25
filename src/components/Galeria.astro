@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import plaza from '../assets/plaza.jpg';
+import gastronomia from '../assets/afiche-gastronomia.jpg';
+import distrito from '../data/distrito.json';
+
+const imagenes = { plaza, gastronomia };
+---
+<section id="galeria" class="bg-crema px-4 py-14">
+  <div class="mx-auto max-w-5xl">
+    <h2 class="text-4xl text-verde-900 sm:text-5xl">Fotos</h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      {distrito.galeria.map((f) => (
+        <figure class="overflow-hidden rounded-2xl border border-verde-700/20 bg-white">
+          <Image
+            src={imagenes[f.archivo as keyof typeof imagenes]}
+            alt={f.alt}
+            widths={[360, 640, 900]}
+            sizes="(min-width: 768px) 480px, 92vw"
+            format="webp"
+            quality={70}
+            loading="lazy"
+            class="h-auto w-full"
+          />
+          <figcaption class="px-4 py-3 text-[0.98rem]">{f.pie}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

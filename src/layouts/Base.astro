@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import distrito from '../data/distrito.json';
+import programa from '../data/programa.json';
+
+const { sitio, aniversario } = distrito;
+const urlFinal = sitio.url.startsWith('http') ? sitio.url : null;
+const ultimo = programa.dias[programa.dias.length - 1];
+
+const eventoLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: `${aniversario}.° Aniversario del Distrito de Pólvora`,
+  startDate: distrito.fechaInicio,
+  endDate: ultimo.fecha,
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  location: {
+    '@type': 'Place',
+    name: 'Distrito de Pólvora',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Pólvora',
+      addressRegion: 'San Martín',
+      addressCountry: 'PE',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: distrito.ubicacion.lat, longitude: distrito.ubicacion.lng },
+  },
+  organizer: { '@type': 'Organization', name: distrito.municipalidad.nombre },
+  description: sitio.descripcion,
+};
+---
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{sitio.titulo}</title>
+    <meta name="description" content={sitio.descripcion} />
+    <meta name="theme-color" content="#08402d" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    {urlFinal && <link rel="canonical" href={urlFinal} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:title" content={sitio.titulo} />
+    <meta property="og:description" content={sitio.descripcion} />
+    <meta property="og:image" content={urlFinal ? new URL('/og.jpg', urlFinal).href : '/og.jpg'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(eventoLd)} />
+  </head>
+  <body>
+    <a
+      href="#programa"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-oro-300 focus:px-4 focus:py-2 focus:font-bold focus:text-verde-950"
+    >Ir al programa</a>
+    <slot />
+  </body>
+</html>

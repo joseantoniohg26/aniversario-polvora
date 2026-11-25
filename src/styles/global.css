@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+@import '@fontsource/bree-serif/latin-400.css';
+@import '@fontsource/source-sans-3/latin-400.css';
+@import '@fontsource/source-sans-3/latin-700.css';
+
+@theme {
+  --font-display: 'Bree Serif', Georgia, serif;
+  --font-sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Paleta sacada del escudo (verde de la palabra PÓLVORA, cinta dorada, granos de café, cielo) */
+  --color-verde-950: #06301f;
+  --color-verde-900: #08402d;
+  --color-verde-700: #0b6b4a;
+  --color-verde-500: #149668;
+  --color-verde-100: #e3f2ea;
+  --color-oro-300: #efd488;
+  --color-oro-500: #c79d31;
+  --color-oro-700: #7a5a0c;
+  --color-cafe-600: #ae3232;
+  --color-cafe-700: #8f2626;
+  --color-crema: #fbf6e8;
+  --color-tinta: #1b2a22;
+  --color-cielo: #218fcc;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  font-family: var(--font-sans);
+  background: var(--color-crema);
+  color: var(--color-tinta);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.1; }
+
+:focus-visible {
+  outline: 3px solid var(--color-oro-500);
+  outline-offset: 3px;
+}
+
+/* Textura suave de la portada, sin imágenes */
+.fondo-portada {
+  background:
+    radial-gradient(60rem 28rem at 50% -8rem, rgb(20 150 104 / 0.55), transparent 70%),
+    var(--color-verde-900);
+}
