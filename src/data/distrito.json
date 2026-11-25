@@ -57,14 +57,44 @@
   },
   "galeria": [
     {
-      "archivo": "plaza",
+      "archivo": "01-plaza",
       "alt": "Vista aérea de la Plaza de Armas de Pólvora, con sus senderos, jardines y la pileta al centro",
       "pie": "La Plaza de Armas de Pólvora vista desde arriba"
     },
     {
-      "archivo": "gastronomia",
+      "archivo": "02-carretera-discurso",
+      "alt": "El alcalde hablando con micrófono en un estrado, frente a vecinos y autoridades, durante la inauguración de una obra vial",
+      "pie": "Inauguración de la carretera Nuevo Horizonte – Canuto, octubre de 2026"
+    },
+    {
+      "archivo": "03-carretera-cinta",
+      "alt": "Autoridades y vecinos cortan juntos la cinta de inauguración en la carretera",
+      "pie": "Corte de cinta en la inauguración de la carretera, octubre de 2026"
+    },
+    {
+      "archivo": "04-puente-lajas",
+      "alt": "Vecinos reunidos sobre el puente al atardecer, aplaudiendo durante la inauguración",
+      "pie": "Puente en la quebrada Lajas, Puerto Rico, octubre de 2026"
+    },
+    {
+      "archivo": "05-afiche-gastronomia",
       "alt": "Afiche del concurso gastronómico Platos Típicos 2026, con premios de 350, 200 y 100 soles",
       "pie": "Afiche del concurso Platos Típicos 2026, jueves 3 de diciembre"
+    },
+    {
+      "archivo": "06-aniversario-2016-discurso",
+      "alt": "Autoridad con banda de alcalde hablando en el escenario de la ceremonia del 32.° aniversario",
+      "pie": "Ceremonia del 32.° aniversario, 2016"
+    },
+    {
+      "archivo": "07-aniversario-2016-mesa",
+      "alt": "Mesa de honor con autoridades y público sentado durante el 32.° aniversario",
+      "pie": "Mesa de honor del 32.° aniversario, 2016"
+    },
+    {
+      "archivo": "08-afiche-aniversario-2018",
+      "alt": "Afiche del 34.° aniversario del distrito de Pólvora con el programa del jueves 6 de diciembre",
+      "pie": "Afiche del 34.° aniversario, 2018"
     }
   ],
   "invitados": [],

@@ -1,22 +1,27 @@
 ---
 import { Image } from 'astro:assets';
-import plaza from '../assets/plaza.jpg';
-import gastronomia from '../assets/afiche-gastronomia.jpg';
+import type { ImageMetadata } from 'astro';
 import distrito from '../data/distrito.json';
 
-const imagenes = { plaza, gastronomia };
+// Las fotos viven en src/assets/galeria/. Para agregar una: poner el archivo ahí
+// y sumar su entrada en "galeria" de distrito.json (el nombre sin extensión va en "archivo").
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/galeria/*.{jpg,jpeg,png,webp}', { eager: true });
+const porNombre = Object.fromEntries(
+  Object.entries(fotos).map(([ruta, m]) => [ruta.split('/').pop()!.replace(/\.[^.]+$/, ''), m.default]),
+);
+const items = distrito.galeria.filter((f) => porNombre[f.archivo]);
 ---
 <section id="galeria" class="bg-crema px-4 py-14">
   <div class="mx-auto max-w-5xl">
     <h2 class="text-4xl text-verde-900 sm:text-5xl">Fotos</h2>
-    <div class="mt-8 grid gap-6 md:grid-cols-2">
-      {distrito.galeria.map((f) => (
+    <div class="mt-8 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((f) => (
         <figure class="overflow-hidden rounded-2xl border border-verde-700/20 bg-white">
           <Image
-            src={imagenes[f.archivo as keyof typeof imagenes]}
+            src={porNombre[f.archivo]}
             alt={f.alt}
             widths={[360, 640, 900]}
-            sizes="(min-width: 768px) 480px, 92vw"
+            sizes="(min-width: 1024px) 330px, (min-width: 640px) 45vw, 92vw"
             format="webp"
             quality={70}
             loading="lazy"
