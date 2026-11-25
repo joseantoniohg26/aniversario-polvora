@@ -40,8 +40,15 @@ body {
 h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.1; }
 
 :focus-visible {
-  outline: 3px solid var(--color-oro-500);
+  outline: 3px solid var(--color-verde-700);
   outline-offset: 3px;
+}
+/* En las zonas verdes oscuras el foco va en dorado claro */
+header :focus-visible,
+.fondo-portada :focus-visible,
+#ubicacion :focus-visible,
+footer :focus-visible {
+  outline-color: var(--color-oro-300);
 }
 
 /* Textura suave de la portada, sin imágenes */

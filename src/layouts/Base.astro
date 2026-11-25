@@ -17,12 +17,12 @@ const eventoLd = {
   eventStatus: 'https://schema.org/EventScheduled',
   location: {
     '@type': 'Place',
-    name: 'Distrito de Pólvora',
+    name: distrito.ubicacion.nombreLugar,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Pólvora',
-      addressRegion: 'San Martín',
-      addressCountry: 'PE',
+      addressLocality: distrito.ubicacion.localidad,
+      addressRegion: distrito.ubicacion.region,
+      addressCountry: distrito.ubicacion.pais,
     },
     geo: { '@type': 'GeoCoordinates', latitude: distrito.ubicacion.lat, longitude: distrito.ubicacion.lng },
   },

@@ -8,15 +8,55 @@
       "numero": 2,
       "central": false,
       "actividades": [
-        { "hora": "5:30 a.m.", "titulo": "Despertar Pólvora", "detalle": "Salva de 21 camaretazos", "lugar": null },
-        { "hora": "5:30 a.m.", "titulo": "Entrada de la banda folklórica", "lugar": null },
-        { "hora": "6:00 a.m.", "titulo": "Faena general", "detalle": "Población, institución invitada y Municipalidad", "lugar": null },
-        { "hora": "7:00 a.m.", "titulo": "Embanderamiento general", "lugar": null },
-        { "hora": "8:00 a.m.", "titulo": "1.0 Embellecimiento de la Plaza de Armas – Identidad Pólvora 2026", "detalle": "A cargo de la Municipalidad", "lugar": "Plaza de Armas" },
-        { "hora": "3:00 p.m.", "titulo": "Premiamos tu puntualidad por el pago de tus tributos", "lugar": null },
-        { "hora": "4:00 p.m.", "titulo": "Inauguración Calles Pólvora", "lugar": null },
-        { "hora": "4:30 p.m.", "titulo": "1.1 Concurso de embellecimiento de calles – Identidad Pólvora 2026", "detalle": "Participa la población", "lugar": null },
-        { "hora": "7:00 p.m.", "titulo": "Elección y coronación de Señorita Pólvora 2026", "lugar": null }
+        {
+          "hora": "5:30 a.m.",
+          "titulo": "Despertar Pólvora",
+          "detalle": "Salva de 21 camaretazos",
+          "lugar": null
+        },
+        {
+          "hora": "5:30 a.m.",
+          "titulo": "Entrada de la banda folklórica",
+          "lugar": null
+        },
+        {
+          "hora": "6:00 a.m.",
+          "titulo": "Faena general",
+          "detalle": "Población, institución invitada y Municipalidad",
+          "lugar": null
+        },
+        {
+          "hora": "7:00 a.m.",
+          "titulo": "Embanderamiento general",
+          "lugar": null
+        },
+        {
+          "hora": "8:00 a.m.",
+          "titulo": "1.0 Embellecimiento de la Plaza de Armas – Identidad Pólvora 2026",
+          "detalle": "A cargo de la Municipalidad",
+          "lugar": null
+        },
+        {
+          "hora": "3:00 p.m.",
+          "titulo": "Premiamos tu puntualidad por el pago de tus tributos",
+          "lugar": null
+        },
+        {
+          "hora": "4:00 p.m.",
+          "titulo": "Inauguración Calles Pólvora",
+          "lugar": null
+        },
+        {
+          "hora": "4:30 p.m.",
+          "titulo": "1.1 Concurso de embellecimiento de calles – Identidad Pólvora 2026",
+          "detalle": "Participa la población",
+          "lugar": null
+        },
+        {
+          "hora": "7:00 p.m.",
+          "titulo": "Elección y coronación de Señorita Pólvora 2026",
+          "lugar": null
+        }
       ]
     },
     {
@@ -26,8 +66,17 @@
       "numero": 3,
       "central": false,
       "actividades": [
-        { "hora": "5:00 a.m.", "titulo": "Despertar Pólvora", "detalle": "Salva de 21 camaretazos", "lugar": null },
-        { "hora": "8:30 a.m.", "titulo": "Entrada de la banda folklórica", "lugar": null },
+        {
+          "hora": "5:00 a.m.",
+          "titulo": "Despertar Pólvora",
+          "detalle": "Salva de 21 camaretazos",
+          "lugar": null
+        },
+        {
+          "hora": "8:30 a.m.",
+          "titulo": "Entrada de la banda folklórica",
+          "lugar": null
+        },
         {
           "hora": "9:00 a.m. a 3:00 p.m.",
           "titulo": "Inauguración de la feria agraria, pecuaria, forestal, industrial, gastronómica, artesanal y turística y medio ambiental",
@@ -55,9 +104,16 @@
           "titulo": "Concurso gastronómico: Platos Típicos 2026",
           "detalle": "Premios: 1.er puesto S/ 350, 2.º puesto S/ 200, 3.er puesto S/ 100",
           "lugar": "Plaza de Armas",
-          "contacto": { "texto": "Consultas al WhatsApp 916 476 214", "whatsapp": "51916476214" }
+          "contacto": {
+            "texto": "Consultas al WhatsApp 916 476 214",
+            "whatsapp": "51916476214"
+          }
         },
-        { "hora": "7:00 p.m.", "titulo": "Verbena artística", "lugar": null }
+        {
+          "hora": "7:00 p.m.",
+          "titulo": "Verbena artística",
+          "lugar": null
+        }
       ]
     },
     {
@@ -67,9 +123,22 @@
       "numero": 4,
       "central": false,
       "actividades": [
-        { "hora": "5:30 a.m.", "titulo": "Despertar Pólvora", "detalle": "Salva de 21 camaretazos", "lugar": null },
-        { "hora": "8:30 a.m.", "titulo": "Entrada de la banda folklórica", "lugar": null },
-        { "hora": "9:00 a.m.", "titulo": "Campeonato de mini fútbol intercentros poblados, caseríos y sectores (varones)", "lugar": null }
+        {
+          "hora": "5:30 a.m.",
+          "titulo": "Despertar Pólvora",
+          "detalle": "Salva de 21 camaretazos",
+          "lugar": null
+        },
+        {
+          "hora": "8:30 a.m.",
+          "titulo": "Entrada de la banda folklórica",
+          "lugar": null
+        },
+        {
+          "hora": "9:00 a.m.",
+          "titulo": "Campeonato de mini fútbol intercentros poblados, caseríos y sectores (varones)",
+          "lugar": null
+        }
       ]
     },
     {
@@ -80,11 +149,32 @@
       "central": false,
       "lema": "¡Pólvora celebra su historia, cultura y unidad!",
       "actividades": [
-        { "hora": "5:30 a.m.", "titulo": "Despertar Pólvora", "detalle": "Salva de 21 camaretazos", "lugar": null },
-        { "hora": "8:30 a.m.", "titulo": "Entrada de la banda folklórica", "lugar": null },
-        { "hora": "9:00 a.m.", "titulo": "Campeonato de vóley intercentros poblados y sectores (mujeres)", "lugar": null },
-        { "hora": "1:00 p.m.", "titulo": "Campeonato de mini fútbol intercentros poblados y sectores (varones): final", "lugar": null },
-        { "hora": "7:00 p.m.", "titulo": "Fiesta social y quema de castillo", "lugar": null }
+        {
+          "hora": "5:30 a.m.",
+          "titulo": "Despertar Pólvora",
+          "detalle": "Salva de 21 camaretazos",
+          "lugar": null
+        },
+        {
+          "hora": "8:30 a.m.",
+          "titulo": "Entrada de la banda folklórica",
+          "lugar": null
+        },
+        {
+          "hora": "9:00 a.m.",
+          "titulo": "Campeonato de vóley intercentros poblados y sectores (mujeres)",
+          "lugar": null
+        },
+        {
+          "hora": "1:00 p.m.",
+          "titulo": "Campeonato de mini fútbol intercentros poblados y sectores (varones): final",
+          "lugar": null
+        },
+        {
+          "hora": "7:00 p.m.",
+          "titulo": "Fiesta social y quema de castillo",
+          "lugar": null
+        }
       ]
     },
     {
@@ -95,15 +185,52 @@
       "central": true,
       "lema": "¡Pólvora, 42 años de historia, identidad y progreso!",
       "actividades": [
-        { "hora": "5:30 a.m.", "titulo": "Despertar Pólvora", "detalle": "Salva de 21 camaretazos", "lugar": null },
-        { "hora": "5:30 a.m.", "titulo": "Entrada de la banda de música", "lugar": null },
-        { "hora": "6:00 a.m.", "titulo": "Desayuno de camaradería", "lugar": null },
-        { "hora": "7:00 a.m.", "titulo": "Misa Te Deum", "lugar": null },
-        { "hora": "8:30 a.m.", "titulo": "Izamiento del pabellón nacional", "lugar": null },
-        { "hora": "9:00 a.m.", "titulo": "Desfile cívico", "lugar": null },
-        { "hora": "12:00 p.m.", "titulo": "Sesión solemne", "lugar": null },
-        { "hora": "1:00 p.m.", "titulo": "Almuerzo de camaradería", "lugar": null },
-        { "hora": "3:00 p.m.", "titulo": "Hunsha", "lugar": null }
+        {
+          "hora": "5:30 a.m.",
+          "titulo": "Despertar Pólvora",
+          "detalle": "Salva de 21 camaretazos",
+          "lugar": null
+        },
+        {
+          "hora": "5:30 a.m.",
+          "titulo": "Entrada de la banda de música",
+          "lugar": null
+        },
+        {
+          "hora": "6:00 a.m.",
+          "titulo": "Desayuno de camaradería",
+          "lugar": null
+        },
+        {
+          "hora": "7:00 a.m.",
+          "titulo": "Misa Te Deum",
+          "lugar": null
+        },
+        {
+          "hora": "8:30 a.m.",
+          "titulo": "Izamiento del pabellón nacional",
+          "lugar": null
+        },
+        {
+          "hora": "9:00 a.m.",
+          "titulo": "Desfile cívico",
+          "lugar": null
+        },
+        {
+          "hora": "12:00 p.m.",
+          "titulo": "Sesión solemne",
+          "lugar": null
+        },
+        {
+          "hora": "1:00 p.m.",
+          "titulo": "Almuerzo de camaradería",
+          "lugar": null
+        },
+        {
+          "hora": "3:00 p.m.",
+          "titulo": "Hunsha",
+          "lugar": null
+        }
       ]
     }
   ]

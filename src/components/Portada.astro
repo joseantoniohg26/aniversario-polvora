@@ -4,7 +4,7 @@ import escudo from '../assets/escudo.webp';
 import Bunting from './Bunting.astro';
 import distrito from '../data/distrito.json';
 
-const { aniversario, fechaCentral, zonaHoraria, textoFechas } = distrito;
+const { aniversario, fechaCentral, zonaHoraria, textoFechas, textos } = distrito;
 const objetivo = `${fechaCentral}T00:00:00${zonaHoraria}`;
 ---
 <section id="inicio" class="fondo-portada relative overflow-hidden text-center text-white">
@@ -19,28 +19,29 @@ const objetivo = `${fechaCentral}T00:00:00${zonaHoraria}`;
       loading="eager"
       fetchpriority="high"
     />
-    <p class="mt-6 text-lg font-bold uppercase tracking-wide text-oro-300">Distrito de Pólvora</p>
+    <p class="mt-6 text-lg font-bold uppercase tracking-wide text-oro-300">{textos.portada.etiqueta}</p>
     <h1 class="mt-1 text-oro-300">
       <span class="block text-[5.5rem] leading-none sm:text-[8rem]">{aniversario}.°</span>
       <span class="block text-4xl text-white sm:text-6xl">Aniversario</span>
     </h1>
     <p class="mt-4 text-xl font-bold">{textoFechas}</p>
-    <p class="mt-1 text-white/85">Día central: domingo 6 de diciembre</p>
+    <p class="mt-1 text-white/85">{textos.portada.diaCentral}</p>
 
     <div
       id="contador" hidden
       data-objetivo={objetivo}
+      data-textos={JSON.stringify(textos.contador)}
       class="mx-auto mt-8 max-w-xs rounded-2xl [&:not([hidden])]:block border border-oro-500/60 bg-verde-950/70 px-5 py-4"
     >
-      <p class="text-sm font-bold uppercase tracking-wider text-oro-300">Faltan</p>
-      <p class="font-display text-5xl text-white" aria-live="polite"><span data-dias>—</span></p>
-      <p class="text-sm text-white/80" data-unidad>días para el 6 de diciembre</p>
+      <p class="text-sm font-bold uppercase tracking-wider text-oro-300">{textos.contador.faltan}</p>
+      <p class="font-display text-5xl text-white" aria-live="polite"><span data-dias></span></p>
+      <p class="text-sm text-white/80" data-unidad></p>
     </div>
 
     <a
       href="#programa"
       class="mt-8 inline-block rounded-full bg-oro-300 px-7 py-3 text-lg font-bold text-verde-950 shadow-lg hover:bg-white"
-    >Ver el programa</a>
+    >{textos.portada.botonPrograma}</a>
   </div>
 </section>
 
@@ -49,15 +50,16 @@ const objetivo = `${fechaCentral}T00:00:00${zonaHoraria}`;
   const caja = document.getElementById('contador');
   if (caja) {
     const objetivo = new Date(caja.dataset.objetivo ?? '').getTime();
+    const t = JSON.parse(caja.dataset.textos ?? '{}');
     const dias = Math.ceil((objetivo - Date.now()) / 86400000);
     const num = caja.querySelector('[data-dias]');
     const unidad = caja.querySelector('[data-unidad]');
     if (num && unidad && !Number.isNaN(dias)) {
       caja.hidden = false;
-      if (dias > 1) { num.textContent = String(dias); unidad.textContent = 'días para el 6 de diciembre'; }
-      else if (dias === 1) { num.textContent = '1'; unidad.textContent = 'día para el 6 de diciembre'; }
-      else if (dias === 0) { num.textContent = '¡Hoy!'; unidad.textContent = 'es el día central'; }
-      else { num.textContent = '¡Gracias!'; unidad.textContent = 'por celebrar con nosotros'; }
+      if (dias > 1) { num.textContent = String(dias); unidad.textContent = t.plural; }
+      else if (dias === 1) { num.textContent = '1'; unidad.textContent = t.singular; }
+      else if (dias === 0) { num.textContent = t.hoy; unidad.textContent = t.hoyUnidad; }
+      else { num.textContent = t.despues; unidad.textContent = t.despuesUnidad; }
     }
   }
 </script>

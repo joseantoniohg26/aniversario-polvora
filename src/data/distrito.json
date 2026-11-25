@@ -5,10 +5,7 @@
     "descripcion": "Programa completo del 42.° aniversario del distrito de Pólvora, Tocache, San Martín: actividades del 2 al 6 de diciembre de 2026, historia y cómo llegar.",
     "url": "PENDIENTE: poner la dirección final de Vercel"
   },
-  "nombre": "Pólvora",
-  "nombreCompleto": "Distrito de Pólvora",
   "aniversario": 42,
-  "aniversarioRomano": "XLII",
   "fechaCentral": "2026-12-06",
   "fechaInicio": "2026-12-02",
   "textoFechas": "Del 2 al 6 de diciembre de 2026",
@@ -18,12 +15,31 @@
     "alcalde": "Hugo Ventura Sánchez"
   },
   "datos": [
-    { "etiqueta": "Creación", "valor": "Ley 24016, del 6 de diciembre de 1984" },
-    { "etiqueta": "Provincia", "valor": "Tocache" },
-    { "etiqueta": "Departamento", "valor": "San Martín" },
-    { "etiqueta": "Capital", "valor": "Pólvora" },
-    { "etiqueta": "Población", "valor": "10 994 habitantes", "nota": "Censo 2017, INEI" },
-    { "etiqueta": "Gentilicio", "valor": "polvorino, polvorina" }
+    {
+      "etiqueta": "Creación",
+      "valor": "Ley 24016, del 6 de diciembre de 1984"
+    },
+    {
+      "etiqueta": "Provincia",
+      "valor": "Tocache"
+    },
+    {
+      "etiqueta": "Departamento",
+      "valor": "San Martín"
+    },
+    {
+      "etiqueta": "Capital",
+      "valor": "Pólvora"
+    },
+    {
+      "etiqueta": "Población",
+      "valor": "10 994 habitantes",
+      "nota": "Censo 2017, INEI"
+    },
+    {
+      "etiqueta": "Gentilicio",
+      "valor": "polvorino, polvorina"
+    }
   ],
   "pendientes": {
     "superficie": "PENDIENTE: Wikipedia dice 2 174,48 km² y el plan ambiental municipal 2 180,44 km². Confirmar con la municipalidad.",
@@ -57,19 +73,64 @@
     "lng": -76.6703278,
     "fuenteCoordenadas": "Wikipedia (Distrito de Pólvora). Confirmar sobre el mapa.",
     "mapsUrl": "https://maps.app.goo.gl/aaQxAdU4dLoo7od2A",
-    "texto": "Pólvora está en la provincia de Tocache, departamento de San Martín."
+    "texto": "Pólvora está en la provincia de Tocache, departamento de San Martín.",
+    "localidad": "Pólvora",
+    "region": "San Martín",
+    "pais": "PE",
+    "nombreLugar": "Distrito de Pólvora"
   },
   "contacto": {
     "whatsapp": [
-      { "etiqueta": "Concurso gastronómico", "numero": "916 476 214", "wa": "51916476214" },
-      { "etiqueta": "Gerencia de Desarrollo Social", "numero": "931 595 106", "wa": "51931595106" }
+      {
+        "etiqueta": "Concurso gastronómico",
+        "numero": "916 476 214",
+        "wa": "51916476214"
+      },
+      {
+        "etiqueta": "Gerencia de Desarrollo Social",
+        "numero": "931 595 106",
+        "wa": "51931595106"
+      }
     ],
     "redes": [
-      { "etiqueta": "Facebook de la Municipalidad", "url": "https://www.facebook.com/municipalidaddepolvora.gob.pe/" }
+      {
+        "etiqueta": "Facebook de la Municipalidad",
+        "url": "https://www.facebook.com/municipalidaddepolvora.gob.pe/"
+      }
     ]
   },
   "desarrollador": {
     "nombre": "José",
     "url": "https://github.com/joseantoniohg26"
+  },
+  "_confirmacion": "Aniversario 42.° y día central 6/12/2026: confirmados por el desarrollador el 25/11/2026 (coinciden con los afiches de la municipalidad). Falta el visto bueno escrito de la municipalidad.",
+  "textos": {
+    "portada": {
+      "etiqueta": "Distrito de Pólvora",
+      "diaCentral": "Día central: domingo 6 de diciembre",
+      "botonPrograma": "Ver el programa"
+    },
+    "contador": {
+      "faltan": "Faltan",
+      "plural": "días para el 6 de diciembre",
+      "singular": "día para el 6 de diciembre",
+      "hoy": "¡Hoy!",
+      "hoyUnidad": "es el día central",
+      "despues": "Gracias",
+      "despuesUnidad": "por acompañarnos"
+    },
+    "programa": {
+      "etiquetaCentral": "Día central",
+      "etiquetaHoy": "Hoy"
+    },
+    "ubicacion": {
+      "tituloLlegar": "Cómo llegar",
+      "tituloContacto": "Contacto",
+      "introContacto": "Para consultas, escribe a la municipalidad:",
+      "tituloMapa": "Mapa de Pólvora, Tocache",
+      "botonMaps": "Abrir en Google Maps",
+      "verMapa": "Ver el mapa aquí",
+      "verMapaNota": "(carga al abrirlo)"
+    }
   }
 }

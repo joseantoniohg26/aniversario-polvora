@@ -1,6 +1,7 @@
 ---
 import distrito from '../data/distrito.json';
-const { ubicacion, contacto } = distrito;
+const { ubicacion, contacto, textos } = distrito;
+const t = textos.ubicacion;
 const d = 0.045;
 const bbox = [ubicacion.lng - d, ubicacion.lat - d * 0.7, ubicacion.lng + d, ubicacion.lat + d * 0.7].join('%2C');
 const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${ubicacion.lat}%2C${ubicacion.lng}`;
@@ -8,21 +9,21 @@ const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=
 <section id="ubicacion" class="bg-verde-900 px-4 py-14 text-white">
   <div class="mx-auto grid max-w-5xl gap-10 md:grid-cols-2">
     <div>
-      <h2 class="text-4xl text-oro-300 sm:text-5xl">Cómo llegar</h2>
+      <h2 class="text-4xl text-oro-300 sm:text-5xl">{t.tituloLlegar}</h2>
       <p class="mt-4 text-lg">{ubicacion.texto}</p>
       <a
         href={ubicacion.mapsUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="mt-5 inline-block rounded-full bg-oro-300 px-6 py-3 font-bold text-verde-950 hover:bg-white"
-      >Abrir en Google Maps</a>
+      >{t.botonMaps}</a>
 
       <details class="mt-6 rounded-2xl border border-oro-500/60 bg-verde-950/60">
         <summary class="cursor-pointer list-none px-5 py-4 text-lg font-bold">
-          Ver el mapa aquí <span class="font-normal text-white/80">(carga al abrirlo)</span>
+          {t.verMapa} <span class="font-normal text-white/80">{t.verMapaNota}</span>
         </summary>
         <iframe
-          title="Mapa de Pólvora, Tocache"
+          title={t.tituloMapa}
           src={osm}
           loading="lazy"
           referrerpolicy="no-referrer"
@@ -32,8 +33,8 @@ const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=
     </div>
 
     <div>
-      <h2 class="text-4xl text-oro-300 sm:text-5xl">Contacto</h2>
-      <p class="mt-4 text-lg">Para consultas, escribe a la municipalidad:</p>
+      <h2 class="text-4xl text-oro-300 sm:text-5xl">{t.tituloContacto}</h2>
+      <p class="mt-4 text-lg">{t.introContacto}</p>
       <ul class="mt-4 space-y-3">
         {contacto.whatsapp.map((w) => (
           <li>
