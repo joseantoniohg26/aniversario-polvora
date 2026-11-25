@@ -80,21 +80,6 @@
       "archivo": "05-afiche-gastronomia",
       "alt": "Afiche del concurso gastronómico Platos Típicos 2026, con premios de 350, 200 y 100 soles",
       "pie": "Afiche del concurso Platos Típicos 2026, jueves 3 de diciembre"
-    },
-    {
-      "archivo": "06-aniversario-2016-discurso",
-      "alt": "Autoridad con banda de alcalde hablando en el escenario de la ceremonia del 32.° aniversario",
-      "pie": "Ceremonia del 32.° aniversario, 2016"
-    },
-    {
-      "archivo": "07-aniversario-2016-mesa",
-      "alt": "Mesa de honor con autoridades y público sentado durante el 32.° aniversario",
-      "pie": "Mesa de honor del 32.° aniversario, 2016"
-    },
-    {
-      "archivo": "08-afiche-aniversario-2018",
-      "alt": "Afiche del 34.° aniversario del distrito de Pólvora con el programa del jueves 6 de diciembre",
-      "pie": "Afiche del 34.° aniversario, 2018"
     }
   ],
   "invitados": [],
@@ -163,6 +148,11 @@
       "botonMaps": "Abrir en Google Maps",
       "verMapa": "Ver el mapa aquí",
       "verMapaNota": "(carga al abrirlo)"
+    },
+    "sonido": {
+      "activar": "Activar sonido",
+      "silenciar": "Silenciar",
+      "salva": "Salva de 21 camaretazos"
     }
   }
 }

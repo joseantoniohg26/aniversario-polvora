@@ -1,0 +1,199 @@
+---
+import distrito from '../data/distrito.json';
+const t = distrito.textos.sonido;
+---
+<button
+  id="sonido"
+  type="button"
+  hidden
+  class="sonido"
+  aria-pressed="false"
+  aria-label={t.activar}
+  data-textos={JSON.stringify(t)}
+>
+  <svg class="ico-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M11 5L6 9H3v6h3l5 4z" /><path d="M16 9l5 6M21 9l-5 6" />
+  </svg>
+  <svg class="ico-on" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M11 5L6 9H3v6h3l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+  </svg>
+</button>
+
+<script>
+  // Sonidos generados en el navegador (Web Audio): no se descarga ningún archivo.
+  // Empiezan apagados; el visitante los activa con el botón.
+  const boton = document.getElementById('sonido') as HTMLButtonElement | null;
+  const salva = document.getElementById('salva') as HTMLButtonElement | null;
+  const AC: typeof AudioContext | undefined = window.AudioContext ?? (window as any).webkitAudioContext;
+
+  if (boton && AC) {
+    const t = JSON.parse(boton.dataset.textos ?? '{}');
+    boton.hidden = false;
+    if (salva) salva.hidden = false;
+
+    let ctx: AudioContext | null = null;
+    let ruido: AudioBuffer | null = null;
+    let activo = false;
+
+    const audio = () => {
+      if (!ctx) {
+        ctx = new AC();
+        const n = Math.floor(ctx.sampleRate * 1.2);
+        ruido = ctx.createBuffer(1, n, ctx.sampleRate);
+        const d = ruido.getChannelData(0);
+        for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+      }
+      if (ctx.state === 'suspended') void ctx.resume();
+      return ctx;
+    };
+
+    // Camaretazo: estampido de ruido grave, golpe seco y chisporroteo.
+    const boom = (vol = 1) => {
+      if (!activo) return;
+      const c = audio();
+      const t0 = c.currentTime;
+      const fuente = c.createBufferSource();
+      fuente.buffer = ruido;
+      const pasabajos = c.createBiquadFilter();
+      pasabajos.type = 'lowpass';
+      pasabajos.frequency.setValueAtTime(1800, t0);
+      pasabajos.frequency.exponentialRampToValueAtTime(120, t0 + 0.6);
+      const g = c.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.9 * vol, t0 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.9);
+      fuente.connect(pasabajos).connect(g).connect(c.destination);
+      fuente.start(t0);
+      fuente.stop(t0 + 1);
+
+      const o = c.createOscillator();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(120, t0);
+      o.frequency.exponentialRampToValueAtTime(38, t0 + 0.35);
+      const og = c.createGain();
+      og.gain.setValueAtTime(0.9 * vol, t0);
+      og.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.45);
+      o.connect(og).connect(c.destination);
+      o.start(t0);
+      o.stop(t0 + 0.5);
+
+      for (let i = 0; i < 7; i++) {
+        const s = c.createBufferSource();
+        s.buffer = ruido;
+        const pasaaltos = c.createBiquadFilter();
+        pasaaltos.type = 'highpass';
+        pasaaltos.frequency.value = 3500;
+        const cg = c.createGain();
+        const ti = t0 + 0.35 + Math.random() * 0.7;
+        cg.gain.setValueAtTime(0.0001, ti);
+        cg.gain.exponentialRampToValueAtTime(0.18 * vol, ti + 0.004);
+        cg.gain.exponentialRampToValueAtTime(0.0001, ti + 0.05);
+        s.connect(pasaaltos).connect(cg).connect(c.destination);
+        s.start(ti, Math.random() * 0.5);
+        s.stop(ti + 0.06);
+      }
+    };
+
+    // Campana de fiesta: tres parciales que se apagan despacio.
+    const campana = (f = 660, vol = 0.35, demora = 0) => {
+      if (!activo) return;
+      const c = audio();
+      const t0 = c.currentTime + demora;
+      [[1, 1], [2.76, 0.45], [5.4, 0.2]].forEach(([mult, peso]) => {
+        const o = c.createOscillator();
+        o.type = 'sine';
+        o.frequency.value = f * mult;
+        const g = c.createGain();
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(vol * peso, t0 + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.6);
+        o.connect(g).connect(c.destination);
+        o.start(t0);
+        o.stop(t0 + 1.7);
+      });
+    };
+
+    const tic = () => {
+      if (!activo) return;
+      const c = audio();
+      const t0 = c.currentTime;
+      const o = c.createOscillator();
+      o.type = 'triangle';
+      o.frequency.setValueAtTime(1100, t0);
+      o.frequency.exponentialRampToValueAtTime(700, t0 + 0.05);
+      const g = c.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.16, t0 + 0.005);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.07);
+      o.connect(g).connect(c.destination);
+      o.start(t0);
+      o.stop(t0 + 0.08);
+    };
+
+    const alternar = () => {
+      activo = !activo;
+      boton.setAttribute('aria-pressed', String(activo));
+      boton.setAttribute('aria-label', activo ? t.silenciar : t.activar);
+      boton.classList.toggle('on', activo);
+      if (activo) {
+        audio();
+        campana(784, 0.4);
+      }
+    };
+    boton.addEventListener('click', alternar);
+
+    // Los camaretazos de la portada suenan cuando estallan.
+    document.querySelectorAll('.fuego').forEach((el) => {
+      const suena = () => {
+        if (!activo || document.getElementById('inicio')?.classList.contains('fuera')) return;
+        setTimeout(() => boom(0.45), 450);
+      };
+      el.addEventListener('animationstart', suena);
+      el.addEventListener('animationiteration', suena);
+    });
+
+    // Cada día del programa tiene su sonido; el día central suena a fanfarria.
+    document.addEventListener('click', (e) => {
+      const el = e.target as Element;
+      const dia = el.closest<HTMLAnchorElement>('a[href^="#dia-"]');
+      if (dia) {
+        const central = dia.matches('.central') || dia.getAttribute('href') === '#dia-6';
+        if (central) [523, 659, 784].forEach((f, i) => campana(f, 0.28, i * 0.13));
+        else tic();
+      } else if (el.closest('.boton-oro, #subir')) {
+        tic();
+      }
+    });
+
+    // Salva de 21 camaretazos: 21 estampidos y 21 destellos en la portada.
+    salva?.addEventListener('click', () => {
+      if (!activo) alternar();
+      const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const capa = document.querySelector('#inicio .fiesta');
+      const colores = ['#efd488', '#ff8a7a', '#7de0b4', '#6cc4ff'];
+      const etiqueta = salva.textContent ?? '';
+      salva.disabled = true;
+      let n = 0;
+      const siguiente = () => {
+        n++;
+        boom(0.5 + Math.random() * 0.4);
+        salva.textContent = `${n} / 21`;
+        if (capa && !reducido) {
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('viewBox', '-50 -50 100 100');
+          svg.setAttribute('class', 'destello');
+          const tam = 90 + Math.random() * 90;
+          svg.style.cssText = `width:${tam}px;height:${tam}px;left:${Math.random() * 85}%;top:${Math.random() * 70}%;color:${colores[n % 4]}`;
+          const uso = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+          uso.setAttribute('href', '#estallido');
+          svg.appendChild(uso);
+          svg.addEventListener('animationend', () => svg.remove());
+          capa.appendChild(svg);
+        }
+        if (n < 21) setTimeout(siguiente, 140 + Math.random() * 320);
+        else setTimeout(() => { salva.textContent = etiqueta; salva.disabled = false; }, 1500);
+      };
+      siguiente();
+    });
+  }
+</script>

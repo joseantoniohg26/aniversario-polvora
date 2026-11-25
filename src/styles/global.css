@@ -27,6 +27,29 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 4.5rem;
 }
+/* Sonido y salva de camaretazos */
+.sonido {
+  position: fixed; left: 1rem; bottom: 1rem; z-index: 45; display: grid; place-items: center;
+  width: 3rem; height: 3rem; border-radius: 9999px; color: var(--color-oro-300);
+  background: var(--color-verde-900); border: 2px solid var(--color-oro-500);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.3); transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.sonido:hover { transform: scale(1.06); }
+.sonido:active { transform: scale(0.94); }
+.sonido .ico-on { display: none; }
+.sonido.on { background: var(--color-oro-300); color: var(--color-verde-950); }
+.sonido.on .ico-on { display: block; }
+.sonido.on .ico-off { display: none; }
+.salva {
+  align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: 9999px; font-weight: 700;
+  color: var(--color-oro-300); border: 2px solid var(--color-oro-300); background: rgb(6 48 31 / 0.5);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.salva:hover:not(:disabled) { background: var(--color-oro-300); color: var(--color-verde-950); }
+.salva:active:not(:disabled) { transform: scale(0.96); }
+.salva:disabled { opacity: 0.85; cursor: progress; }
+.destello { position: absolute; opacity: 0; animation: estallar 1.6s ease-out 1 forwards; transform-origin: 50% 50%; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }

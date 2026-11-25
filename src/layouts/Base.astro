@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import distrito from '../data/distrito.json';
 import programa from '../data/programa.json';
+import Sonido from '../components/Sonido.astro';
 
 const { sitio, aniversario } = distrito;
 const urlFinal = sitio.url.startsWith('http') ? sitio.url : null;
@@ -97,6 +98,7 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
       class="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-oro-300 focus:px-4 focus:py-2 focus:font-bold focus:text-verde-950"
     >Ir al programa</a>
     <slot />
+    <Sonido />
     <a href="#inicio" id="subir" aria-label="Volver arriba" class="subir">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
     </a>
