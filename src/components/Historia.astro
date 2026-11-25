@@ -1,17 +1,19 @@
 ---
 import distrito from '../data/distrito.json';
+import Ola from './Ola.astro';
 const { historia, datos } = distrito;
 ---
-<section id="historia" class="bg-verde-100 px-4 py-14">
+<section id="historia" class="relative bg-verde-100 px-4 pb-14 pt-16">
+  <Ola class="text-crema" />
   <div class="mx-auto grid max-w-5xl gap-10 md:grid-cols-[1.2fr_1fr]">
-    <div>
+    <div class="reveal">
       <h2 class="text-4xl text-verde-900 sm:text-5xl">{historia.titulo}</h2>
       <div class="mt-5 space-y-4 text-lg">
         {historia.parrafos.map((p) => <p>{p}</p>)}
       </div>
       <p class="mt-5 text-sm text-tinta/75">Fuentes: {historia.fuentes}</p>
     </div>
-    <aside aria-labelledby="datos-titulo" class="self-start rounded-2xl border-2 border-verde-700 bg-white p-5">
+    <aside aria-labelledby="datos-titulo" class="reveal self-start rounded-2xl border-2 border-verde-700 bg-white p-5" style="--i:2">
       <h3 id="datos-titulo" class="text-2xl text-verde-900">Datos del distrito</h3>
       <dl class="mt-3 divide-y divide-verde-700/15">
         {datos.map((d) => (

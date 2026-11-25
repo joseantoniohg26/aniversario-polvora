@@ -1,0 +1,7 @@
+---
+// Borde ondulado entre secciones. El color es el de la sección de arriba (text-*).
+const { class: clase = '' } = Astro.props;
+---
+<svg class={`pointer-events-none absolute inset-x-0 top-0 block h-7 w-full sm:h-10 ${clase}`} viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path fill="currentColor" d="M0 0H1440V14C1320 34 1200 36 1080 22S840 -4 720 12S480 38 360 28S120 6 0 20Z" />
+</svg>

@@ -1,0 +1,32 @@
+---
+// Guirnalda de luces navideñas. Cuatro capas, una por color, que parpadean por turnos.
+const { class: clase = '' } = Astro.props;
+const tramo = 100;
+const tramos = 24;
+const colores = ['#ff6b5e', '#efd488', '#7de0b4', '#6cc4ff'];
+const capas = colores.map((c) => ({ c, focos: [] as { x: number; y: number }[] }));
+for (let s = 0; s < tramos; s++) {
+  for (const t of [0.25, 0.5, 0.75]) {
+    const x0 = s * tramo;
+    const x = (1 - t) ** 2 * x0 + 2 * (1 - t) * t * (x0 + tramo / 2) + t * t * (x0 + tramo);
+    const y = (1 - t) ** 2 * 4 + 2 * (1 - t) * t * 30 + t * t * 4;
+    capas[(s * 3 + Math.round(t * 4)) % 4].focos.push({ x: +x.toFixed(1), y: +(y + 4).toFixed(1) });
+  }
+}
+const cable = Array.from({ length: tramos }, (_, s) => `M${s * tramo} 4Q${s * tramo + tramo / 2} 30 ${(s + 1) * tramo} 4`).join('');
+---
+<div class={`relative h-11 ${clase}`} aria-hidden="true">
+  <svg class="absolute inset-0" viewBox="0 0 2400 44" preserveAspectRatio="xMidYMin slice" width="100%" height="44" focusable="false">
+    <path d={cable} fill="none" stroke="rgb(255 255 255 / 0.35)" stroke-width="2" />
+  </svg>
+  {capas.map((capa, k) => (
+    <svg class="capa-foco absolute inset-0" style={`animation-delay:${k * -0.45}s`} viewBox="0 0 2400 44" preserveAspectRatio="xMidYMin slice" width="100%" height="44" focusable="false">
+      {capa.focos.map((f) => (
+        <>
+          <circle cx={f.x} cy={f.y} r="9" fill={capa.c} opacity="0.25" />
+          <circle cx={f.x} cy={f.y} r="4" fill={capa.c} />
+        </>
+      ))}
+    </svg>
+  ))}
+</div>

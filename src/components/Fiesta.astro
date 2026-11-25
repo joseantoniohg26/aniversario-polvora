@@ -1,0 +1,41 @@
+---
+// Capa decorativa de la portada: cacao y hojas que caen, estrellas y camaretazos.
+// Todo es SVG + CSS. Se pausa cuando la portada sale de pantalla.
+const lluvia = [
+  { t: 'cacao', l: 6, s: 26, dur: 16, del: -3, c: '#e39a2d', dx: 24, g: 16 },
+  { t: 'hoja', l: 16, s: 22, dur: 13, del: -9, c: '#2fae7d', dx: -18, g: 22 },
+  { t: 'cacao', l: 27, s: 20, dur: 19, del: -12, c: '#ae3232', dx: 16, g: 14 },
+  { t: 'hoja', l: 38, s: 26, dur: 15, del: -5, c: '#149668', dx: 22, g: 20 },
+  { t: 'cacao', l: 49, s: 30, dur: 18, del: -1, c: '#efd488', dx: -20, g: 12 },
+  { t: 'hoja', l: 58, s: 20, dur: 12, del: -7, c: '#7de0b4', dx: 18, g: 24 },
+  { t: 'cacao', l: 68, s: 24, dur: 17, del: -14, c: '#e39a2d', dx: -22, g: 15 },
+  { t: 'hoja', l: 78, s: 28, dur: 14, del: -4, c: '#2fae7d', dx: 20, g: 18 },
+  { t: 'cacao', l: 87, s: 22, dur: 20, del: -10, c: '#c79d31', dx: -16, g: 13 },
+  { t: 'hoja', l: 94, s: 24, dur: 16, del: -6, c: '#149668', dx: -14, g: 20 },
+];
+const estrellas = [
+  { l: 12, t: 22, s: 14, d: 0 }, { l: 84, t: 12, s: 12, d: 0.8 }, { l: 72, t: 44, s: 16, d: 1.5 },
+  { l: 22, t: 58, s: 10, d: 0.4 }, { l: 90, t: 66, s: 14, d: 1.1 }, { l: 8, t: 78, s: 12, d: 1.9 },
+];
+const fuegos = [
+  { cls: 'left-[2%] top-[16%]', c: '#efd488', d: 0 },
+  { cls: 'right-[0%] top-[30%]', c: '#ff8a7a', d: 1.5 },
+  { cls: 'left-[54%] top-[6%] hidden sm:block', c: '#7de0b4', d: 2.8 },
+];
+---
+<div class="fiesta pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+  {fuegos.map((f) => (
+    <svg class={`fuego absolute h-44 w-44 ${f.cls}`} style={`color:${f.c};animation-delay:${f.d}s`} viewBox="-50 -50 100 100"><use href="#estallido" /></svg>
+  ))}
+  {estrellas.map((e) => (
+    <svg class="titila absolute text-oro-300" style={`left:${e.l}%;top:${e.t}%;width:${e.s}px;height:${e.s}px;animation-delay:${e.d}s`} viewBox="0 0 24 24"><use href="#estrella" /></svg>
+  ))}
+  {lluvia.map((p, i) => (
+    <div
+      class:list={['cae absolute top-0', i > 6 && 'hidden sm:block']}
+      style={`left:${p.l}%;animation-duration:${p.dur}s;animation-delay:${p.del}s;--dx:${p.dx}px`}
+    >
+      <svg class="balanceo" style={`width:${p.s}px;height:${p.s * 1.5}px;color:${p.c};--g:${p.g}deg;animation-duration:${(p.dur / 3).toFixed(1)}s`} viewBox="0 0 40 60"><use href={`#${p.t}`} /></svg>
+    </div>
+  ))}
+</div>

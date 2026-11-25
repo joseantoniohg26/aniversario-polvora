@@ -57,3 +57,140 @@ footer :focus-visible {
     radial-gradient(60rem 28rem at 50% -8rem, rgb(20 150 104 / 0.55), transparent 70%),
     var(--color-verde-900);
 }
+
+
+/* ───────── Movimiento ─────────
+   Todo con CSS y SVG, sin librerías. Se apaga con prefers-reduced-motion. */
+
+@keyframes subir {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes caer {
+  from { transform: translate3d(0, -14vh, 0); }
+  to { transform: translate3d(var(--dx, 0px), 112vh, 0); }
+}
+@keyframes balancear {
+  0%, 100% { transform: rotate(calc(var(--g, 18deg) * -1)); }
+  50% { transform: rotate(var(--g, 18deg)); }
+}
+@keyframes mecer {
+  0%, 100% { transform: rotate(-0.7deg); }
+  50% { transform: rotate(0.7deg); }
+}
+@keyframes parpadeo {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+@keyframes titilar {
+  0%, 100% { opacity: 0.15; transform: scale(0.6) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+@keyframes estallar {
+  0% { opacity: 0; transform: scale(0.15); }
+  12% { opacity: 1; }
+  70% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.18); }
+}
+@keyframes flotar {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -7px, 0); }
+}
+@keyframes latir {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+@keyframes progreso {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Entrada escalonada de la portada */
+.entra { animation: subir 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0s); }
+
+/* Capa de fiesta (portada) */
+.cae { animation: caer linear infinite; will-change: transform; }
+.balanceo { animation: balancear ease-in-out infinite; transform-origin: 50% 0; opacity: 0.8; }
+.titila { animation: titilar 2.6s ease-in-out infinite; }
+.fuego { animation: estallar 4.2s ease-out infinite; transform-origin: 50% 50%; opacity: 0; }
+.capa-bandera { animation: mecer 3.4s ease-in-out infinite; transform-origin: 50% 0; }
+.capa-foco { animation: parpadeo 1.8s ease-in-out infinite; }
+.flota { animation: flotar 5s ease-in-out infinite; }
+.halo {
+  position: absolute; inset: -1.8rem; border-radius: 9999px;
+  background: radial-gradient(circle, rgb(239 212 136 / 0.55), transparent 65%);
+  animation: latir 3.6s ease-in-out infinite;
+}
+.latido { animation: latir 2.4s ease-in-out infinite; }
+.fuera .cae, .fuera .balanceo, .fuera .titila, .fuera .fuego,
+.fuera .capa-bandera, .fuera .capa-foco, .fuera .flota, .fuera .halo { animation-play-state: paused; }
+
+.brillo { color: var(--color-oro-300); text-shadow: 0 2px 0 rgb(0 0 0 / 0.25), 0 0 28px rgb(239 212 136 / 0.35); }
+
+/* Botones y atajos */
+.boton-oro { transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; }
+.boton-oro:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 24px rgb(0 0 0 / 0.3); }
+.boton-oro:active { transform: translateY(0) scale(0.97); }
+.atajo-dia { transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease; }
+.atajo-dia:hover { background: var(--color-oro-300); color: var(--color-verde-950); transform: translateY(-3px); }
+.atajo-dia:active { transform: scale(0.94); }
+
+/* Aparecer al hacer scroll (solo si hay JavaScript) */
+.js .reveal {
+  opacity: 0; transform: translate3d(0, 22px, 0);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+.js .reveal.visible { opacity: 1; transform: none; }
+
+/* Programa: un día a la vez cuando hay JavaScript */
+#programa[data-tabs] .dia:not(.activo) { display: none; }
+#programa[data-tabs] .dia.activo { animation: subir 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.dia { scroll-margin-top: 8.5rem; }
+.chip {
+  display: grid; place-items: center; width: 100%; gap: 0.1rem; padding: 0.4rem 0 0.3rem;
+  border: 2px solid var(--color-verde-700); border-radius: 0.95rem; line-height: 1;
+  color: var(--color-verde-900); background: #fff; font-weight: 700;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.chip:hover { background: var(--color-verde-100); }
+.chip:active { transform: scale(0.95); }
+.chip.central { border-color: var(--color-cafe-600); }
+.chip[aria-current='true'] {
+  background: var(--color-verde-900); border-color: var(--color-verde-900); color: #fff;
+  transform: translateY(-3px); box-shadow: 0 6px 14px rgb(8 64 45 / 0.35);
+}
+.chip.central[aria-current='true'] { background: var(--color-cafe-600); border-color: var(--color-cafe-600); box-shadow: 0 6px 14px rgb(174 50 50 / 0.35); }
+.chip[aria-current='true'] span:last-child { color: var(--color-oro-300); }
+.fila { transition: background-color 0.2s ease; }
+.fila:hover { background: var(--color-verde-100); }
+
+/* Fotos */
+.foto img { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.foto:hover img { transform: scale(1.05); }
+
+/* Barra de avance de lectura (solo en navegadores que la soportan) */
+.barra-progreso { display: none; }
+@supports (animation-timeline: scroll()) {
+  .barra-progreso {
+    display: block; position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 60;
+    background: linear-gradient(90deg, var(--color-oro-500), var(--color-cafe-600));
+    transform-origin: 0 50%; animation: progreso linear both; animation-timeline: scroll(root);
+  }
+}
+
+/* Volver arriba */
+.subir {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 45; display: grid; place-items: center;
+  width: 3rem; height: 3rem; border-radius: 9999px; color: var(--color-verde-950);
+  background: var(--color-oro-300); box-shadow: 0 8px 20px rgb(0 0 0 / 0.3);
+  opacity: 0; transform: translateY(14px) scale(0.9); pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.subir.visible { opacity: 1; transform: none; pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .reveal { opacity: 1; transform: none; }
+  .cae, .fuego { display: none; }
+}

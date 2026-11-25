@@ -1,14 +1,16 @@
 ---
 import distrito from '../data/distrito.json';
+import Ola from './Ola.astro';
 const { ubicacion, contacto, textos } = distrito;
 const t = textos.ubicacion;
 const d = 0.045;
 const bbox = [ubicacion.lng - d, ubicacion.lat - d * 0.7, ubicacion.lng + d, ubicacion.lat + d * 0.7].join('%2C');
 const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${ubicacion.lat}%2C${ubicacion.lng}`;
 ---
-<section id="ubicacion" class="bg-verde-900 px-4 py-14 text-white">
+<section id="ubicacion" class="relative bg-verde-900 px-4 pb-14 pt-16 text-white">
+  <Ola class="text-crema" />
   <div class="mx-auto grid max-w-5xl gap-10 md:grid-cols-2">
-    <div>
+    <div class="reveal">
       <h2 class="text-4xl text-oro-300 sm:text-5xl">{t.tituloLlegar}</h2>
       <p class="mt-4 text-lg">{ubicacion.texto}</p>
       <a
@@ -32,7 +34,7 @@ const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=
       </details>
     </div>
 
-    <div>
+    <div class="reveal" style="--i:2">
       <h2 class="text-4xl text-oro-300 sm:text-5xl">{t.tituloContacto}</h2>
       <p class="mt-4 text-lg">{t.introContacto}</p>
       <ul class="mt-4 space-y-3">

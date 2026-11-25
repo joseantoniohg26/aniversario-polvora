@@ -3,7 +3,7 @@
   "sitio": {
     "titulo": "42.° Aniversario del Distrito de Pólvora · Programa del 2 al 6 de diciembre de 2026",
     "descripcion": "Programa completo del 42.° aniversario del distrito de Pólvora, Tocache, San Martín: actividades del 2 al 6 de diciembre de 2026, historia y cómo llegar.",
-    "url": "PENDIENTE: poner la dirección final de Vercel"
+    "url": "https://aniversario-polvora.vercel.app/"
   },
   "aniversario": 42,
   "fechaCentral": "2026-12-06",
@@ -138,7 +138,8 @@
     "portada": {
       "etiqueta": "Distrito de Pólvora",
       "diaCentral": "Día central: domingo 6 de diciembre",
-      "botonPrograma": "Ver el programa"
+      "botonPrograma": "Ver el programa",
+      "verDia": "Ir directo al día"
     },
     "contador": {
       "faltan": "Faltan",
@@ -151,7 +152,8 @@
     },
     "programa": {
       "etiquetaCentral": "Día central",
-      "etiquetaHoy": "Hoy"
+      "etiquetaHoy": "Hoy",
+      "atajos": "Días del programa"
     },
     "ubicacion": {
       "tituloLlegar": "Cómo llegar",
