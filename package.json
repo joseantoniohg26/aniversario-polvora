@@ -1,0 +1,18 @@
+{
+  "name": "aniversario-polvora",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource/bree-serif": "^5.3.0",
+    "@fontsource/source-sans-3": "^5.3.1",
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^5.18.2",
+    "tailwindcss": "^4.3.5"
+  }
+}
