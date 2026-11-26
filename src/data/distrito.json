@@ -45,6 +45,12 @@
     "superficie": "PENDIENTE: Wikipedia dice 2 174,48 km² y el plan ambiental municipal 2 180,44 km². Confirmar con la municipalidad.",
     "altitud": "PENDIENTE: Wikipedia da 540 y 450 m s. n. m. Confirmar."
   },
+  "videoIntro": {
+    "archivo": "/video/impuesto-predial-2026.mp4",
+    "poster": "01-plaza",
+    "titulo": "Paga tu Impuesto Predial 2026 – Gran Sorteo Municipal",
+    "detalle": "Introducción institucional: contribuye con tu distrito y participa del gran sorteo de premios este aniversario."
+  },
   "historia": {
     "titulo": "De Pacota a Pólvora",
     "parrafos": [
@@ -69,66 +75,80 @@
   },
   "galeria": [
     {
+      "archivo": "09-feria-vocacional",
+      "etiqueta": "Educación · 2026",
+      "alt": "Estudiantes de 5.º de secundaria reunidos con representantes de instituciones educativas y fuerzas policiales durante la Feria de Orientación Vocacional en Pólvora",
+      "pie": "La educación como prioridad: Gran Feria de Orientación Vocacional para estudiantes de 5.º de secundaria, con instituciones educativas, fuerzas policiales y premiación deportiva en fútbol y vóley (gestión Hugo Ventura Sánchez)."
+    },
+    {
       "archivo": "01-plaza",
+      "etiqueta": "Distrito",
       "alt": "Vista aérea de la Plaza de Armas de Pólvora, con sus senderos, jardines y la pileta al centro",
       "pie": "La Plaza de Armas de Pólvora vista desde arriba"
     },
     {
       "archivo": "02-carretera-discurso",
+      "etiqueta": "Obras · 2026",
       "alt": "El alcalde Hugo Ventura Sánchez hablando con micrófono frente a vecinos y autoridades durante la inauguración de la carretera Nuevo Horizonte – Cañuto",
       "pie": "Inauguración de la carretera Nuevo Horizonte – Cañuto, octubre de 2026"
     },
     {
       "archivo": "03-carretera-cinta",
+      "etiqueta": "Obras · 2026",
       "alt": "Autoridades y vecinos cortan juntos la cinta de inauguración en la carretera Nuevo Horizonte – Cañuto",
       "pie": "Corte de cinta en la inauguración de la carretera, octubre de 2026"
     },
     {
       "archivo": "04-puente-lajas",
+      "etiqueta": "Obras · 2026",
       "alt": "El alcalde y agricultores reunidos sobre el puente de la quebrada Lajas al atardecer en Puerto Rico",
       "pie": "Puente sobre la quebrada Lajas, caserío Puerto Rico, octubre de 2026"
     },
     {
       "archivo": "05-afiche-gastronomia",
+      "etiqueta": "Aniversario · 2026",
       "alt": "Afiche del concurso gastronómico Platos Típicos 2026 por el 42° Aniversario, con premios de 350, 200 y 100 soles",
       "pie": "Afiche del concurso Platos Típicos 2026, jueves 3 de diciembre"
     },
     {
       "archivo": "06-senorita-polvora",
+      "etiqueta": "Certamen · 2026",
       "alt": "Afiche de la convocatoria oficial Señorita Pólvora 2026 por el aniversario del distrito",
       "pie": "Convocatoria oficial Señorita Pólvora 2026, noviembre de 2026"
     },
     {
       "archivo": "07-transferencia",
+      "etiqueta": "Gestión · 2026",
       "alt": "Instalación de la mesa de transferencia de gestión 2023-2026 con presencia del alcalde Hugo Ventura Sánchez",
       "pie": "Mesa de transferencia de gestión 2023–2026, noviembre de 2026"
     },
     {
       "archivo": "08-cascadas-canuto",
+      "etiqueta": "Turismo · 2026",
       "alt": "Cascadas y quebrada de aguas limpias en Alto Cañuto, distrito de Pólvora",
       "pie": "Cascadas de Alto Cañuto, atractivo natural de Pólvora, 2026"
     }
   ],
   "videos": [
     {
-      "archivo": "/video/aniversario-polvora.mp4",
-      "poster": "01-plaza",
-      "titulo": "Celebración y espíritu de aniversario en Pólvora",
-      "detalle": "Video institucional de las actividades de aniversario en el distrito."
-    },
-    {
       "archivo": "/video/cascadas-alto-canuto.mp4",
       "poster": "08-cascadas-canuto",
       "titulo": "Cascadas de Alto Cañuto – Turismo en Pólvora",
       "detalle": "Recorrido por uno de los parajes naturales y quebradas del distrito (2026)."
+    },
+    {
+      "archivo": "/video/aniversario-polvora.mp4",
+      "poster": "01-plaza",
+      "titulo": "Celebración del Aniversario en Pólvora",
+      "detalle": "Video institucional de las actividades y espíritu festivo en el distrito."
     }
   ],
   "invitados": [
     {
       "nombre": "Orquesta Tempestad",
+      "origen": "Chachapoyas, Perú",
       "detalle": "Sábado 5 de diciembre · 7:00 p.m. · Local Comunal · Entrada libre",
       "portada": "tempestad",
-      "origen": "Chachapoyas, Perú",
       "videoSrc": "/video/artistas/orquesta-tempestad-promo.mp4",
       "videoPoster": "tempestad-video",
       "videoTitulo": "Video del afiche de Orquesta Tempestad",
@@ -146,7 +166,7 @@
   ],
   "playlistFiesta": {
     "titulo": "Previa de la Fiesta Social · Sábado 5 de diciembre",
-    "subtitulo": "Escucha y adelanta canciones de los grupos invitados para la noche de quema de castillo",
+    "subtitulo": "Escucha y adelanta canciones de los grupos invitados; la música sigue sonando mientras navegas",
     "canciones": [
       {
         "id": "tempestad-1",
@@ -279,6 +299,5 @@
       "silenciar": "Silenciar",
       "salva": "Salva de 21 camaretazos"
     }
-  },
-  "invitadosNota": "Datos tomados de los videos-afiche de la municipalidad (Local Comunal, entrada libre, sábado 5 de diciembre)."
+  }
 }
