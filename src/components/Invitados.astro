@@ -1,14 +1,92 @@
 ---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import distrito from '../data/distrito.json';
-const invitados = distrito.invitados as { nombre: string; detalle?: string }[];
+
+interface Invitado {
+  nombre: string;
+  detalle?: string;
+  origen?: string;
+  portada?: string;
+  videoSrc?: string;
+  videoPoster?: string;
+  videoTitulo?: string;
+  videoDuracion?: string;
+}
+
+const imagenes = import.meta.glob<{ default: ImageMetadata }>('../assets/artistas/*.{jpg,jpeg,png,webp}', { eager: true });
+const imagenDe = Object.fromEntries(
+  Object.entries(imagenes).map(([ruta, m]) => [ruta.split('/').pop()!.replace(/\.[^.]+$/, ''), m.default]),
+);
+
+const invitados = distrito.invitados as Invitado[];
+const posters: Record<string, string> = {};
+for (const inv of invitados) {
+  if (inv.videoPoster && imagenDe[inv.videoPoster]) {
+    const img = await getImage({ src: imagenDe[inv.videoPoster], width: 480, format: 'webp', quality: 70 });
+    posters[inv.nombre] = img.src;
+  }
+}
 ---
 {invitados.length > 0 && (
   <section id="invitados" class="bg-verde-900 px-4 py-14 text-white">
-    <div class="mx-auto max-w-3xl">
-      <h2 class="text-4xl text-oro-300 sm:text-5xl">Invitados</h2>
-      <ul class="mt-6 space-y-3 text-lg">
-        {invitados.map((i) => (
-          <li><strong>{i.nombre}</strong>{i.detalle && <span> · {i.detalle}</span>}</li>
+    <div class="mx-auto max-w-5xl">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 class="text-4xl text-oro-300 sm:text-5xl">Artistas invitados</h2>
+          <p class="mt-2 text-lg text-white/85">Noche de fiesta social y quema de castillo · sábado 5 de diciembre</p>
+        </div>
+        <a
+          href="#dia-5"
+          class="boton-oro inline-flex items-center gap-2 rounded-full bg-oro-300 px-5 py-2.5 text-sm font-bold text-verde-950 shadow-lg"
+        >
+          Escuchar canciones en el Día 5
+        </a>
+      </div>
+
+      <ul class="mt-8 grid gap-6 md:grid-cols-2">
+        {invitados.map((inv) => (
+          <li class="reveal min-w-0 rounded-2xl border border-oro-500/40 bg-verde-950/65 p-4 shadow-lg">
+            <div class="flex items-center gap-4">
+              {inv.portada && imagenDe[inv.portada] && (
+                <Image
+                  src={imagenDe[inv.portada]}
+                  alt={inv.nombre}
+                  width={180}
+                  height={180}
+                  format="webp"
+                  quality={80}
+                  loading="lazy"
+                  class="h-20 w-20 shrink-0 rounded-xl border border-oro-300/50 object-cover sm:h-24 sm:w-24"
+                />
+              )}
+              <div class="min-w-0">
+                <p class="font-display text-2xl text-oro-300">{inv.nombre}</p>
+                {inv.origen && <p class="text-sm font-bold text-white/90">{inv.origen}</p>}
+                {inv.detalle && <p class="mt-1 text-sm text-white/85">{inv.detalle}</p>}
+              </div>
+            </div>
+
+            {inv.videoSrc && (
+              <details class="mt-4 rounded-xl border border-oro-300/40 bg-black/25">
+                <summary class="flex cursor-pointer list-none items-center gap-2 px-3 py-2.5 font-bold">
+                  <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-oro-300 text-verde-950" aria-hidden="true">▶</span>
+                  <span class="min-w-0">Ver el video del afiche</span>
+                  {inv.videoDuracion && <span class="ml-auto text-xs font-normal text-white/75">{inv.videoDuracion}</span>}
+                </summary>
+                <video
+                  controls
+                  preload="none"
+                  playsinline
+                  data-poster={posters[inv.nombre]}
+                  aria-label={inv.videoTitulo}
+                  class="mx-auto block max-h-[26rem] w-full rounded-b-xl bg-black object-contain"
+                >
+                  <source src={inv.videoSrc} type="video/mp4" />
+                </video>
+              </details>
+            )}
+          </li>
         ))}
       </ul>
     </div>

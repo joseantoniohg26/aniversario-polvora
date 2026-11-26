@@ -133,6 +133,22 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
         items.forEach(revelar);
       }
       setTimeout(() => items.forEach(revelar), 6000);
+
+      // Los videos no traen su imagen de portada hasta que están cerca de la pantalla
+      // (o se abre el <details> que los contiene), para no gastar datos en la primera carga.
+      const pegarPortada = (v: HTMLVideoElement) => {
+        if (v.dataset.poster) { v.poster = v.dataset.poster; delete v.dataset.poster; }
+      };
+      const portadas = document.querySelectorAll<HTMLVideoElement>('video[data-poster]');
+      if ('IntersectionObserver' in window) {
+        const ip = new IntersectionObserver(
+          (es) => es.forEach((e) => { if (e.isIntersecting) { pegarPortada(e.target as HTMLVideoElement); ip.unobserve(e.target); } }),
+          { rootMargin: '300px 0px' },
+        );
+        portadas.forEach((v) => ip.observe(v));
+      } else {
+        portadas.forEach(pegarPortada);
+      }
     </script>
   </body>
 </html>

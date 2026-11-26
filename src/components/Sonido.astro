@@ -18,15 +18,24 @@ const t = distrito.textos.sonido;
     <path d="M11 5L6 9H3v6h3l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
   </svg>
 </button>
+<audio id="sfx-player" preload="none"></audio>
 
 <script>
-  // Sonidos generados en el navegador (Web Audio): no se descarga ningún archivo.
-  // Empiezan apagados; el visitante los activa con el botón.
   const boton = document.getElementById('sonido') as HTMLButtonElement | null;
   const salva = document.getElementById('salva') as HTMLButtonElement | null;
+  const sfxPlayer = document.getElementById('sfx-player') as HTMLAudioElement | null;
   const AC: typeof AudioContext | undefined = window.AudioContext ?? (window as any).webkitAudioContext;
 
-  if (boton && AC) {
+  const pistas: Record<string, string> = {
+    camaretazos: '/audio/camaretazos.m4a',
+    banda: '/audio/banda-folklore.m4a',
+    futbol: '/audio/futbol-silbato.m4a',
+    misa: '/audio/campanas-misa.m4a',
+    marcha: '/audio/marcha-banderas.m4a',
+    hunsha: '/audio/pandilla-hunsha.m4a',
+  };
+
+  if (boton) {
     const t = JSON.parse(boton.dataset.textos ?? '{}');
     boton.hidden = false;
     if (salva) salva.hidden = false;
@@ -34,8 +43,10 @@ const t = distrito.textos.sonido;
     let ctx: AudioContext | null = null;
     let ruido: AudioBuffer | null = null;
     let activo = false;
+    let sfxActual = '';
 
     const audio = () => {
+      if (!AC) return null;
       if (!ctx) {
         ctx = new AC();
         const n = Math.floor(ctx.sampleRate * 1.2);
@@ -47,10 +58,10 @@ const t = distrito.textos.sonido;
       return ctx;
     };
 
-    // Camaretazo: estampido de ruido grave, golpe seco y chisporroteo.
     const boom = (vol = 1) => {
       if (!activo) return;
       const c = audio();
+      if (!c || !ruido) return;
       const t0 = c.currentTime;
       const fuente = c.createBufferSource();
       fuente.buffer = ruido;
@@ -76,28 +87,12 @@ const t = distrito.textos.sonido;
       o.connect(og).connect(c.destination);
       o.start(t0);
       o.stop(t0 + 0.5);
-
-      for (let i = 0; i < 7; i++) {
-        const s = c.createBufferSource();
-        s.buffer = ruido;
-        const pasaaltos = c.createBiquadFilter();
-        pasaaltos.type = 'highpass';
-        pasaaltos.frequency.value = 3500;
-        const cg = c.createGain();
-        const ti = t0 + 0.35 + Math.random() * 0.7;
-        cg.gain.setValueAtTime(0.0001, ti);
-        cg.gain.exponentialRampToValueAtTime(0.18 * vol, ti + 0.004);
-        cg.gain.exponentialRampToValueAtTime(0.0001, ti + 0.05);
-        s.connect(pasaaltos).connect(cg).connect(c.destination);
-        s.start(ti, Math.random() * 0.5);
-        s.stop(ti + 0.06);
-      }
     };
 
-    // Campana de fiesta: tres parciales que se apagan despacio.
     const campana = (f = 660, vol = 0.35, demora = 0) => {
       if (!activo) return;
       const c = audio();
+      if (!c) return;
       const t0 = c.currentTime + demora;
       [[1, 1], [2.76, 0.45], [5.4, 0.2]].forEach(([mult, peso]) => {
         const o = c.createOscillator();
@@ -116,6 +111,7 @@ const t = distrito.textos.sonido;
     const tic = () => {
       if (!activo) return;
       const c = audio();
+      if (!c) return;
       const t0 = c.currentTime;
       const o = c.createOscillator();
       o.type = 'triangle';
@@ -130,6 +126,18 @@ const t = distrito.textos.sonido;
       o.stop(t0 + 0.08);
     };
 
+    const actualizarBotonesSfx = (idActivo: string) => {
+      document.querySelectorAll<HTMLElement>('[data-sonido-id]').forEach((el) => {
+        el.classList.toggle('is-playing', idActivo !== '' && el.dataset.sonidoId === idActivo);
+      });
+    };
+
+    const detenerSfx = () => {
+      if (sfxPlayer && !sfxPlayer.paused) sfxPlayer.pause();
+      sfxActual = '';
+      actualizarBotonesSfx('');
+    };
+
     const alternar = () => {
       activo = !activo;
       boton.setAttribute('aria-pressed', String(activo));
@@ -137,37 +145,63 @@ const t = distrito.textos.sonido;
       boton.classList.toggle('on', activo);
       if (activo) {
         audio();
-        campana(784, 0.4);
+        campana(784, 0.35);
+      } else {
+        detenerSfx();
       }
     };
     boton.addEventListener('click', alternar);
 
-    // Los camaretazos de la portada suenan cuando estallan.
-    document.querySelectorAll('.fuego').forEach((el) => {
-      const suena = () => {
-        if (!activo || document.getElementById('inicio')?.classList.contains('fuera')) return;
-        setTimeout(() => boom(0.45), 450);
-      };
-      el.addEventListener('animationstart', suena);
-      el.addEventListener('animationiteration', suena);
-    });
+    const reproducirSfx = (id: string) => {
+      const ruta = pistas[id];
+      if (!ruta || !sfxPlayer) return;
+      if (sfxActual === id && !sfxPlayer.paused) {
+        detenerSfx();
+        return;
+      }
+      if (!activo) {
+        activo = true;
+        boton.setAttribute('aria-pressed', 'true');
+        boton.setAttribute('aria-label', t.silenciar);
+        boton.classList.add('on');
+      }
+      window.dispatchEvent(new CustomEvent('polvora:sfx-play'));
+      sfxActual = id;
+      sfxPlayer.src = ruta;
+      sfxPlayer.currentTime = 0;
+      actualizarBotonesSfx(id);
+      void sfxPlayer.play().catch(() => {
+        if (id === 'camaretazos') boom(0.8);
+        else if (id === 'misa') campana(660, 0.45);
+        else tic();
+        detenerSfx();
+      });
+    };
 
-    // Cada día del programa tiene su sonido; el día central suena a fanfarria.
+    sfxPlayer?.addEventListener('ended', () => detenerSfx());
+    window.addEventListener('polvora:spotify-play', () => detenerSfx());
+
     document.addEventListener('click', (e) => {
-      const el = e.target as Element;
-      const dia = el.closest<HTMLAnchorElement>('a[href^="#dia-"]');
+      const target = e.target as Element;
+      const sfxBtn = target.closest<HTMLElement>('[data-sonido-id]');
+      if (sfxBtn) {
+        e.preventDefault();
+        reproducirSfx(sfxBtn.dataset.sonidoId ?? '');
+        return;
+      }
+      const dia = target.closest<HTMLAnchorElement>('a[href^="#dia-"]');
       if (dia) {
         const central = dia.matches('.central') || dia.getAttribute('href') === '#dia-6';
-        if (central) [523, 659, 784].forEach((f, i) => campana(f, 0.28, i * 0.13));
+        if (central) [523, 659, 784].forEach((f, i) => campana(f, 0.25, i * 0.13));
         else tic();
-      } else if (el.closest('.boton-oro, #subir')) {
+      } else if (target.closest('.boton-oro, #subir')) {
         tic();
       }
     });
 
-    // Salva de 21 camaretazos: 21 estampidos y 21 destellos en la portada.
+    // Salva de 21 camaretazos: audio real + 21 destellos visuales en la portada.
     salva?.addEventListener('click', () => {
-      if (!activo) alternar();
+      reproducirSfx('camaretazos');
       const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const capa = document.querySelector('#inicio .fiesta');
       const colores = ['#efd488', '#ff8a7a', '#7de0b4', '#6cc4ff'];
@@ -176,7 +210,6 @@ const t = distrito.textos.sonido;
       let n = 0;
       const siguiente = () => {
         n++;
-        boom(0.5 + Math.random() * 0.4);
         salva.textContent = `${n} / 21`;
         if (capa && !reducido) {
           const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -190,7 +223,7 @@ const t = distrito.textos.sonido;
           svg.addEventListener('animationend', () => svg.remove());
           capa.appendChild(svg);
         }
-        if (n < 21) setTimeout(siguiente, 140 + Math.random() * 320);
+        if (n < 21) setTimeout(siguiente, 160 + Math.random() * 260);
         else setTimeout(() => { salva.textContent = etiqueta; salva.disabled = false; }, 1500);
       };
       siguiente();

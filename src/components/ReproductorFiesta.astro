@@ -1,0 +1,330 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import distrito from '../data/distrito.json';
+
+const portadas = import.meta.glob<{ default: ImageMetadata }>('../assets/artistas/*.{jpg,jpeg,png,webp}', { eager: true });
+const portadaDe = Object.fromEntries(
+  Object.entries(portadas).map(([ruta, m]) => [ruta.split('/').pop()!.replace(/\.[^.]+$/, ''), m.default]),
+);
+
+const { titulo, subtitulo, canciones } = distrito.playlistFiesta;
+const barras = [
+  { dur: '0.48s', del: '0s' },
+  { dur: '0.64s', del: '0.12s' },
+  { dur: '0.42s', del: '0.24s' },
+  { dur: '0.58s', del: '0.06s' },
+  { dur: '0.51s', del: '0.18s' },
+  { dur: '0.67s', del: '0.3s' },
+  { dur: '0.45s', del: '0.09s' },
+  { dur: '0.61s', del: '0.21s' },
+  { dur: '0.53s', del: '0.14s' },
+  { dur: '0.47s', del: '0.27s' },
+  { dur: '0.63s', del: '0.03s' },
+  { dur: '0.49s', del: '0.16s' },
+];
+---
+<section
+  id="reproductor-dia-5"
+  aria-label={titulo}
+  class="spotify-card mt-8 overflow-hidden rounded-3xl border border-[#1db954]/35 bg-gradient-to-br from-[#0e1914] via-[#121212] to-[#082419] p-5 text-white shadow-2xl sm:p-7"
+>
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+    <div class="flex items-center gap-3">
+      <span class="relative flex h-3.5 w-3.5">
+        <span class="mg-anillo absolute inline-flex h-full w-full rounded-full bg-[#1db954]"></span>
+        <span class="relative inline-flex h-3.5 w-3.5 rounded-full bg-[#1db954]"></span>
+      </span>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-[#1db954]">En vivo · Fiesta Social 7:00 p.m.</p>
+        <h4 class="font-display text-xl text-white sm:text-2xl">{titulo}</h4>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filtrar por grupo">
+      <button type="button" data-filtro="todos" class="filtro-grupo rounded-full bg-[#1db954] px-3.5 py-1 text-xs font-bold text-black transition">Todos</button>
+      <button type="button" data-filtro="tempestad" class="filtro-grupo rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs font-bold text-white/90 transition hover:bg-white/15">Orquesta Tempestad</button>
+      <button type="button" data-filtro="chino-montalvo" class="filtro-grupo rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs font-bold text-white/90 transition hover:bg-white/15">Chino Montalvo</button>
+    </div>
+  </div>
+
+  <p class="mt-3 text-sm text-white/75">{subtitulo}</p>
+
+  <div class="mt-5 grid gap-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1.15fr)] md:items-center">
+    <!-- Escenario principal del reproductor -->
+    <div class="min-w-0 rounded-2xl border border-white/10 bg-black/40 p-4 sm:p-5">
+      <div class="flex items-center gap-4">
+        <div class="relative h-24 w-24 shrink-0 sm:h-28 sm:w-28">
+          <div class="disco-vinilo relative h-full w-full overflow-hidden rounded-full border-4 border-oro-300/70 shadow-xl">
+            {canciones.map((c, idx) => (
+              <Image
+                src={portadaDe[c.portada]}
+                alt={c.artista}
+                width={220}
+                height={220}
+                format="webp"
+                quality={80}
+                loading="lazy"
+                data-cover-id={c.id}
+                class:list={['h-full w-full object-cover', idx !== 0 && 'hidden']}
+              />
+            ))}
+            <span class="pointer-events-none absolute inset-0 m-auto h-5 w-5 rounded-full border-2 border-white/70 bg-[#121212]"></span>
+          </div>
+        </div>
+
+        <div class="min-w-0 flex-1">
+          <p class="text-xs font-bold uppercase tracking-wider text-oro-300" data-estado>Listo para reproducir</p>
+          <p class="mt-0.5 truncate font-display text-xl text-white sm:text-2xl" data-titulo>{canciones[0].titulo}</p>
+          <p class="truncate text-sm font-bold text-white/75" data-artista>{canciones[0].artista}</p>
+
+          <div class="mt-3 flex h-7 items-end gap-1" aria-hidden="true">
+            {barras.map((b) => (
+              <span class="espectro-barra h-full" style={`--dur:${b.dur};--del:${b.del}`}></span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de progreso para adelantar / retroceder -->
+      <div class="mt-5">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="0"
+          step="0.1"
+          aria-label="Adelantar o retroceder canción"
+          class="spotify-range"
+          data-seek
+        />
+        <div class="mt-1 flex justify-between text-xs font-bold tabular-nums text-white/70">
+          <span data-actual>0:00</span>
+          <span data-total>{canciones[0].duracion}</span>
+        </div>
+      </div>
+
+      <!-- Controles de reproducción -->
+      <div class="mt-4 flex items-center justify-center gap-2 sm:gap-3">
+        <button type="button" data-prev aria-label="Canción anterior" class="grid h-10 w-10 place-items-center rounded-full text-white/85 transition hover:bg-white/10 hover:text-white">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" /></svg>
+        </button>
+        <button type="button" data-skip="-5" aria-label="Retroceder 5 segundos" class="rounded-full border border-white/20 px-2.5 py-1 text-xs font-bold text-white/90 transition hover:bg-white/15">
+          -5s
+        </button>
+        <button
+          type="button"
+          data-toggle
+          aria-label="Reproducir o pausar"
+          class="grid h-12 w-12 place-items-center rounded-full bg-[#1db954] text-black shadow-lg transition hover:scale-105 hover:bg-[#1ed760] active:scale-95"
+        >
+          <svg class="ico-play" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+          <svg class="ico-pause hidden" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z" /></svg>
+        </button>
+        <button type="button" data-skip="5" aria-label="Adelantar 5 segundos" class="rounded-full border border-white/20 px-2.5 py-1 text-xs font-bold text-white/90 transition hover:bg-white/15">
+          +5s
+        </button>
+        <button type="button" data-next aria-label="Siguiente canción" class="grid h-10 w-10 place-items-center rounded-full text-white/85 transition hover:bg-white/10 hover:text-white">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de canciones -->
+    <ul class="min-w-0 space-y-2" data-lista>
+      {canciones.map((c, idx) => (
+        <li class="min-w-0" data-grupo={c.grupo} data-track-item={c.id}>
+          <button
+            type="button"
+            data-track-btn={c.id}
+            data-src={c.audio}
+            data-titulo={c.titulo}
+            data-artista={c.artista}
+            data-duracion={c.duracion}
+            class:list={[
+              'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition',
+              idx === 0 ? 'bg-[#1db954]/20 ring-1 ring-[#1db954]/60' : 'bg-white/5 hover:bg-white/10',
+            ]}
+          >
+            <span class="w-5 text-center text-xs font-bold tabular-nums text-white/60" data-num>{idx + 1}</span>
+            <Image
+              src={portadaDe[c.portada]}
+              alt={c.artista}
+              width={80}
+              height={80}
+              format="webp"
+              quality={75}
+              loading="lazy"
+              class="h-11 w-11 shrink-0 rounded-lg object-cover"
+            />
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-bold text-white">{c.titulo}</p>
+              <p class="truncate text-xs text-white/70">{c.artista}</p>
+            </div>
+            <span class="eq-mini text-[#1db954]" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="text-xs font-bold tabular-nums text-white/60">{c.duracion}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <audio preload="none" data-audio></audio>
+</section>
+
+<script>
+  const card = document.getElementById('reproductor-dia-5');
+  if (card) {
+    const audio = card.querySelector<HTMLAudioElement>('[data-audio]')!;
+    const seek = card.querySelector<HTMLInputElement>('[data-seek]')!;
+    const lblActual = card.querySelector<HTMLElement>('[data-actual]')!;
+    const lblTotal = card.querySelector<HTMLElement>('[data-total]')!;
+    const lblTitulo = card.querySelector<HTMLElement>('[data-titulo]')!;
+    const lblArtista = card.querySelector<HTMLElement>('[data-artista]')!;
+    const lblEstado = card.querySelector<HTMLElement>('[data-estado]')!;
+    const btnToggle = card.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    const icoPlay = btnToggle.querySelector('.ico-play')!;
+    const icoPause = btnToggle.querySelector('.ico-pause')!;
+    const covers = [...card.querySelectorAll<HTMLElement>('[data-cover-id]')];
+    const items = [...card.querySelectorAll<HTMLElement>('[data-track-item]')];
+    const btns = [...card.querySelectorAll<HTMLButtonElement>('[data-track-btn]')];
+    const filtros = [...card.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
+
+    let actualId = btns[0]?.dataset.trackBtn ?? '';
+    let cargada = false;
+
+    const fmt = (s: number) => {
+      if (!Number.isFinite(s) || s < 0) return '0:00';
+      const m = Math.floor(s / 60);
+      const r = Math.floor(s % 60);
+      return `${m}:${r < 10 ? '0' : ''}${r}`;
+    };
+
+    const pintarBotonPlay = (sonando: boolean) => {
+      card.classList.toggle('reproduciendo', sonando);
+      icoPlay.classList.toggle('hidden', sonando);
+      icoPause.classList.toggle('hidden', !sonando);
+      lblEstado.textContent = sonando ? 'Sonando ahora' : 'En pausa';
+      btns.forEach((b) => b.classList.toggle('is-playing', sonando && b.dataset.trackBtn === actualId));
+    };
+
+    const seleccionar = (id: string, autoPlay = false) => {
+      const btn = btns.find((b) => b.dataset.trackBtn === id);
+      if (!btn) return;
+      actualId = id;
+      lblTitulo.textContent = btn.dataset.titulo ?? '';
+      lblArtista.textContent = btn.dataset.artista ?? '';
+      lblTotal.textContent = btn.dataset.duracion ?? '0:30';
+      lblActual.textContent = '0:00';
+      seek.value = '0';
+
+      covers.forEach((c) => c.classList.toggle('hidden', c.dataset.coverId !== id));
+      btns.forEach((b) => {
+        const activo = b.dataset.trackBtn === id;
+        b.classList.toggle('bg-[#1db954]/20', activo);
+        b.classList.toggle('ring-1', activo);
+        b.classList.toggle('ring-[#1db954]/60', activo);
+        b.classList.toggle('bg-white/5', !activo);
+      });
+
+      const src = btn.dataset.src ?? '';
+      if (audio.getAttribute('src') !== src) {
+        audio.src = src;
+        cargada = true;
+      }
+      if (autoPlay) {
+        window.dispatchEvent(new CustomEvent('polvora:spotify-play'));
+        void audio.play().then(() => pintarBotonPlay(true)).catch(() => pintarBotonPlay(false));
+      } else {
+        pintarBotonPlay(false);
+      }
+    };
+
+    btns.forEach((b) => b.addEventListener('click', () => {
+      if (b.dataset.trackBtn === actualId && cargada && !audio.paused) {
+        audio.pause();
+        pintarBotonPlay(false);
+      } else {
+        seleccionar(b.dataset.trackBtn!, true);
+      }
+    }));
+
+    btnToggle.addEventListener('click', () => {
+      if (!cargada) {
+        seleccionar(actualId, true);
+        return;
+      }
+      if (audio.paused) {
+        window.dispatchEvent(new CustomEvent('polvora:spotify-play'));
+        void audio.play().then(() => pintarBotonPlay(true)).catch(() => pintarBotonPlay(false));
+      } else {
+        audio.pause();
+        pintarBotonPlay(false);
+      }
+    });
+
+    const visibles = () => btns.filter((b) => !b.closest('li')?.classList.contains('hidden'));
+    card.querySelector('[data-prev]')?.addEventListener('click', () => {
+      const lista = visibles();
+      const idx = lista.findIndex((b) => b.dataset.trackBtn === actualId);
+      const prev = lista[(idx - 1 + lista.length) % lista.length];
+      if (prev) seleccionar(prev.dataset.trackBtn!, true);
+    });
+    card.querySelector('[data-next]')?.addEventListener('click', () => {
+      const lista = visibles();
+      const idx = lista.findIndex((b) => b.dataset.trackBtn === actualId);
+      const next = lista[(idx + 1) % lista.length];
+      if (next) seleccionar(next.dataset.trackBtn!, true);
+    });
+
+    card.querySelectorAll<HTMLButtonElement>('[data-skip]').forEach((b) => {
+      b.addEventListener('click', () => {
+        if (!cargada) seleccionar(actualId, true);
+        const delta = Number(b.dataset.skip ?? 0);
+        const dur = Number.isFinite(audio.duration) ? audio.duration : 30;
+        audio.currentTime = Math.max(0, Math.min(dur - 0.2, audio.currentTime + delta));
+      });
+    });
+
+    seek.addEventListener('input', () => {
+      if (!cargada) return;
+      const dur = Number.isFinite(audio.duration) ? audio.duration : 30;
+      audio.currentTime = (Number(seek.value) / 100) * dur;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const dur = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 30;
+      lblActual.textContent = fmt(audio.currentTime);
+      lblTotal.textContent = fmt(dur);
+      seek.value = String((audio.currentTime / dur) * 100);
+    });
+    audio.addEventListener('ended', () => {
+      const lista = visibles();
+      const idx = lista.findIndex((b) => b.dataset.trackBtn === actualId);
+      const next = lista[(idx + 1) % lista.length];
+      if (next) seleccionar(next.dataset.trackBtn!, true);
+      else pintarBotonPlay(false);
+    });
+
+    filtros.forEach((f) => {
+      f.addEventListener('click', () => {
+        const g = f.dataset.filtro ?? 'todos';
+        filtros.forEach((x) => {
+          const on = x === f;
+          x.classList.toggle('bg-[#1db954]', on);
+          x.classList.toggle('text-black', on);
+          x.classList.toggle('bg-white/5', !on);
+          x.classList.toggle('text-white/90', !on);
+        });
+        items.forEach((li) => li.classList.toggle('hidden', g !== 'todos' && li.dataset.grupo !== g));
+      });
+    });
+
+    window.addEventListener('polvora:sfx-play', () => {
+      if (!audio.paused) {
+        audio.pause();
+        pintarBotonPlay(false);
+      }
+    });
+  }
+</script>

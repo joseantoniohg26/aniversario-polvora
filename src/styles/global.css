@@ -27,6 +27,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 4.5rem;
 }
+
 /* Sonido y salva de camaretazos */
 .sonido {
   position: fixed; left: 1rem; bottom: 1rem; z-index: 45; display: grid; place-items: center;
@@ -66,24 +67,22 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
   outline: 3px solid var(--color-verde-700);
   outline-offset: 3px;
 }
-/* En las zonas verdes oscuras el foco va en dorado claro */
 header :focus-visible,
 .fondo-portada :focus-visible,
 #ubicacion :focus-visible,
-footer :focus-visible {
+footer :focus-visible,
+.spotify-card :focus-visible {
   outline-color: var(--color-oro-300);
 }
 
-/* Textura suave de la portada, sin imágenes */
+/* Textura suave de la portada */
 .fondo-portada {
   background:
     radial-gradient(60rem 28rem at 50% -8rem, rgb(20 150 104 / 0.55), transparent 70%),
     var(--color-verde-900);
 }
 
-
-/* ───────── Movimiento ─────────
-   Todo con CSS y SVG, sin librerías. Se apaga con prefers-reduced-motion. */
+/* ───────── Movimiento y Motion Graphics ───────── */
 
 @keyframes subir {
   from { opacity: 0; transform: translate3d(0, 18px, 0); }
@@ -127,8 +126,33 @@ footer :focus-visible {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes eq-barra {
+  0%, 100% { transform: scaleY(0.28); }
+  50% { transform: scaleY(1); }
+}
+@keyframes rebote-pelota {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  45% { transform: translateY(-7px) rotate(22deg); }
+  70% { transform: translateY(-2px) rotate(-10deg); }
+}
+@keyframes fluir-rio {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes ondear-bandera {
+  0%, 100% { transform: skewY(0deg) scaleX(1); }
+  50% { transform: skewY(-3deg) scaleX(0.96); }
+}
+@keyframes pulso-anillo {
+  0% { transform: scale(0.92); opacity: 0.85; }
+  70% { transform: scale(1.25); opacity: 0; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
 
-/* Entrada escalonada de la portada */
 .entra { animation: subir 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0s); }
 
 /* Capa de fiesta (portada) */
@@ -149,6 +173,49 @@ footer :focus-visible {
 .fuera .capa-bandera, .fuera .capa-foco, .fuera .flota, .fuera .halo { animation-play-state: paused; }
 
 .brillo { color: var(--color-oro-300); text-shadow: 0 2px 0 rgb(0 0 0 / 0.25), 0 0 28px rgb(239 212 136 / 0.35); }
+
+/* Motion graphics temáticos por actividad */
+.mg-rebote { animation: rebote-pelota 2.1s ease-in-out infinite; }
+.mg-onda { animation: ondear-bandera 2.8s ease-in-out infinite; transform-origin: left center; }
+.mg-flota { animation: flotar 3.6s ease-in-out infinite; }
+.mg-anillo { animation: pulso-anillo 2.2s ease-out infinite; }
+
+/* Ecualizador en vivo (botones de sonido y reproductor Spotify) */
+.eq-mini { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
+.eq-mini i {
+  display: block; width: 3px; height: 100%; border-radius: 9999px; background: currentColor;
+  transform-origin: bottom; transform: scaleY(0.32);
+}
+.is-playing .eq-mini i:nth-child(1) { animation: eq-barra 0.55s ease-in-out infinite; }
+.is-playing .eq-mini i:nth-child(2) { animation: eq-barra 0.42s ease-in-out 0.15s infinite; }
+.is-playing .eq-mini i:nth-child(3) { animation: eq-barra 0.62s ease-in-out 0.25s infinite; }
+.is-playing .eq-mini i:nth-child(4) { animation: eq-barra 0.48s ease-in-out 0.08s infinite; }
+
+/* Vinilo y espectro estilo Spotify */
+.disco-vinilo { animation: girar 9s linear infinite; animation-play-state: paused; }
+.spotify-card.reproduciendo .disco-vinilo { animation-play-state: running; }
+.espectro-barra {
+  width: 4px; border-radius: 9999px; background: #1db954;
+  transform-origin: bottom; transform: scaleY(0.22); transition: transform 0.2s ease;
+}
+.spotify-card.reproduciendo .espectro-barra { animation: eq-barra var(--dur, 0.6s) ease-in-out var(--del, 0s) infinite; }
+
+/* Slider tipo Spotify */
+.spotify-range {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 9999px;
+  background: rgb(255 255 255 / 0.18); cursor: pointer;
+}
+.spotify-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 9999px;
+  background: #1db954; border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
+}
+.spotify-range::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 9999px;
+  background: #1db954; border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
+}
+
+/* Ola de río animada en Historia */
+.rio-onda { animation: fluir-rio 16s linear infinite; }
 
 /* Botones y atajos */
 .boton-oro { transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; }
@@ -171,7 +238,7 @@ footer :focus-visible {
 #programa[data-tabs] .dia.activo { animation: subir 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 .dia { scroll-margin-top: 8.5rem; }
 .chip {
-  display: grid; place-items: center; width: 100%; gap: 0.1rem; padding: 0.4rem 0 0.3rem;
+  display: grid; place-items: center; width: 100%; gap: 0.1rem; padding: 0.45rem 0 0.35rem;
   border: 2px solid var(--color-verde-700); border-radius: 0.95rem; line-height: 1;
   color: var(--color-verde-900); background: #fff; font-weight: 700;
   transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
@@ -185,14 +252,16 @@ footer :focus-visible {
 }
 .chip.central[aria-current='true'] { background: var(--color-cafe-600); border-color: var(--color-cafe-600); box-shadow: 0 6px 14px rgb(174 50 50 / 0.35); }
 .chip[aria-current='true'] span:last-child { color: var(--color-oro-300); }
-.fila { transition: background-color 0.2s ease; }
-.fila:hover { background: var(--color-verde-100); }
+.fila { transition: background-color 0.25s ease, transform 0.25s ease; }
+.fila:hover { background: rgb(227 242 234 / 0.45); }
+.fila-foto img { transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.fila:hover .fila-foto img { transform: scale(1.04); }
 
 /* Fotos */
 .foto img { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .foto:hover img { transform: scale(1.05); }
 
-/* Barra de avance de lectura (solo en navegadores que la soportan) */
+/* Barra de avance de lectura */
 .barra-progreso { display: none; }
 @supports (animation-timeline: scroll()) {
   .barra-progreso {

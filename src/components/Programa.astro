@@ -1,23 +1,81 @@
 ---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import programa from '../data/programa.json';
 import distrito from '../data/distrito.json';
+import plazaFondo from '../assets/galeria/01-plaza.jpg';
 import Ola from './Ola.astro';
+import ReproductorFiesta from './ReproductorFiesta.astro';
+
+const fotosActividades = import.meta.glob<{ default: ImageMetadata }>('../assets/actividades/*.{jpg,jpeg,png,webp}', { eager: true });
+const fotoDe = Object.fromEntries(
+  Object.entries(fotosActividades).map(([ruta, m]) => [ruta.split('/').pop()!.replace(/\.[^.]+$/, ''), m.default]),
+);
+
+const posterPorDia: Record<string, string | undefined> = {};
+for (const d of programa.dias) {
+  if (d.videoRef?.poster && fotoDe[d.videoRef.poster]) {
+    const img = await getImage({ src: fotoDe[d.videoRef.poster], width: 800, format: 'webp', quality: 70 });
+    posterPorDia[d.id] = img.src;
+  }
+}
+
+interface Actividad {
+  hora: string;
+  titulo: string;
+  detalle?: string;
+  lugar: string | null;
+  icono?: string;
+  foto?: string;
+  fotoAlt?: string;
+  sonido?: string;
+  sonidoTexto?: string;
+  lista?: string[];
+  contacto?: { texto: string; whatsapp: string };
+}
 
 const { textos } = distrito;
 const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
 ---
-<section id="programa" class="relative bg-crema px-4 pb-14 pt-16">
+<section id="programa" class="relative overflow-hidden bg-crema px-4 pb-16 pt-16">
   <Ola class="text-verde-900" />
-  <div class="mx-auto max-w-3xl">
-    <h2 class="reveal text-4xl text-verde-900 sm:text-5xl">Programa de actividades</h2>
-    <p class="reveal mt-3 text-lg">
-      {distrito.textoFechas}. Los horarios son los del cronograma de la municipalidad.
-      Si cambia algo, se avisa en su página de Facebook.
-    </p>
+
+  <!-- Fondo atmosférico en transparencia para dar profundidad sin restar lectura -->
+  <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <Image
+      src={plazaFondo}
+      alt=""
+      widths={[480]}
+      sizes="100vw"
+      format="webp"
+      quality={35}
+      loading="lazy"
+      class="h-full w-full object-cover opacity-[0.07]"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-crema/90 via-crema/75 to-crema"></div>
+    <svg class="mg-flota absolute left-4 top-32 hidden h-28 w-20 text-verde-700/15 lg:block" viewBox="0 0 40 60"><use href="#hoja" /></svg>
+    <svg class="mg-flota absolute right-6 top-56 hidden h-28 w-20 text-oro-500/20 lg:block" style="animation-delay:-1.4s" viewBox="0 0 40 60"><use href="#cacao" /></svg>
+    <svg class="mg-flota absolute left-8 bottom-36 hidden h-24 w-16 text-oro-500/20 lg:block" style="animation-delay:-2.1s" viewBox="0 0 40 60"><use href="#cacao" /></svg>
+    <svg class="mg-flota absolute right-8 bottom-24 hidden h-28 w-20 text-verde-700/15 lg:block" style="animation-delay:-0.8s" viewBox="0 0 40 60"><use href="#hoja" /></svg>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h2 class="reveal text-4xl text-verde-900 sm:text-5xl">Programa de actividades</h2>
+        <p class="reveal mt-3 max-w-2xl text-lg">
+          {distrito.textoFechas}. Los horarios son los del cronograma de la municipalidad.
+          Si cambia algo, se avisa en su página de Facebook.
+        </p>
+      </div>
+      <p class="reveal hidden rounded-full border border-verde-700/25 bg-white/80 px-4 py-1.5 text-sm font-bold text-verde-900 shadow-sm sm:inline-block">
+        42.° Aniversario · Pólvora 2026
+      </p>
+    </div>
 
     <nav id="dias-nav" aria-label={textos.programa.atajos} class="dias-nav sticky top-[3.3rem] z-30 -mx-4 mt-6 bg-crema/95 px-4 py-2.5 backdrop-blur">
-      <ul class="mx-auto flex max-w-3xl gap-2">
+      <ul class="mx-auto flex max-w-5xl gap-2">
         {programa.dias.map((d) => (
           <li class="flex-1">
             <a href={`#${d.id}`} data-dia={d.id} class:list={['chip', d.central && 'central']}>
@@ -30,56 +88,214 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
     </nav>
 
     <div class="mt-8 space-y-12">
-      {programa.dias.map((d) => (
-        <article id={d.id} data-fecha={d.fecha} class="dia">
-          <header
-            class:list={[
-              'flex items-center gap-4 rounded-t-2xl px-5 py-4 text-white',
-              d.central ? 'bg-cafe-600' : 'bg-verde-900',
-            ]}
-          >
-            <p class="font-display text-5xl leading-none text-oro-300">{d.numero}</p>
-            <div>
-              <h3 class="text-2xl">{d.diaSemana}</h3>
-              <p class="text-sm text-white/90">{mesDe(d.fecha)} de {d.fecha.slice(0, 4)}</p>
-            </div>
-            <div class="ml-auto flex flex-col items-end gap-1">
-              {d.central && (
-                <p class="rounded-full bg-oro-300 px-3 py-1 text-sm font-bold text-verde-950">{textos.programa.etiquetaCentral}</p>
+      {programa.dias.map((d) => {
+        const banner = d.bannerFoto ? fotoDe[d.bannerFoto] : undefined;
+        return (
+          <article id={d.id} data-fecha={d.fecha} class="dia">
+            <!-- Cabecera visual del día con foto en transparencia y motion graphic -->
+            <header
+              class:list={[
+                'relative overflow-hidden rounded-t-3xl px-5 py-5 text-white shadow-lg sm:px-7 sm:py-6',
+                d.central ? 'bg-cafe-600' : 'bg-verde-900',
+              ]}
+            >
+              {banner && (
+                <Image
+                  src={banner}
+                  alt=""
+                  widths={[640, 1000]}
+                  sizes="(min-width: 1024px) 960px, 95vw"
+                  format="webp"
+                  quality={60}
+                  loading="lazy"
+                  class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25 mix-blend-luminosity"
+                />
               )}
-              <p class="hoy hidden rounded-full bg-white px-3 py-1 text-sm font-bold text-verde-900">{textos.programa.etiquetaHoy}</p>
-            </div>
-          </header>
-          <ol class="divide-y divide-verde-700/15 rounded-b-2xl border-x border-b border-verde-700/20 bg-white">
-            {d.actividades.map((a) => (
-              <li class="fila grid grid-cols-[5.6rem_1fr] gap-x-3 px-4 py-3.5 sm:grid-cols-[8rem_1fr] sm:px-5">
-                <p class="font-bold leading-tight text-verde-700">{a.hora}</p>
-                <div>
-                  <p class="font-bold leading-snug">{a.titulo}</p>
-                  {a.detalle && <p class="text-[0.98rem] text-tinta/80">{a.detalle}</p>}
-                  {a.lista && (
-                    <ul class="mt-1.5 list-disc space-y-0.5 pl-5 text-[0.98rem]">
-                      {a.lista.map((x) => <li>{x}</li>)}
-                    </ul>
+              <div
+                class:list={[
+                  'pointer-events-none absolute inset-0',
+                  d.central
+                    ? 'bg-gradient-to-r from-cafe-700/95 via-cafe-600/85 to-cafe-700/75'
+                    : 'bg-gradient-to-r from-verde-950/95 via-verde-900/85 to-verde-700/70',
+                ]}
+              ></div>
+
+              <div class="relative z-10 flex flex-wrap items-center gap-4">
+                <p class="font-display text-5xl leading-none text-oro-300 sm:text-6xl">{d.numero}</p>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-2xl sm:text-3xl">{d.diaSemana}</h3>
+                  <p class="text-sm text-white/90">{mesDe(d.fecha)} de {d.fecha.slice(0, 4)}</p>
+                  {d.subtitulo && <p class="mt-1 text-sm font-bold text-oro-300/95 sm:text-base">{d.subtitulo}</p>}
+                </div>
+                <div class="ml-auto flex items-center gap-2">
+                  {d.id === 'dia-4' && (
+                    <span class="mg-rebote grid h-11 w-11 place-items-center rounded-full bg-white/15 text-oro-300" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7l3 2.2-1.1 3.5H10.1L9 9.2z" />
+                        <path d="M12 3v4M20.5 9.5l-5.5-.3M17.5 19l-3.6-6.3M6.5 19l3.6-6.3M3.5 9.5l5.5-.3" />
+                      </svg>
+                    </span>
                   )}
-                  {a.lugar && <p class="mt-1 text-[0.95rem] font-bold text-cafe-700">Lugar: {a.lugar}</p>}
-                  {a.contacto && (
-                    <p class="mt-1 text-[0.95rem]">
-                      <a
-                        class="font-bold text-verde-700 underline underline-offset-2"
-                        href={`https://wa.me/${a.contacto.whatsapp}`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >{a.contacto.texto}</a>
-                    </p>
+                  {d.id === 'dia-5' && (
+                    <span class="mg-flota grid h-11 w-11 place-items-center rounded-full bg-[#1db954]/25 text-[#1db954]" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" />
+                      </svg>
+                    </span>
+                  )}
+                  {d.central && (
+                    <span class="mg-onda grid h-11 w-11 place-items-center rounded-full bg-white/15 text-oro-300" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 3v18M5 4h12l-2 4 2 4H5" />
+                      </svg>
+                    </span>
+                  )}
+                  <div class="flex flex-col items-end gap-1">
+                    {d.central && (
+                      <p class="rounded-full bg-oro-300 px-3 py-1 text-sm font-bold text-verde-950">{textos.programa.etiquetaCentral}</p>
+                    )}
+                    <p class="hoy hidden rounded-full bg-white px-3 py-1 text-sm font-bold text-verde-900">{textos.programa.etiquetaHoy}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Barra rápida de sonidos del día -->
+              {d.sonidosDia && d.sonidosDia.length > 0 && (
+                <div class="relative z-10 mt-4 flex flex-wrap items-center gap-2 border-t border-white/15 pt-3">
+                  <span class="text-xs font-bold uppercase tracking-wider text-oro-300">Sonido del día:</span>
+                  {d.sonidosDia.map((s) => (
+                    <button
+                      type="button"
+                      data-sonido-id={s.id}
+                      class="inline-flex items-center gap-2 rounded-full border border-oro-300/60 bg-black/25 px-3 py-1 text-xs font-bold text-white transition hover:bg-oro-300 hover:text-verde-950"
+                    >
+                      <span class="eq-mini" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                      <span>{s.etiqueta}</span>
+                    </button>
+                  ))}
+                  {d.tieneReproductor && (
+                    <a
+                      href="#reproductor-dia-5"
+                      class="ml-auto inline-flex items-center gap-1.5 rounded-full bg-[#1db954] px-3.5 py-1 text-xs font-bold text-black transition hover:bg-[#1ed760]"
+                    >
+                      <span>Escuchar grupos (estilo Spotify)</span>
+                    </a>
                   )}
                 </div>
-              </li>
-            ))}
-          </ol>
-          {d.lema && <p class="mt-3 text-center font-display text-lg text-verde-700">{d.lema}</p>}
-        </article>
-      ))}
+              )}
+            </header>
+
+            <!-- Video de referencia opcional para el día -->
+            {d.videoRef && (
+              <details class="border-x border-b border-verde-700/20 bg-verde-100/70 px-4 py-2.5 sm:px-6">
+                <summary class="cursor-pointer list-none font-bold text-verde-900">
+                  <span class="inline-flex items-center gap-2">
+                    <span class="grid h-7 w-7 place-items-center rounded-full bg-verde-900 text-oro-300" aria-hidden="true">▶</span>
+                    <span>{d.videoRef.titulo}</span>
+                    <span class="text-xs font-normal text-tinta/75">(toca para ver el video)</span>
+                  </span>
+                </summary>
+                <div class="mt-3 overflow-hidden rounded-2xl border border-verde-700/25 bg-black shadow-md">
+                  <video
+                    controls
+                    preload="none"
+                    playsinline
+                    data-poster={posterPorDia[d.id]}
+                    class="max-h-[420px] w-full object-contain"
+                  >
+                    <source src={d.videoRef.src} type="video/mp4" />
+                  </video>
+                </div>
+              </details>
+            )}
+
+            <!-- Lista de actividades con fotos reales y botones de audio -->
+            <ol class="divide-y divide-verde-700/15 rounded-b-3xl border-x border-b border-verde-700/20 bg-white/95 shadow-sm">
+              {(d.actividades as Actividad[]).map((a) => {
+                const foto = a.foto ? fotoDe[a.foto] : undefined;
+                return (
+                  <li class="fila grid gap-4 px-4 py-4 sm:grid-cols-[7.2rem_1fr_14.5rem] sm:items-center sm:px-6">
+                    <div class="flex items-center gap-2 sm:block">
+                      <p class="font-bold leading-tight text-verde-700 sm:text-lg">{a.hora}</p>
+                      {a.icono === 'camaretazos' && (
+                        <span class="inline-flex items-center gap-1 rounded-full bg-oro-300/35 px-2 py-0.5 text-[0.7rem] font-bold text-oro-700 sm:mt-1.5">
+                          21 salvas
+                        </span>
+                      )}
+                      {a.icono === 'futbol' && (
+                        <span class="inline-flex items-center gap-1 rounded-full bg-verde-100 px-2 py-0.5 text-[0.7rem] font-bold text-verde-900 sm:mt-1.5">
+                          Deporte
+                        </span>
+                      )}
+                      {a.icono === 'fiesta' && (
+                        <span class="inline-flex items-center gap-1 rounded-full bg-cafe-600/15 px-2 py-0.5 text-[0.7rem] font-bold text-cafe-700 sm:mt-1.5">
+                          Estelar
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <p class="text-lg font-bold leading-snug text-verde-950">{a.titulo}</p>
+                      {a.detalle && <p class="mt-0.5 text-[0.98rem] text-tinta/85">{a.detalle}</p>}
+                      {a.lista && (
+                        <ul class="mt-2 grid gap-1 text-[0.95rem] sm:grid-cols-2">
+                          {a.lista.map((x) => (
+                            <li class="flex items-center gap-1.5">
+                              <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-verde-500" aria-hidden="true"></span>
+                              <span>{x}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {a.lugar && <p class="mt-1.5 text-[0.95rem] font-bold text-cafe-700">Lugar: {a.lugar}</p>}
+                      {a.contacto && (
+                        <p class="mt-1 text-[0.95rem]">
+                          <a
+                            class="font-bold text-verde-700 underline underline-offset-2"
+                            href={`https://wa.me/${a.contacto.whatsapp}`}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >{a.contacto.texto}</a>
+                        </p>
+                      )}
+                      {a.sonido && (
+                        <button
+                          type="button"
+                          data-sonido-id={a.sonido}
+                          class="mt-2.5 inline-flex items-center gap-2 rounded-full border border-verde-700/35 bg-verde-100 px-3.5 py-1.5 text-xs font-bold text-verde-900 transition hover:bg-verde-900 hover:text-oro-300"
+                        >
+                          <span class="eq-mini" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                          <span>{a.sonidoTexto ?? 'Escuchar sonido'}</span>
+                        </button>
+                      )}
+                    </div>
+
+                    {foto && (
+                      <div class="fila-foto overflow-hidden rounded-xl border border-verde-700/20 bg-crema shadow-sm">
+                        <Image
+                          src={foto}
+                          alt={a.fotoAlt ?? a.titulo}
+                          widths={[320, 520]}
+                          sizes="(min-width: 640px) 232px, 90vw"
+                          format="webp"
+                          quality={75}
+                          loading="lazy"
+                          class="h-32 w-full object-cover sm:h-28"
+                        />
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+
+            {d.tieneReproductor && <ReproductorFiesta />}
+
+            {d.lema && <p class="mt-4 text-center font-display text-xl text-verde-700">{d.lema}</p>}
+          </article>
+        );
+      })}
     </div>
   </div>
 </section>
@@ -109,7 +325,6 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
     seccion.dataset.tabs = 'on';
     mostrar((desdeUrl ?? delHoy ?? proximo ?? dias[dias.length - 1]).id);
 
-    // Cualquier enlace a un día (chips del programa o de la portada) cambia de pestaña.
     document.addEventListener('click', (e) => {
       const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#dia-"]');
       if (!a) return;
