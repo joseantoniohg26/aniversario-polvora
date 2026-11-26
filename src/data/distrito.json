@@ -2,7 +2,7 @@
   "_nota": "Datos del distrito. Fuentes indicadas en cada bloque. Lo que dice PENDIENTE no se publica hasta confirmar con la municipalidad.",
   "sitio": {
     "titulo": "42.° Aniversario del Distrito de Pólvora · Programa del 2 al 6 de diciembre de 2026",
-    "descripcion": "Programa completo del 42.° aniversario del distrito de Pólvora, Tocache, San Martín: actividades del 2 al 6 de diciembre de 2026, historia y cómo llegar.",
+    "descripcion": "Programa completo del 42.° aniversario del distrito de Pólvora, Tocache, San Martín: actividades del 2 al 6 de diciembre de 2026, música de los artistas invitados, historia y cómo llegar.",
     "url": "https://aniversario-polvora.vercel.app/"
   },
   "aniversario": 42,
@@ -53,6 +53,18 @@
       "A inicios de 1973 empiezan a llegar las primeras familias, atraídas por las tierras fértiles para sembrar. En 1974 el lugar es reconocido como caserío del distrito de Tocache, entonces en la provincia de Mariscal Cáceres.",
       "El 6 de diciembre de 1984, con la Ley 24016, Pólvora se convierte en distrito. Es la misma ley que crea la provincia de Tocache."
     ],
+    "imagenes": [
+      {
+        "archivo": "quebrada-polvora",
+        "alt": "Aguas cristalinas de una quebrada rodeada de vegetación amazónica en el distrito de Pólvora",
+        "pie": "Quebrada de aguas claras entre la selva de Pólvora (Alto Cañuto)"
+      },
+      {
+        "archivo": "rio-tocache-huallaga",
+        "alt": "Vista del río Huallaga entre cerros verdes y palmeras en la provincia de Tocache, San Martín",
+        "pie": "Río Huallaga a su paso por la provincia de Tocache, San Martín"
+      }
+    ],
     "fuentes": "Wikipedia (Distrito de Pólvora) y tríptico del 31.° aniversario de la municipalidad (2015). El texto de la ley está en el Congreso de la República."
   },
   "galeria": [
@@ -63,26 +75,135 @@
     },
     {
       "archivo": "02-carretera-discurso",
-      "alt": "El alcalde hablando con micrófono en un estrado, frente a vecinos y autoridades, durante la inauguración de una obra vial",
-      "pie": "Inauguración de la carretera Nuevo Horizonte – Canuto, octubre de 2026"
+      "alt": "El alcalde Hugo Ventura Sánchez hablando con micrófono frente a vecinos y autoridades durante la inauguración de la carretera Nuevo Horizonte – Cañuto",
+      "pie": "Inauguración de la carretera Nuevo Horizonte – Cañuto, octubre de 2026"
     },
     {
       "archivo": "03-carretera-cinta",
-      "alt": "Autoridades y vecinos cortan juntos la cinta de inauguración en la carretera",
+      "alt": "Autoridades y vecinos cortan juntos la cinta de inauguración en la carretera Nuevo Horizonte – Cañuto",
       "pie": "Corte de cinta en la inauguración de la carretera, octubre de 2026"
     },
     {
       "archivo": "04-puente-lajas",
-      "alt": "Vecinos reunidos sobre el puente al atardecer, aplaudiendo durante la inauguración",
-      "pie": "Puente en la quebrada Lajas, Puerto Rico, octubre de 2026"
+      "alt": "El alcalde y agricultores reunidos sobre el puente de la quebrada Lajas al atardecer en Puerto Rico",
+      "pie": "Puente sobre la quebrada Lajas, caserío Puerto Rico, octubre de 2026"
     },
     {
       "archivo": "05-afiche-gastronomia",
-      "alt": "Afiche del concurso gastronómico Platos Típicos 2026, con premios de 350, 200 y 100 soles",
+      "alt": "Afiche del concurso gastronómico Platos Típicos 2026 por el 42° Aniversario, con premios de 350, 200 y 100 soles",
       "pie": "Afiche del concurso Platos Típicos 2026, jueves 3 de diciembre"
+    },
+    {
+      "archivo": "06-senorita-polvora",
+      "alt": "Afiche de la convocatoria oficial Señorita Pólvora 2026 por el aniversario del distrito",
+      "pie": "Convocatoria oficial Señorita Pólvora 2026, noviembre de 2026"
+    },
+    {
+      "archivo": "07-transferencia",
+      "alt": "Instalación de la mesa de transferencia de gestión 2023-2026 con presencia del alcalde Hugo Ventura Sánchez",
+      "pie": "Mesa de transferencia de gestión 2023–2026, noviembre de 2026"
+    },
+    {
+      "archivo": "08-cascadas-canuto",
+      "alt": "Cascadas y quebrada de aguas limpias en Alto Cañuto, distrito de Pólvora",
+      "pie": "Cascadas de Alto Cañuto, atractivo natural de Pólvora, 2026"
     }
   ],
-  "invitados": [],
+  "videos": [
+    {
+      "archivo": "/video/aniversario-polvora.mp4",
+      "poster": "01-plaza",
+      "titulo": "Celebración y espíritu de aniversario en Pólvora",
+      "detalle": "Video institucional de las actividades de aniversario en el distrito."
+    },
+    {
+      "archivo": "/video/cascadas-alto-canuto.mp4",
+      "poster": "08-cascadas-canuto",
+      "titulo": "Cascadas de Alto Cañuto – Turismo en Pólvora",
+      "detalle": "Recorrido por uno de los parajes naturales y quebradas del distrito (2026)."
+    }
+  ],
+  "invitados": [
+    {
+      "nombre": "Orquesta Tempestad",
+      "detalle": "Sábado 5 de diciembre · 7:00 p.m. · Local Comunal · Entrada libre",
+      "portada": "tempestad",
+      "origen": "Chachapoyas, Perú",
+      "videoSrc": "/video/artistas/orquesta-tempestad-promo.mp4",
+      "videoPoster": "tempestad-video",
+      "videoTitulo": "Video del afiche de Orquesta Tempestad",
+      "videoDuracion": "1:00"
+    },
+    {
+      "nombre": "Chino Montalvo y La Montalveña",
+      "detalle": "Sábado 5 de diciembre · 7:00 p.m. · Local Comunal · Entrada libre",
+      "portada": "chino-montalvo",
+      "videoSrc": "/video/artistas/chino-montalvo-promo.mp4",
+      "videoPoster": "chino-montalvo-video",
+      "videoTitulo": "Video del afiche de Chino Montalvo y La Montalveña",
+      "videoDuracion": "1:00"
+    }
+  ],
+  "playlistFiesta": {
+    "titulo": "Previa de la Fiesta Social · Sábado 5 de diciembre",
+    "subtitulo": "Escucha y adelanta canciones de los grupos invitados para la noche de quema de castillo",
+    "canciones": [
+      {
+        "id": "tempestad-1",
+        "titulo": "El Silbido de Amor",
+        "artista": "Orquesta Tempestad",
+        "grupo": "tempestad",
+        "portada": "tempestad",
+        "audio": "/audio/tempestad-silbido-de-amor.m4a",
+        "duracion": "0:30"
+      },
+      {
+        "id": "tempestad-2",
+        "titulo": "Corazón Necio",
+        "artista": "Orquesta Tempestad",
+        "grupo": "tempestad",
+        "portada": "tempestad",
+        "audio": "/audio/tempestad-corazon-necio.m4a",
+        "duracion": "0:30"
+      },
+      {
+        "id": "tempestad-3",
+        "titulo": "Linda Charapita",
+        "artista": "Orquesta Tempestad",
+        "grupo": "tempestad",
+        "portada": "tempestad",
+        "audio": "/audio/tempestad-linda-charapita.m4a",
+        "duracion": "0:30"
+      },
+      {
+        "id": "chino-1",
+        "titulo": "El Zapatón",
+        "artista": "Chino Montalvo y La Montalveña",
+        "grupo": "chino-montalvo",
+        "portada": "chino-montalvo",
+        "audio": "/audio/chino-montalvo-el-zapaton.m4a",
+        "duracion": "0:30"
+      },
+      {
+        "id": "chino-2",
+        "titulo": "La Pusanguera",
+        "artista": "Chino Montalvo y La Montalveña",
+        "grupo": "chino-montalvo",
+        "portada": "chino-montalvo",
+        "audio": "/audio/chino-montalvo-la-pusanguera.m4a",
+        "duracion": "0:30"
+      },
+      {
+        "id": "chino-3",
+        "titulo": "Amor Quebrado",
+        "artista": "Chino Montalvo y La Montalveña",
+        "grupo": "chino-montalvo",
+        "portada": "chino-montalvo",
+        "audio": "/audio/chino-montalvo-amor-quebrado.m4a",
+        "duracion": "0:30"
+      }
+    ]
+  },
   "ubicacion": {
     "lat": -7.9074376,
     "lng": -76.6703278,
@@ -109,8 +230,12 @@
     ],
     "redes": [
       {
-        "etiqueta": "Facebook de la Municipalidad",
-        "url": "https://www.facebook.com/municipalidaddepolvora.gob.pe/"
+        "etiqueta": "Facebook oficial (Gestión 2023–2026)",
+        "url": "https://web.facebook.com/p/Municipalidad-Distrital-de-Polvora-2023-2026-61573782732110/"
+      },
+      {
+        "etiqueta": "Página institucional en Gob.pe",
+        "url": "https://www.gob.pe/munipolvora"
       }
     ]
   },
@@ -154,5 +279,6 @@
       "silenciar": "Silenciar",
       "salva": "Salva de 21 camaretazos"
     }
-  }
+  },
+  "invitadosNota": "Datos tomados de los videos-afiche de la municipalidad (Local Comunal, entrada libre, sábado 5 de diciembre)."
 }

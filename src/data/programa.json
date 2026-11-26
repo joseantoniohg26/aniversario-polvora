@@ -7,55 +7,103 @@
       "diaSemana": "Miércoles",
       "numero": 2,
       "central": false,
+      "subtitulo": "Apertura, embellecimiento y coronación de Señorita Pólvora 2026",
+      "bannerFoto": "d2-embellecimiento",
+      "videoRef": {
+        "src": "/video/aniversario-polvora.mp4",
+        "titulo": "Video de referencia: Celebración del aniversario en Pólvora",
+        "poster": "d2-embellecimiento"
+      },
+      "sonidosDia": [
+        {
+          "id": "camaretazos",
+          "etiqueta": "Salva de 21 camaretazos"
+        },
+        {
+          "id": "banda",
+          "etiqueta": "Entrada de banda folklórica"
+        }
+      ],
       "actividades": [
         {
           "hora": "5:30 a.m.",
           "titulo": "Despertar Pólvora",
           "detalle": "Salva de 21 camaretazos",
-          "lugar": null
+          "lugar": null,
+          "icono": "camaretazos",
+          "foto": "d2-camaretazos",
+          "fotoAlt": "Fuegos artificiales iluminando la madrugada del despertar de Pólvora",
+          "sonido": "camaretazos",
+          "sonidoTexto": "Escuchar 21 camaretazos"
         },
         {
           "hora": "5:30 a.m.",
           "titulo": "Entrada de la banda folklórica",
-          "lugar": null
+          "lugar": null,
+          "icono": "banda",
+          "foto": "d2-banda",
+          "fotoAlt": "Banda folklórica con trompetas, bombo y platillos recorriendo la plaza de Pólvora",
+          "sonido": "banda",
+          "sonidoTexto": "Escuchar banda"
         },
         {
           "hora": "6:00 a.m.",
           "titulo": "Faena general",
           "detalle": "Población, institución invitada y Municipalidad",
-          "lugar": null
+          "lugar": null,
+          "icono": "faena",
+          "foto": "d2-faena",
+          "fotoAlt": "Vecinos y personal municipal en jornada de limpieza y faena comunal"
         },
         {
           "hora": "7:00 a.m.",
           "titulo": "Embanderamiento general",
-          "lugar": null
+          "lugar": null,
+          "icono": "bandera",
+          "foto": "d2-embanderamiento",
+          "fotoAlt": "Banderas peruanas izadas en las calles del distrito de Pólvora"
         },
         {
           "hora": "8:00 a.m.",
           "titulo": "1.0 Embellecimiento de la Plaza de Armas – Identidad Pólvora 2026",
           "detalle": "A cargo de la Municipalidad",
-          "lugar": null
+          "lugar": null,
+          "icono": "plaza",
+          "foto": "d2-embellecimiento",
+          "fotoAlt": "Letras turísticas de Pólvora en la Plaza de Armas"
         },
         {
           "hora": "3:00 p.m.",
           "titulo": "Premiamos tu puntualidad por el pago de tus tributos",
-          "lugar": null
+          "lugar": null,
+          "icono": "premio",
+          "foto": "d2-tributos",
+          "fotoAlt": "Alcalde Hugo Ventura Sánchez premiando a vecinos contribuyentes puntuales"
         },
         {
           "hora": "4:00 p.m.",
           "titulo": "Inauguración Calles Pólvora",
-          "lugar": null
+          "lugar": null,
+          "icono": "calle",
+          "foto": "d2-calles",
+          "fotoAlt": "Autoridades y pobladores en el corte de cinta de inauguración de calles"
         },
         {
           "hora": "4:30 p.m.",
           "titulo": "1.1 Concurso de embellecimiento de calles – Identidad Pólvora 2026",
           "detalle": "Participa la población",
-          "lugar": null
+          "lugar": null,
+          "icono": "plaza",
+          "foto": "d2-concurso-calles",
+          "fotoAlt": "Calle arborizada y decorada con flores en Pólvora"
         },
         {
           "hora": "7:00 p.m.",
           "titulo": "Elección y coronación de Señorita Pólvora 2026",
-          "lugar": null
+          "lugar": null,
+          "icono": "corona",
+          "foto": "d2-senorita-polvora",
+          "fotoAlt": "Reinas y candidatas del certamen Señorita Pólvora"
         }
       ]
     },
@@ -65,27 +113,60 @@
       "diaSemana": "Jueves",
       "numero": 3,
       "central": false,
+      "subtitulo": "Feria agraria, concursos tradicionales, platos típicos y verbena artística",
+      "bannerFoto": "d3-feria",
+      "videoRef": {
+        "src": "/video/cascadas-alto-canuto.mp4",
+        "titulo": "Video de referencia: Riqueza turística y natural de Pólvora",
+        "poster": "d3-feria"
+      },
+      "sonidosDia": [
+        {
+          "id": "camaretazos",
+          "etiqueta": "Salva de 21 camaretazos"
+        },
+        {
+          "id": "banda",
+          "etiqueta": "Banda folklórica"
+        }
+      ],
       "actividades": [
         {
           "hora": "5:00 a.m.",
           "titulo": "Despertar Pólvora",
           "detalle": "Salva de 21 camaretazos",
-          "lugar": null
+          "lugar": null,
+          "icono": "camaretazos",
+          "foto": "d3-camaretazos",
+          "fotoAlt": "Estallido de fuegos artificiales al amanecer en Pólvora",
+          "sonido": "camaretazos",
+          "sonidoTexto": "Escuchar 21 camaretazos"
         },
         {
           "hora": "8:30 a.m.",
           "titulo": "Entrada de la banda folklórica",
-          "lugar": null
+          "lugar": null,
+          "icono": "banda",
+          "foto": "d3-banda",
+          "fotoAlt": "Músicos de banda tocando trompetas y tuba en Pólvora",
+          "sonido": "banda",
+          "sonidoTexto": "Escuchar banda"
         },
         {
           "hora": "9:00 a.m. a 3:00 p.m.",
           "titulo": "Inauguración de la feria agraria, pecuaria, forestal, industrial, gastronómica, artesanal y turística y medio ambiental",
-          "lugar": null
+          "lugar": null,
+          "icono": "feria",
+          "foto": "d3-feria",
+          "fotoAlt": "Productores y expositores reunidos en la inauguración de la feria distrital"
         },
         {
           "hora": "9:00 a.m. a 3:00 p.m.",
           "titulo": "Concursos",
           "lugar": null,
+          "icono": "concurso",
+          "foto": "d3-concursos-platanero",
+          "fotoAlt": "Participantes compitiendo en los concursos tradicionales plataneros",
           "lista": [
             "Glotón platanero (varones)",
             "Glotón platanero (mujeres)",
@@ -104,6 +185,9 @@
           "titulo": "Concurso gastronómico: Platos Típicos 2026",
           "detalle": "Premios: 1.er puesto S/ 350, 2.º puesto S/ 200, 3.er puesto S/ 100",
           "lugar": "Plaza de Armas",
+          "icono": "comida",
+          "foto": "d3-platos-tipicos",
+          "fotoAlt": "Exhibición de platos típicos, cacao y concursos gastronómicos",
           "contacto": {
             "texto": "Consultas al WhatsApp 916 476 214",
             "whatsapp": "51916476214"
@@ -112,7 +196,12 @@
         {
           "hora": "7:00 p.m.",
           "titulo": "Verbena artística",
-          "lugar": null
+          "lugar": null,
+          "icono": "musica",
+          "foto": "d3-verbena",
+          "fotoAlt": "Danzantes con trajes típicos durante la verbena artística",
+          "sonido": "hunsha",
+          "sonidoTexto": "Ambiente festivo"
         }
       ]
     },
@@ -122,22 +211,52 @@
       "diaSemana": "Viernes",
       "numero": 4,
       "central": false,
+      "subtitulo": "Jornada deportiva de mini fútbol y pasacalle de banda folklórica",
+      "bannerFoto": "d4-futbol",
+      "sonidosDia": [
+        {
+          "id": "futbol",
+          "etiqueta": "Pitazo de fútbol"
+        },
+        {
+          "id": "banda",
+          "etiqueta": "Banda folklórica"
+        },
+        {
+          "id": "camaretazos",
+          "etiqueta": "21 camaretazos"
+        }
+      ],
       "actividades": [
         {
           "hora": "5:30 a.m.",
           "titulo": "Despertar Pólvora",
           "detalle": "Salva de 21 camaretazos",
-          "lugar": null
+          "lugar": null,
+          "icono": "camaretazos",
+          "sonido": "camaretazos",
+          "sonidoTexto": "Escuchar 21 camaretazos"
         },
         {
           "hora": "8:30 a.m.",
           "titulo": "Entrada de la banda folklórica",
-          "lugar": null
+          "lugar": null,
+          "icono": "banda",
+          "foto": "d4-banda",
+          "fotoAlt": "Banda folklórica encabezando el recorrido festivo por las calles de Pólvora",
+          "sonido": "banda",
+          "sonidoTexto": "Escuchar banda folklórica"
         },
         {
           "hora": "9:00 a.m.",
           "titulo": "Campeonato de mini fútbol intercentros poblados, caseríos y sectores (varones)",
-          "lugar": null
+          "detalle": "Encuentros deportivos entre los caseríos y centros poblados del distrito.",
+          "lugar": null,
+          "icono": "futbol",
+          "foto": "d4-futbol",
+          "fotoAlt": "Partido de mini fútbol en cancha verde y equipo campeón con su trofeo",
+          "sonido": "futbol",
+          "sonidoTexto": "Pitazo inicial de fútbol"
         }
       ]
     },
@@ -147,33 +266,74 @@
       "diaSemana": "Sábado",
       "numero": 5,
       "central": false,
+      "subtitulo": "Finales deportivas, quema de castillo y gran fiesta con Orquesta Tempestad y Chino Montalvo",
       "lema": "¡Pólvora celebra su historia, cultura y unidad!",
+      "bannerFoto": "d5-fiesta-castillo",
+      "tieneReproductor": true,
+      "sonidosDia": [
+        {
+          "id": "banda",
+          "etiqueta": "Banda folklórica"
+        },
+        {
+          "id": "futbol",
+          "etiqueta": "Pitazo de la final"
+        },
+        {
+          "id": "camaretazos",
+          "etiqueta": "21 camaretazos"
+        }
+      ],
       "actividades": [
         {
           "hora": "5:30 a.m.",
           "titulo": "Despertar Pólvora",
           "detalle": "Salva de 21 camaretazos",
-          "lugar": null
+          "lugar": null,
+          "icono": "camaretazos",
+          "foto": "d5-camaretazos",
+          "fotoAlt": "Castillo y fuegos artificiales iluminando el cielo",
+          "sonido": "camaretazos",
+          "sonidoTexto": "Escuchar 21 camaretazos"
         },
         {
           "hora": "8:30 a.m.",
           "titulo": "Entrada de la banda folklórica",
-          "lugar": null
+          "lugar": null,
+          "icono": "banda",
+          "foto": "d5-banda",
+          "fotoAlt": "Banda folklórica animando la mañana del sábado en Pólvora",
+          "sonido": "banda",
+          "sonidoTexto": "Escuchar banda"
         },
         {
           "hora": "9:00 a.m.",
           "titulo": "Campeonato de vóley intercentros poblados y sectores (mujeres)",
-          "lugar": null
+          "lugar": null,
+          "icono": "voley",
+          "foto": "d5-voley",
+          "fotoAlt": "Jugadoras en pleno partido del campeonato de vóley femenino"
         },
         {
           "hora": "1:00 p.m.",
           "titulo": "Campeonato de mini fútbol intercentros poblados y sectores (varones): final",
-          "lugar": null
+          "lugar": null,
+          "icono": "futbol",
+          "foto": "d5-futbol-final",
+          "fotoAlt": "Final del campeonato de mini fútbol ante la hinchada de los caseríos",
+          "sonido": "futbol",
+          "sonidoTexto": "Pitazo de la final"
         },
         {
           "hora": "7:00 p.m.",
           "titulo": "Fiesta social y quema de castillo",
-          "lugar": null
+          "detalle": "Con la presentación de Orquesta Tempestad y Chino Montalvo y La Montalveña. Entrada libre.",
+          "lugar": "Local Comunal",
+          "icono": "fiesta",
+          "foto": "d5-fiesta-castillo",
+          "fotoAlt": "Quema de castillo pirotécnico y fiesta popular en la noche de víspera",
+          "sonido": "camaretazos",
+          "sonidoTexto": "Sonido de quema de castillo"
         }
       ]
     },
@@ -183,53 +343,110 @@
       "diaSemana": "Domingo",
       "numero": 6,
       "central": true,
+      "subtitulo": "42 años de creación política · Actos cívicos, sesión solemne y tradicional hunsha",
       "lema": "¡Pólvora, 42 años de historia, identidad y progreso!",
+      "bannerFoto": "d6-desfile",
+      "sonidosDia": [
+        {
+          "id": "camaretazos",
+          "etiqueta": "21 camaretazos"
+        },
+        {
+          "id": "misa",
+          "etiqueta": "Campanas Te Deum"
+        },
+        {
+          "id": "marcha",
+          "etiqueta": "Marcha de Banderas"
+        },
+        {
+          "id": "hunsha",
+          "etiqueta": "Música de Hunsha"
+        }
+      ],
       "actividades": [
         {
           "hora": "5:30 a.m.",
           "titulo": "Despertar Pólvora",
           "detalle": "Salva de 21 camaretazos",
-          "lugar": null
+          "lugar": null,
+          "icono": "camaretazos",
+          "sonido": "camaretazos",
+          "sonidoTexto": "Escuchar 21 camaretazos"
         },
         {
           "hora": "5:30 a.m.",
           "titulo": "Entrada de la banda de música",
-          "lugar": null
+          "lugar": null,
+          "icono": "banda",
+          "foto": "d6-banda",
+          "fotoAlt": "Banda de música interpretando dianas en la alborada del día central",
+          "sonido": "banda",
+          "sonidoTexto": "Escuchar banda de música"
         },
         {
           "hora": "6:00 a.m.",
           "titulo": "Desayuno de camaradería",
-          "lugar": null
+          "lugar": null,
+          "icono": "desayuno",
+          "foto": "d6-desayuno",
+          "fotoAlt": "Autoridades y vecinos compartiendo el desayuno de camaradería"
         },
         {
           "hora": "7:00 a.m.",
           "titulo": "Misa Te Deum",
-          "lugar": null
+          "lugar": null,
+          "icono": "iglesia",
+          "foto": "d6-misa",
+          "fotoAlt": "Celebración de la Misa Te Deum por el aniversario de Pólvora",
+          "sonido": "misa",
+          "sonidoTexto": "Repique de campanas"
         },
         {
           "hora": "8:30 a.m.",
           "titulo": "Izamiento del pabellón nacional",
-          "lugar": null
+          "lugar": null,
+          "icono": "bandera",
+          "foto": "d6-izamiento",
+          "fotoAlt": "Autoridades distritales durante el izamiento del Pabellón Nacional",
+          "sonido": "marcha",
+          "sonidoTexto": "Marcha de Banderas"
         },
         {
           "hora": "9:00 a.m.",
           "titulo": "Desfile cívico",
-          "lugar": null
+          "lugar": null,
+          "icono": "desfile",
+          "foto": "d6-desfile",
+          "fotoAlt": "Escolares, delegaciones y autoridades marchando en el desfile cívico de Pólvora",
+          "sonido": "marcha",
+          "sonidoTexto": "Marcha de desfile"
         },
         {
           "hora": "12:00 p.m.",
           "titulo": "Sesión solemne",
-          "lugar": null
+          "lugar": null,
+          "icono": "solemne",
+          "foto": "d6-sesion",
+          "fotoAlt": "Mesa de honor en la Sesión Solemne por el aniversario distrital"
         },
         {
           "hora": "1:00 p.m.",
           "titulo": "Almuerzo de camaradería",
-          "lugar": null
+          "lugar": null,
+          "icono": "almuerzo",
+          "foto": "d6-almuerzo",
+          "fotoAlt": "Tradicional chancho al palo y platos típicos en el almuerzo de camaradería"
         },
         {
           "hora": "3:00 p.m.",
           "titulo": "Hunsha",
-          "lugar": null
+          "lugar": null,
+          "icono": "hunsha",
+          "foto": "d6-hunsha",
+          "fotoAlt": "Pobladores bailando alrededor del árbol adornado en la tradicional hunsha",
+          "sonido": "hunsha",
+          "sonidoTexto": "Escuchar pandilla / hunsha"
         }
       ]
     }
