@@ -4,11 +4,18 @@ import type { ImageMetadata } from 'astro';
 import distrito from '../data/distrito.json';
 import Ola from './Ola.astro';
 
+interface Foto {
+  archivo: string;
+  alt: string;
+  pie: string;
+  ajuste?: string;
+}
+
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/galeria/*.{jpg,jpeg,png,webp}', { eager: true });
 const porNombre = Object.fromEntries(
   Object.entries(fotos).map(([ruta, m]) => [ruta.split('/').pop()!.replace(/\.[^.]+$/, ''), m.default]),
 );
-const items = distrito.galeria.filter((f) => porNombre[f.archivo]);
+const items = (distrito.galeria as Foto[]).filter((f) => porNombre[f.archivo]);
 const videos = await Promise.all(
   (distrito.videos ?? []).map(async (v) => {
     const src = porNombre[v.poster];
@@ -21,46 +28,35 @@ const videos = await Promise.all(
   <Ola class="text-verde-100" />
   <div class="mx-auto max-w-5xl">
     <h2 class="reveal text-4xl text-verde-900 sm:text-5xl">Fotos y videos del distrito</h2>
-    <p class="reveal mt-2 text-lg text-tinta/80">Obras, educación, actividades recientes y paisajes de Pólvora (gestión 2023–2026).</p>
+    <p class="reveal mt-2 text-lg text-tinta/80">Obras, educación, actividades recientes y paisajes de Pólvora.</p>
 
-    <div class="mt-8 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Todas las fotos en el mismo formato; los afiches se muestran completos -->
+    <div class="mt-8 grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((f, i) => (
-        <figure
-          class:list={[
-            'foto reveal overflow-hidden rounded-2xl border border-verde-700/20 bg-white shadow-sm',
-            i === 0 && 'sm:col-span-2 lg:col-span-2',
-          ]}
-          style={`--i:${i % 3}`}
-        >
-          <div class="relative overflow-hidden">
+        <figure class="foto reveal" style={`--i:${i % 3}`}>
+          <div class:list={['overflow-hidden rounded-xl border border-verde-700/15', f.ajuste === 'contener' ? 'bg-verde-950/5' : 'bg-verde-100']}>
             <Image
               src={porNombre[f.archivo]}
               alt={f.alt}
               widths={[400, 800]}
-              sizes={i === 0 ? '(min-width: 1024px) 660px, 95vw' : '(min-width: 1024px) 330px, 92vw'}
+              sizes="(min-width: 1024px) 330px, (min-width: 640px) 45vw, 92vw"
               format="webp"
-              quality={80}
+              quality={75}
               loading="lazy"
-              class:list={['w-full object-cover', i === 0 ? 'h-64 sm:h-72' : 'h-56']}
+              class:list={['aspect-[4/3] w-full', f.ajuste === 'contener' ? 'object-contain' : 'object-cover']}
             />
-            {f.etiqueta && (
-              <span class="absolute left-3 top-3 rounded-full bg-verde-950/85 px-3 py-1 text-xs font-bold text-oro-300 backdrop-blur-sm">
-                {f.etiqueta}
-              </span>
-            )}
           </div>
-          <figcaption class="px-4 py-3 text-[0.96rem] font-bold leading-snug text-verde-950">{f.pie}</figcaption>
+          <figcaption class="mt-2.5 text-[0.98rem] leading-snug text-tinta/90">{f.pie}</figcaption>
         </figure>
       ))}
     </div>
 
     {videos.length > 0 && (
-      <div class="mt-12">
-        <h3 class="reveal text-2xl text-verde-900 sm:text-3xl">Videos de referencia</h3>
-        <p class="reveal mt-1 text-sm text-tinta/75">Se reproducen al entrar en pantalla y se pausan automáticamente al desplazarte.</p>
+      <div class="mt-14">
+        <h3 class="reveal text-2xl text-verde-900 sm:text-3xl">Videos</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2">
           {videos.map((v, i) => (
-            <div class="video-card reveal overflow-hidden rounded-2xl border border-verde-700/25 bg-white shadow-sm" style={`--i:${i}`}>
+            <div class="video-card reveal overflow-hidden rounded-xl border border-verde-700/20 bg-white" style={`--i:${i}`}>
               <div class="relative bg-verde-950">
                 <video
                   data-auto-video
@@ -68,7 +64,7 @@ const videos = await Promise.all(
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="none"
                   data-poster={v.posterUrl}
                   class="aspect-video w-full object-cover"
                 >
@@ -77,9 +73,9 @@ const videos = await Promise.all(
                 <button
                   type="button"
                   data-video-audio
-                  class="absolute right-3 top-3 rounded-full border border-oro-300/70 bg-black/65 px-3 py-1 text-xs font-bold text-oro-300 backdrop-blur-sm transition hover:bg-oro-300 hover:text-verde-950"
+                  class="absolute right-3 top-3 rounded-full border border-oro-300/70 bg-black/65 px-3 py-1 text-xs font-bold text-oro-300 backdrop-blur-sm transition-colors hover:bg-oro-300 hover:text-verde-950"
                 >
-                  Tocar para activar audio
+                  Activar sonido
                 </button>
               </div>
               <div class="px-4 py-3">

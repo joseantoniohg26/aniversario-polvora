@@ -30,7 +30,7 @@ const imagenes = (historia.imagenes ?? []).filter((img) => porNombre[img.archivo
         <dl class="mt-3 divide-y divide-verde-700/15">
           {datos.map((d) => (
             <div class="py-2.5">
-              <dt class="text-sm font-bold uppercase tracking-wide text-cafe-700">{d.etiqueta}</dt>
+              <dt class="text-sm font-bold text-cafe-700">{d.etiqueta}</dt>
               <dd class="text-lg font-bold">{d.valor}{d.nota && <span class="block text-sm font-normal text-tinta/75">{d.nota}</span>}</dd>
             </div>
           ))}

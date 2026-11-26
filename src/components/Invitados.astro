@@ -76,7 +76,7 @@ for (const inv of invitados) {
                     data-video-audio
                     class="rounded-full border border-oro-300/70 bg-black/60 px-2.5 py-1 text-xs font-bold text-oro-300 transition hover:bg-oro-300 hover:text-verde-950"
                   >
-                    Tocar para activar audio
+                    Activar sonido
                   </button>
                 </div>
                 <video
@@ -85,7 +85,7 @@ for (const inv of invitados) {
                   muted
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="none"
                   data-poster={posters[inv.nombre]}
                   aria-label={inv.videoTitulo}
                   class="mx-auto block max-h-[28rem] w-full bg-black object-contain"

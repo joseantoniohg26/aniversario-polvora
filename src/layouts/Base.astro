@@ -11,7 +11,7 @@ const ultimo = programa.dias[programa.dias.length - 1];
 const eventoLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
-  name: `${aniversario}.° Aniversario del Distrito de Pólvora`,
+  name: `${aniversario}.º Aniversario del Distrito de Pólvora`,
   startDate: distrito.fechaInicio,
   endDate: ultimo.fecha,
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -104,14 +104,14 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
     <div
       id="mini-spotify"
       hidden
-      class="fixed bottom-[4.9rem] left-4 z-45 max-w-[18.5rem] items-center gap-2.5 rounded-full border border-[#1db954]/60 bg-[#0d1d15]/95 px-3 py-1.5 text-white shadow-xl backdrop-blur-md [&:not([hidden])]:flex"
+      class="fixed bottom-[4.9rem] left-4 z-45 max-w-[18.5rem] items-center gap-2.5 rounded-full border border-oro-300/50 bg-[#0c1812]/95 px-3 py-1.5 text-white shadow-xl backdrop-blur-md [&:not([hidden])]:flex"
     >
-      <span class="h-2.5 w-2.5 shrink-0 rounded-full bg-[#1db954] animate-pulse"></span>
+      <span class="h-2.5 w-2.5 shrink-0 rounded-full bg-oro-300"></span>
       <div class="min-w-0 flex-1">
         <p class="truncate text-xs font-bold" data-mini-titulo></p>
         <p class="truncate text-[0.68rem] text-white/70" data-mini-artista></p>
       </div>
-      <button type="button" data-mini-toggle aria-label="Pausar o reanudar música" class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#1db954] text-xs font-bold text-black">
+      <button type="button" data-mini-toggle aria-label="Pausar o reanudar música" class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-oro-300 text-xs font-bold text-black">
         ❚❚
       </button>
     </div>
@@ -224,7 +224,7 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
       const musica = () => document.getElementById('spotify-audio-global') as HTMLAudioElement | null;
       const actualizarBotonVideo = (v: HTMLVideoElement) => {
         const btn = v.closest('.video-card')?.querySelector<HTMLButtonElement>('[data-video-audio]');
-        if (btn) btn.textContent = v.muted ? 'Tocar para activar audio' : 'Audio activado (silenciar)';
+        if (btn) btn.textContent = v.muted ? 'Activar sonido' : 'Silenciar';
       };
       const silenciar = (v: HTMLVideoElement) => {
         if (!v.muted) v.muted = true;

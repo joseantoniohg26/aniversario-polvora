@@ -1,86 +1,75 @@
 ---
 import { Image } from 'astro:assets';
 import escudo from '../assets/escudo-sticker.png';
+import fondo from '../assets/galeria/01-plaza.jpg';
 import Bunting from './Bunting.astro';
-import Luces from './Luces.astro';
 import Fiesta from './Fiesta.astro';
 import distrito from '../data/distrito.json';
-import programa from '../data/programa.json';
 
 const { aniversario, fechaCentral, zonaHoraria, textoFechas, textos } = distrito;
 const objetivo = `${fechaCentral}T00:00:00${zonaHoraria}`;
 ---
-<section id="inicio" class="fondo-portada relative overflow-hidden text-center text-white">
-  <Fiesta />
-  <div class="relative z-10">
-    <Bunting class="block" />
-    <Luces class="-mt-1 block" />
-  </div>
+<section id="inicio" class="relative isolate overflow-hidden bg-verde-950 text-center text-white">
+  <!-- La foto real de la plaza es el momento principal; lo demás queda quieto sobre ella -->
+  <Image
+    src={fondo}
+    alt=""
+    widths={[480, 800, 1280, 1800]}
+    sizes="100vw"
+    format="webp"
+    quality={50}
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 -z-20 h-full w-full object-cover"
+  />
+  <div class="absolute inset-0 -z-10 bg-verde-950/76"></div>
+  <div class="absolute inset-x-0 bottom-0 -z-10 h-2/5 bg-gradient-to-t from-verde-950 to-transparent"></div>
 
-  <div class="relative z-10 mx-auto max-w-3xl px-5 pb-24 pt-5">
-    <div class="entra relative mx-auto w-fit" style="--d:0s">
-      <span class="halo" aria-hidden="true"></span>
+  <Fiesta />
+  <Bunting class="relative z-10 block" />
+
+  <div class="relative z-10 mx-auto max-w-3xl px-5 pb-28 pt-8 sm:pt-12">
+    <div class="entra mx-auto w-fit" style="--d:0s">
       <Image
         src={escudo}
         alt={`Escudo de la ${distrito.municipalidad.nombre}`}
         width={240}
         height={196}
-        class="flota relative mx-auto h-auto w-44 drop-shadow-[0_12px_24px_rgba(0,0,0,0.45)] sm:w-56"
+        class="mx-auto h-auto w-40 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] sm:w-52"
         loading="eager"
-        fetchpriority="high"
       />
     </div>
-    <p class="entra mt-6 text-lg font-bold uppercase tracking-wide text-oro-300" style="--d:.15s">{textos.portada.etiqueta}</p>
-    <h1 class="mt-1 text-oro-300">
-      <span class="entra brillo block text-[5.5rem] leading-none sm:text-[8rem]" style="--d:.3s">{aniversario}.°</span>
-      <span class="entra block text-4xl text-white sm:text-6xl" style="--d:.45s">Aniversario</span>
+    <p class="entra mt-6 text-lg font-bold text-oro-300" style="--d:.12s">{textos.portada.etiqueta}</p>
+    <h1 class="mt-1">
+      <span class="entra block font-display text-[6rem] leading-none text-oro-300 sm:text-[9rem]" style="--d:.24s">{aniversario}<span class="ord">º</span></span>
+      <span class="entra mt-1 block font-display text-4xl sm:text-6xl" style="--d:.36s">Aniversario</span>
     </h1>
-    <p class="entra mt-4 text-xl font-bold" style="--d:.6s">{textoFechas}</p>
-    <p class="entra mt-1 text-white/85" style="--d:.7s">{textos.portada.diaCentral}</p>
+    <p class="entra mt-5 text-xl font-bold" style="--d:.48s">{textoFechas}</p>
+    <p class="entra mt-1 text-white" style="--d:.56s">{textos.portada.diaCentral}</p>
 
     <div
       id="contador"
-      hidden
       data-objetivo={objetivo}
       data-textos={JSON.stringify(textos.contador)}
-      class="entra mx-auto mt-8 max-w-xs rounded-2xl border border-oro-500/60 bg-verde-950/70 px-5 py-4 [&:not([hidden])]:block"
-      style="--d:.85s"
+      class="entra mx-auto mt-8 w-full max-w-[16rem] rounded-2xl border border-white/25 bg-verde-950/60 px-5 py-4 invisible"
+      style="--d:.68s"
     >
-      <p class="text-sm font-bold uppercase tracking-wider text-oro-300">{textos.contador.faltan}</p>
-      <p class="font-display text-5xl text-white" aria-live="polite"><span class="latido inline-block" data-dias></span></p>
-      <p class="text-sm text-white/80" data-unidad></p>
+      <p class="text-sm font-bold text-oro-300">{textos.contador.faltan}</p>
+      <p class="font-display text-5xl tabular-nums text-white" aria-live="polite"><span data-dias>0</span></p>
+      <p class="text-sm text-white/85" data-unidad>{textos.contador.plural}</p>
     </div>
 
-    <a
-      href="#programa"
-      class="entra boton-oro mt-8 inline-block rounded-full bg-oro-300 px-7 py-3 text-lg font-bold text-verde-950 shadow-lg"
-      style="--d:1s"
-    >{textos.portada.botonPrograma}</a>
-
-    <div class="entra mt-7" style="--d:1.15s">
-      <p class="text-sm font-bold uppercase tracking-wide text-oro-300">{textos.portada.verDia}</p>
-      <ul class="mt-2 flex justify-center gap-2">
-        {programa.dias.map((d) => (
-          <li>
-            <a
-              href={`#${d.id}`}
-              class="atajo-dia grid h-14 w-12 place-items-center rounded-xl border border-oro-300/60 bg-verde-950/50 leading-none sm:w-14"
-            >
-              <span class="text-[0.7rem] font-bold uppercase">{d.diaSemana.slice(0, 3)}</span>
-              <span class="font-display text-xl">{d.numero}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+    <div class="entra mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row" style="--d:.8s">
+      <a
+        href="#programa"
+        class="boton-oro inline-block rounded-full bg-oro-300 px-7 py-3 text-lg font-bold text-verde-950"
+      >{textos.portada.botonPrograma}</a>
+      <button
+        id="salva"
+        type="button"
+        class="salva invisible inline-flex"
+      >{textos.sonido.salva}</button>
     </div>
-
-    <button
-      id="salva"
-      type="button"
-      hidden
-      class="entra salva mt-7 [&:not([hidden])]:inline-flex"
-      style="--d:1.3s"
-    >{textos.sonido.salva}</button>
   </div>
 </section>
 
@@ -94,7 +83,7 @@ const objetivo = `${fechaCentral}T00:00:00${zonaHoraria}`;
     const num = caja.querySelector('[data-dias]');
     const unidad = caja.querySelector('[data-unidad]');
     if (num && unidad && !Number.isNaN(dias)) {
-      caja.hidden = false;
+      caja.classList.remove('invisible');
       if (dias > 1) { num.textContent = String(dias); unidad.textContent = t.plural; }
       else if (dias === 1) { num.textContent = '1'; unidad.textContent = t.singular; }
       else if (dias === 0) { num.textContent = t.hoy; unidad.textContent = t.hoyUnidad; }

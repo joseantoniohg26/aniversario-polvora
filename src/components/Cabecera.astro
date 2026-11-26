@@ -6,25 +6,25 @@ import distrito from '../data/distrito.json';
 const enlaces = [
   { href: '#programa', texto: 'Programa', seccion: 'programa' },
   { href: '#historia', texto: 'Historia', seccion: 'historia' },
-  { href: '#galeria', texto: 'Fotos y videos', seccion: 'galeria' },
+  { href: '#galeria', texto: 'Fotos', seccion: 'galeria' },
   { href: '#invitados', texto: 'Artistas', seccion: 'invitados' },
-  { href: '#ubicacion', texto: 'Cómo llegar', seccion: 'ubicacion' },
+  { href: '#ubicacion', texto: 'Ubicación', seccion: 'ubicacion' },
 ];
 ---
 <header class="sticky top-0 z-40 border-b border-oro-500/40 bg-verde-950/95 text-white backdrop-blur-md">
   <div class="mx-auto flex max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4">
     <a href="#inicio" class="flex shrink-0 items-center gap-2 transition hover:scale-105" aria-label={`${distrito.municipalidad.nombre}, ir al inicio`}>
-      <Image src={escudo} alt="" width={88} height={72} class="h-10 w-auto drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]" loading="eager" />
+      <Image src={escudo} alt="" width={88} height={72} class="h-9 w-auto drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]" loading="eager" />
     </a>
     <nav aria-label="Secciones" class="relative ml-auto overflow-x-auto no-scrollbar">
-      <div class="relative inline-flex items-center gap-0.5 text-[0.86rem] font-bold sm:gap-1 sm:text-[0.95rem]" data-nav-track>
+      <div class="relative inline-flex items-center gap-0.5 text-[0.8rem] font-bold min-[400px]:text-[0.86rem] sm:gap-1 sm:text-[0.95rem]" data-nav-track>
         <span class="nav-pill opacity-0" data-nav-pill aria-hidden="true"></span>
         {enlaces.map((e, i) => (
           <a
             href={e.href}
             data-vista-link={e.seccion}
             aria-current={i === 0 ? 'page' : 'false'}
-            class="nav-link shrink-0 whitespace-nowrap rounded-full px-2.5 py-1.5 text-white/85 hover:text-oro-300 aria-[current=page]:text-oro-300 sm:px-3.5"
+            class="nav-link shrink-0 whitespace-nowrap rounded-full px-2 py-1.5 text-white/85 min-[400px]:px-2.5 hover:text-oro-300 aria-[current=page]:text-oro-300 sm:px-3.5"
           >
             {e.texto}
           </a>

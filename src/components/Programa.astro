@@ -6,6 +6,7 @@ import distrito from '../data/distrito.json';
 import plazaFondo from '../assets/galeria/01-plaza.jpg';
 import Ola from './Ola.astro';
 import ReproductorFiesta from './ReproductorFiesta.astro';
+import { parseHora } from '../lib/horas';
 
 const fotosActividades = import.meta.glob<{ default: ImageMetadata }>('../assets/actividades_hd/*.{jpg,jpeg,png,webp}', { eager: true });
 const fotoDe = Object.fromEntries(
@@ -35,11 +36,24 @@ const introPosterUrl = introPosterSrc
 
 const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
+
+// Texto del día para compartir por WhatsApp (se arma al compilar, funciona sin JavaScript)
+const sitioUrl = distrito.sitio.url.startsWith('http') ? distrito.sitio.url.replace(/\/$/, '') : '';
+const enlaceCompartir = (d: (typeof programa.dias)[number]) => {
+  const lineas = (d.actividades as Actividad[]).map((a) => `• ${a.hora}: ${a.titulo}`);
+  const texto = [
+    `Programa del ${d.diaSemana.toLowerCase()} ${d.numero} de ${mesDe(d.fecha)} · ${distrito.aniversario}.º aniversario de Pólvora`,
+    '',
+    ...lineas,
+    ...(sitioUrl ? ['', `${sitioUrl}/#${d.id}`] : []),
+  ].join('\n');
+  return `https://wa.me/?text=${encodeURIComponent(texto)}`;
+};
 ---
 <section id="programa" class="relative overflow-hidden bg-crema px-4 pb-16 pt-16">
   <Ola class="text-verde-900" />
 
-  <!-- Fondo atmosférico en transparencia -->
+  <!-- Fondo muy tenue para dar profundidad sin quitar lectura -->
   <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
     <Image
       src={plazaFondo}
@@ -49,30 +63,26 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
       format="webp"
       quality={35}
       loading="lazy"
-      class="h-full w-full object-cover opacity-[0.07]"
+      class="h-full w-full object-cover opacity-[0.06]"
     />
     <div class="programa-velo absolute inset-0"></div>
-    <svg class="mg-flota absolute left-4 top-32 hidden h-28 w-20 text-verde-700/15 lg:block" viewBox="0 0 40 60"><use href="#hoja" /></svg>
-    <svg class="mg-flota absolute right-6 top-56 hidden h-28 w-20 text-oro-500/20 lg:block" style="animation-delay:-1.4s" viewBox="0 0 40 60"><use href="#cacao" /></svg>
-    <svg class="mg-flota absolute left-8 bottom-36 hidden h-24 w-16 text-oro-500/20 lg:block" style="animation-delay:-2.1s" viewBox="0 0 40 60"><use href="#cacao" /></svg>
-    <svg class="mg-flota absolute right-8 bottom-24 hidden h-28 w-20 text-verde-700/15 lg:block" style="animation-delay:-0.8s" viewBox="0 0 40 60"><use href="#hoja" /></svg>
   </div>
 
   <div class="relative z-10 mx-auto max-w-5xl">
     <!-- Video introductorio ANTES del programa de actividades -->
     {videoIntro && (
-      <div class="video-card reveal mb-10 overflow-hidden rounded-3xl border border-verde-700/25 bg-verde-950 text-white shadow-xl">
+      <div class="video-card reveal mb-12 overflow-hidden rounded-2xl border border-verde-700/25 bg-verde-950 text-white">
         <div class="flex flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6">
           <div>
-            <p class="text-xs font-bold uppercase tracking-widest text-oro-300">Video introductorio</p>
+            <p class="text-sm font-bold text-oro-300">Video introductorio</p>
             <h2 class="font-display text-xl text-white sm:text-2xl">{videoIntro.titulo}</h2>
           </div>
           <button
             type="button"
             data-video-audio
-            class="inline-flex items-center gap-1.5 rounded-full border border-oro-300/60 bg-black/40 px-3 py-1 text-xs font-bold text-oro-300 transition hover:bg-oro-300 hover:text-verde-950"
+            class="rounded-full border border-oro-300/60 px-3.5 py-1.5 text-sm font-bold text-oro-300 transition-colors hover:bg-oro-300 hover:text-verde-950"
           >
-            Tocar para activar audio
+            Activar sonido
           </button>
         </div>
         <div class="relative bg-black">
@@ -82,7 +92,7 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             poster={introPosterUrl}
             class="max-h-[460px] w-full object-contain"
           >
@@ -90,35 +100,45 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
           </video>
         </div>
         {videoIntro.detalle && (
-          <p class="px-4 py-2.5 text-sm text-white/80 sm:px-6">{videoIntro.detalle}</p>
+          <p class="px-4 py-3 text-sm text-white/85 sm:px-6">{videoIntro.detalle}</p>
         )}
       </div>
     )}
 
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <h2 class="reveal text-4xl text-verde-900 sm:text-5xl">Programa de actividades</h2>
-        <p class="reveal mt-3 max-w-2xl text-lg">
-          {distrito.textoFechas}. Los horarios corresponden al cronograma oficial de la municipalidad.
-        </p>
-      </div>
-      <p class="programa-badge reveal hidden rounded-full border border-verde-700/25 bg-white/80 px-4 py-1.5 text-sm font-bold text-verde-900 shadow-sm sm:inline-block">
-        42.° Aniversario · Pólvora 2026
+    <div class="reveal">
+      <h2 class="text-4xl text-verde-900 sm:text-5xl">Programa de actividades</h2>
+      <p class="mt-3 max-w-2xl text-lg">
+        {distrito.textoFechas}. Los horarios corresponden al cronograma oficial de la municipalidad.
       </p>
     </div>
+    <p class="hidden print:block">{distrito.aniversario}.º aniversario del distrito de Pólvora · {distrito.textoFechas}</p>
 
     <nav id="dias-nav" aria-label={textos.programa.atajos} class="dias-nav sticky top-[3.3rem] z-30 -mx-4 mt-6 bg-crema/95 px-4 py-2.5 backdrop-blur">
       <ul class="mx-auto flex max-w-5xl gap-2">
         {programa.dias.map((d) => (
           <li class="flex-1">
             <a href={`#${d.id}`} data-dia={d.id} class:list={['chip', d.central && 'central']}>
-              <span class="text-[0.72rem] font-bold uppercase tracking-wide">{d.diaSemana.slice(0, 3)}</span>
+              <span class="text-[0.78rem] font-bold">{d.diaSemana.slice(0, 3)}</span>
               <span class="font-display text-2xl">{d.numero}</span>
             </a>
           </li>
         ))}
       </ul>
     </nav>
+
+    <!-- Ahora y a continuación: aparece solo durante los días del aniversario -->
+    <div id="ahora" hidden class="ahora mt-5 overflow-hidden rounded-2xl border border-verde-700/25 bg-verde-700/20 [&:not([hidden])]:grid sm:grid-cols-2 gap-px" aria-live="polite">
+      <div class="bg-white p-4">
+        <p class="text-sm font-bold text-cafe-700">Ahora</p>
+        <p class="mt-0.5 font-display text-xl leading-snug text-verde-950" data-ahora-titulo></p>
+        <p class="mt-0.5 text-sm text-tinta/75 tabular-nums" data-ahora-hora></p>
+      </div>
+      <div class="bg-white p-4">
+        <p class="text-sm font-bold text-verde-700">A continuación</p>
+        <p class="mt-0.5 font-display text-xl leading-snug text-verde-950" data-sig-titulo></p>
+        <p class="mt-0.5 text-sm text-tinta/75 tabular-nums" data-sig-hora></p>
+      </div>
+    </div>
 
     <div class="mt-8 space-y-12">
       {programa.dias.map((d) => {
@@ -129,11 +149,11 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
 
         return (
           <article id={d.id} data-fecha={d.fecha} class="dia">
-            <!-- Cabecera visual del día -->
+            <!-- Cabecera del día: número grande, fecha en una línea y el subtítulo a todo el ancho -->
             <header
               class:list={[
-                'relative overflow-hidden rounded-t-3xl px-5 py-5 text-white shadow-lg sm:px-7 sm:py-6',
-                d.central ? 'bg-cafe-600' : 'bg-verde-900',
+                'relative overflow-hidden rounded-t-2xl px-5 py-5 text-white sm:px-7 sm:py-6',
+                d.central ? 'bg-cafe-700' : 'bg-verde-900',
               ]}
             >
               {banner && (
@@ -145,124 +165,95 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
                   format="webp"
                   quality={40}
                   loading="lazy"
-                  class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25 mix-blend-luminosity"
+                  class="dia-fondo pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-luminosity"
                 />
               )}
-              <div
-                class:list={[
-                  'pointer-events-none absolute inset-0',
-                  d.central
-                    ? 'bg-gradient-to-r from-cafe-700/95 via-cafe-700/92 to-cafe-700/85'
-                    : 'bg-gradient-to-r from-verde-950/95 via-verde-900/85 to-verde-700/70',
-                ]}
-              ></div>
 
-              <div class="relative z-10 flex flex-wrap items-center gap-4">
-                <p class="font-display text-5xl leading-none text-oro-300 sm:text-6xl">{d.numero}</p>
-                <div class="min-w-0 flex-1">
-                  <h3 class="text-2xl sm:text-3xl">{d.diaSemana}</h3>
-                  <p class="text-sm text-white/90">{mesDe(d.fecha)} de {d.fecha.slice(0, 4)}</p>
-                  {d.subtitulo && <p class="mt-1 text-sm font-bold text-oro-300/95 sm:text-base">{d.subtitulo}</p>}
-                </div>
-                <div class="ml-auto flex items-center gap-2">
-                  {d.id === 'dia-5' && (
-                    <a
-                      href="#reproductor-dia-5"
-                      class="inline-flex items-center gap-1.5 rounded-full bg-[#1db954] px-3.5 py-1.5 text-xs font-bold text-black shadow transition hover:bg-[#1ed760]"
-                    >
-                      <span>Escuchar grupos abajo</span>
-                    </a>
-                  )}
-                  <div class="flex flex-col items-end gap-1">
-                    {d.central && (
-                      <p class="rounded-full bg-oro-300 px-3 py-1 text-sm font-bold text-verde-950">{textos.programa.etiquetaCentral}</p>
-                    )}
-                    <p class="hoy hidden rounded-full bg-white px-3 py-1 text-sm font-bold text-verde-900">{textos.programa.etiquetaHoy}</p>
+              <div class="relative z-10">
+                <div class="flex items-end gap-4">
+                  <p class="font-display text-6xl leading-none text-oro-300 sm:text-7xl">{d.numero}</p>
+                  <div class="min-w-0 pb-0.5">
+                    <h3 class="text-2xl leading-tight sm:text-3xl">{d.diaSemana}</h3>
+                    <p class="text-sm text-white/85">{mesDe(d.fecha)} de {d.fecha.slice(0, 4)}</p>
+                  </div>
+                  <div class="ml-auto flex shrink-0 flex-col items-end gap-1 self-start text-sm font-bold">
+                    {d.central && <p class="text-oro-300">{textos.programa.etiquetaCentral}</p>}
+                    <p class="hoy hidden rounded-full bg-white px-2.5 py-0.5 text-verde-900">{textos.programa.etiquetaHoy}</p>
                   </div>
                 </div>
+                {d.subtitulo && <p class="mt-3 max-w-2xl text-[0.98rem] leading-snug text-white/90">{d.subtitulo}</p>}
+                {d.id === 'dia-5' && (
+                  <a href="#reproductor-dia-5" class="mt-2 inline-block text-[0.95rem] font-bold text-oro-300 underline underline-offset-4 hover:text-white">
+                    Escuchar a los grupos
+                  </a>
+                )}
               </div>
             </header>
 
-            <!-- Cuerpo del día: cronograma limpio a la izquierda + 1 tarjeta vertical 9:15 destacada a la derecha -->
-            <div class="grid items-start gap-6 rounded-b-3xl border-x border-b border-verde-700/20 bg-white/95 p-4 shadow-sm sm:p-6 lg:grid-cols-[1fr_20rem]">
-              <ol class="divide-y divide-verde-700/15">
-                {(d.actividades as Actividad[]).map((a) => (
-                  <li class="fila grid gap-x-4 gap-y-1 px-2 py-3.5 sm:grid-cols-[7.2rem_1fr] sm:px-3">
-                    <div class="flex items-center gap-2 sm:block">
-                      <p class="font-bold leading-tight text-verde-700 sm:text-lg">{a.hora}</p>
-                      {a.icono === 'camaretazos' && (
-                        <span class="inline-flex items-center rounded-full bg-oro-300/35 px-2 py-0.5 text-[0.7rem] font-bold text-oro-700 sm:mt-1">
-                          21 salvas
-                        </span>
-                      )}
-                      {a.icono === 'futbol' && (
-                        <span class="inline-flex items-center rounded-full bg-verde-100 px-2 py-0.5 text-[0.7rem] font-bold text-verde-900 sm:mt-1">
-                          Deporte
-                        </span>
-                      )}
-                      {a.icono === 'fiesta' && (
-                        <span class="inline-flex items-center rounded-full bg-cafe-600/15 px-2 py-0.5 text-[0.7rem] font-bold text-cafe-700 sm:mt-1">
-                          Estelar
-                        </span>
-                      )}
-                    </div>
+            <div class="rounded-b-2xl border-x border-b border-verde-700/20 bg-white/95 p-4 sm:p-6">
+              <!-- Cronograma a la izquierda y una tarjeta vertical 9:15 a la derecha -->
+              <div class="grid items-start gap-6 lg:grid-cols-[1fr_20rem]">
+                <ol class="divide-y divide-verde-700/15">
+                  {(d.actividades as Actividad[]).map((a) => {
+                    const rango = parseHora(a.hora);
+                    return (
+                      <li
+                        class="fila grid gap-x-4 gap-y-0.5 px-1 py-3.5 sm:grid-cols-[8.5rem_1fr] sm:px-3"
+                        data-ini={rango?.inicio}
+                        data-fin={rango?.fin}
+                      >
+                        <p class="font-display text-lg leading-tight text-verde-700 tabular-nums">{a.hora}</p>
 
-                    <div>
-                      <p class="fila-titulo text-lg font-bold leading-snug text-verde-950">{a.titulo}</p>
-                      {a.detalle && <p class="mt-0.5 text-[0.98rem] text-tinta/85">{a.detalle}</p>}
-                      {a.lista && (
-                        <ul class="mt-2 grid gap-1 text-[0.95rem] sm:grid-cols-2">
-                          {a.lista.map((x) => (
-                            <li class="flex items-center gap-1.5">
-                              <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-verde-500" aria-hidden="true"></span>
-                              <span>{x}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      {a.lugar && <p class="mt-1.5 text-[0.95rem] font-bold text-cafe-700">Lugar: {a.lugar}</p>}
-                      {a.contacto && (
-                        <p class="mt-1 text-[0.95rem]">
-                          <a
-                            class="font-bold text-verde-700 underline underline-offset-2"
-                            href={`https://wa.me/${a.contacto.whatsapp}`}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >{a.contacto.texto}</a>
-                        </p>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ol>
+                        <div>
+                          <p class="fila-titulo text-lg font-bold leading-snug text-verde-950">{a.titulo}</p>
+                          {a.detalle && <p class="mt-0.5 text-[0.98rem] text-tinta/85">{a.detalle}</p>}
+                          {a.lista && (
+                            <ul class="mt-2 grid gap-1 text-[0.95rem] sm:grid-cols-2">
+                              {a.lista.map((x) => (
+                                <li class="flex items-center gap-2">
+                                  <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-verde-500" aria-hidden="true"></span>
+                                  <span>{x}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          {a.lugar && <p class="mt-1.5 text-[0.95rem] font-bold text-cafe-700">Lugar: {a.lugar}</p>}
+                          {a.contacto && (
+                            <p class="mt-1 text-[0.95rem]">
+                              <a
+                                class="font-bold text-verde-700 underline underline-offset-2"
+                                href={`https://wa.me/${a.contacto.whatsapp}`}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >{a.contacto.texto}</a>
+                            </p>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
 
-              <!-- Tarjeta vertical única en formato 9:15 (estilo TikTok/Reels) con sticker animado -->
-              {card915 && fondo915 && (
-                <aside class="lg:sticky lg:top-28">
-                  <div class="destacado-915 relative mx-auto aspect-[9/15] w-full max-w-[21rem] overflow-hidden rounded-3xl border-2 border-oro-500/60 bg-verde-950 text-white shadow-2xl">
-                    <Image
-                      src={fondo915}
-                      alt={sticker915 ? '' : card915.alt}
-                      widths={[400, 640]}
-                      sizes="(min-width: 1024px) 320px, 85vw"
-                      format="webp"
-                      quality={sticker915 ? 55 : 80}
-                      loading="lazy"
-                      class:list={[
-                        'absolute inset-0 h-full w-full object-cover',
-                        sticker915 ? 'opacity-50 scale-105' : 'opacity-90',
-                      ]}
-                    />
-                    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-verde-950 via-verde-950/35 to-verde-950/55"></div>
+                {card915 && fondo915 && (
+                  <aside class="lg:sticky lg:top-28">
+                    <div class="destacado-915 relative mx-auto aspect-[9/15] w-full max-w-[21rem] overflow-hidden rounded-2xl border border-oro-500/50 bg-verde-950 text-white">
+                      <Image
+                        src={fondo915}
+                        alt={sticker915 ? '' : card915.alt}
+                        widths={[400, 640]}
+                        sizes="(min-width: 1024px) 320px, 85vw"
+                        format="webp"
+                        quality={sticker915 ? 55 : 80}
+                        loading="lazy"
+                        class:list={[
+                          'absolute inset-0 h-full w-full object-cover',
+                          sticker915 ? 'opacity-50' : 'opacity-90',
+                        ]}
+                      />
+                      <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-verde-950 via-verde-950/35 to-verde-950/55"></div>
 
-                    <!-- Destellos decorativos suaves -->
-                    <svg class="titila pointer-events-none absolute right-5 top-16 h-5 w-5 text-oro-300" viewBox="0 0 24 24" aria-hidden="true"><use href="#estrella" /></svg>
-                    <svg class="titila pointer-events-none absolute left-5 top-28 h-4 w-4 text-oro-300" style="animation-delay:-1.1s" viewBox="0 0 24 24" aria-hidden="true"><use href="#estrella" /></svg>
-
-                    {sticker915 && (
-                      <div class="pointer-events-none absolute inset-x-0 bottom-20 top-12 flex items-end justify-center px-4">
-                        <div class="relative flex h-full w-full items-end justify-center">
-                          <span class="halo opacity-60" aria-hidden="true"></span>
+                      {sticker915 && (
+                        <div class="pointer-events-none absolute inset-x-0 bottom-20 top-12 flex items-end justify-center px-4">
                           <Image
                             src={sticker915}
                             alt={card915.alt}
@@ -271,44 +262,38 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
                             format="webp"
                             quality={85}
                             loading="lazy"
-                            class="flota relative max-h-full w-auto object-contain drop-shadow-[0_14px_26px_rgba(0,0,0,0.65)]"
+                            class="relative max-h-full w-auto object-contain drop-shadow-[0_14px_26px_rgba(0,0,0,0.65)]"
                           />
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    <div class="relative z-10 flex h-full flex-col justify-between p-5">
-                      <div class="flex items-center justify-between gap-2">
-                        <span class="rounded-full bg-oro-300 px-3 py-1 text-xs font-bold text-verde-950 shadow">
-                          {card915.badge}
-                        </span>
-                        {card915.efecto === 'futbol' && (
-                          <span class="mg-rebote grid h-10 w-10 place-items-center rounded-full bg-white/15 text-oro-300 backdrop-blur-sm" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <circle cx="12" cy="12" r="9" />
-                              <path d="M12 7l3 2.2-1.1 3.5H10.1L9 9.2z" />
-                            </svg>
-                          </span>
-                        )}
-                        {card915.efecto === 'central' && (
-                          <span class="mg-onda grid h-10 w-10 place-items-center rounded-full bg-white/15 text-oro-300 backdrop-blur-sm" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M5 3v18M5 4h12l-2 4 2 4H5" />
-                            </svg>
-                          </span>
-                        )}
-                      </div>
-
-                      <div>
-                        <p class="font-display text-2xl leading-tight text-white drop-shadow">{card915.titulo}</p>
-                        {card915.nota && (
-                          <p class="mt-1.5 text-sm font-bold text-oro-300 drop-shadow">{card915.nota}</p>
-                        )}
+                      <div class="relative z-10 flex h-full flex-col justify-between p-5">
+                        <span class="w-fit rounded-full bg-oro-300 px-3 py-1 text-xs font-bold text-verde-950">{card915.badge}</span>
+                        <div>
+                          <p class="font-display text-2xl leading-tight text-white drop-shadow">{card915.titulo}</p>
+                          {card915.nota && <p class="mt-1.5 text-sm font-bold text-oro-300 drop-shadow">{card915.nota}</p>}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </aside>
-              )}
+                  </aside>
+                )}
+              </div>
+
+              <!-- Acciones del día -->
+              <div class="acciones-dia mt-5 flex flex-wrap gap-x-6 gap-y-2 border-t border-verde-700/15 pt-4 text-[0.95rem]">
+                <a href={enlaceCompartir(d)} target="_blank" rel="noopener noreferrer" class="enlace-accion">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z" /></svg>
+                  Compartir este día por WhatsApp
+                </a>
+                <a href="/calendario-aniversario-polvora.ics" download class="enlace-accion">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4" /></svg>
+                  Agregar el programa al calendario
+                </a>
+                <button type="button" data-imprimir class="enlace-accion">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>
+                  Guardar el programa en PDF
+                </button>
+              </div>
             </div>
 
             {d.tieneReproductor && <ReproductorFiesta />}
@@ -326,7 +311,18 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
   if (seccion) {
     const dias = [...seccion.querySelectorAll<HTMLElement>('.dia')];
     const chips = [...seccion.querySelectorAll<HTMLElement>('[data-dia]')];
-    const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(new Date());
+
+    // Fecha y hora de Perú (el servidor y el teléfono pueden estar en otra zona)
+    const horaPeru = () => {
+      const p = Object.fromEntries(
+        new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'America/Lima', year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+        }).formatToParts(new Date()).map((x) => [x.type, x.value]),
+      );
+      return { fecha: `${p.year}-${p.month}-${p.day}`, minutos: Number(p.hour) * 60 + Number(p.minute) };
+    };
+    const hoy = horaPeru().fecha;
 
     const mostrar = (id: string) => {
       dias.forEach((d) => d.classList.toggle('activo', d.id === id));
@@ -363,5 +359,61 @@ const mesDe = (iso: string) => meses[Number(iso.slice(5, 7)) - 1];
       const id = location.hash.slice(1);
       if (dias.some((d) => d.id === id)) mostrar(id);
     });
+
+    // Guardar el programa en PDF: se abre el diálogo de impresión con los cinco días
+    seccion.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('[data-imprimir]')) window.print();
+    });
+
+    // ───────── Ahora y a continuación ─────────
+    const caja = document.getElementById('ahora');
+    const hora12 = (min: number) => {
+      const h = Math.floor(min / 60), m = min % 60;
+      return `${h % 12 === 0 ? 12 : h % 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'a.m.' : 'p.m.'}`;
+    };
+    const lista = (dia: HTMLElement | undefined) =>
+      dia ? [...dia.querySelectorAll<HTMLElement>('.fila[data-ini]')].map((li) => ({
+        li,
+        ini: Number(li.dataset.ini),
+        fin: li.dataset.fin ? Number(li.dataset.fin) : undefined,
+        titulo: li.querySelector('.fila-titulo')?.textContent?.trim() ?? '',
+      })) : [];
+    const poner = (sel: string, txt: string) => {
+      const el = caja?.querySelector(sel);
+      if (el) el.textContent = txt;
+    };
+
+    const actualizarAhora = () => {
+      dias.forEach((d) => d.querySelectorAll('.en-curso').forEach((x) => x.classList.remove('en-curso')));
+      if (!caja) return;
+      const hoyDia = dias.find((d) => d.dataset.fecha === hoy);
+      if (!hoyDia) { caja.hidden = true; return; }
+      const { minutos } = horaPeru();
+      const filas = lista(hoyDia);
+      // Una actividad sin hora de fin se considera en curso por 90 minutos
+      const enCurso = filas.filter((f) => f.ini <= minutos && minutos < (f.fin ?? f.ini + 90)).pop();
+      const siguiente = filas.find((f) => f.ini > minutos);
+      caja.hidden = false;
+
+      if (enCurso) {
+        enCurso.li.classList.add('en-curso');
+        poner('[data-ahora-titulo]', enCurso.titulo);
+        poner('[data-ahora-hora]', `Desde las ${hora12(enCurso.ini)}`);
+      } else {
+        poner('[data-ahora-titulo]', siguiente ? 'Sin actividad en este momento' : 'El programa de hoy terminó');
+        poner('[data-ahora-hora]', '');
+      }
+      if (siguiente) {
+        poner('[data-sig-titulo]', siguiente.titulo);
+        poner('[data-sig-hora]', `A las ${hora12(siguiente.ini)}`);
+      } else {
+        const manana = dias[dias.indexOf(hoyDia) + 1];
+        const primera = lista(manana)[0];
+        poner('[data-sig-titulo]', primera ? primera.titulo : 'Gracias por acompañarnos');
+        poner('[data-sig-hora]', primera ? `Mañana a las ${hora12(primera.ini)}` : '');
+      }
+    };
+    actualizarAhora();
+    setInterval(actualizarAhora, 60000);
   }
 </script>

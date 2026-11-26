@@ -43,7 +43,6 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
   outline-offset: 3px;
 }
 header :focus-visible,
-.fondo-portada :focus-visible,
 #ubicacion :focus-visible,
 footer :focus-visible,
 .spotify-card :focus-visible,
@@ -66,11 +65,6 @@ html.noche #galeria {
 html.noche .programa-velo {
   background: linear-gradient(to bottom, rgb(7 22 16 / 0.92), rgb(7 22 16 / 0.84), #071610);
 }
-html.noche .programa-badge {
-  background: #102a1f !important;
-  color: var(--color-oro-300) !important;
-  border-color: rgb(239 212 136 / 0.35) !important;
-}
 html.noche #programa .bg-crema\/95,
 html.noche #programa .bg-crema\/90 {
   background: rgb(7 22 16 / 0.94);
@@ -81,7 +75,6 @@ html.noche #historia {
 html.noche #historia aside,
 html.noche #historia figure,
 html.noche #historia figcaption,
-html.noche #galeria figure,
 html.noche #galeria .video-card,
 html.noche #programa .bg-white\/95,
 html.noche #programa ol,
@@ -100,6 +93,8 @@ html.noche #galeria figcaption,
 html.noche .fila-titulo {
   color: var(--color-oro-300) !important;
 }
+html.noche .text-tinta\/90,
+html.noche .text-tinta\/90,
 html.noche .text-tinta\/80,
 html.noche .text-tinta\/85,
 html.noche .text-tinta\/75 {
@@ -122,21 +117,9 @@ html.noche .chip[aria-current='true'] {
 html.noche .chip[aria-current='true'] span:last-child {
   color: var(--color-verde-950) !important;
 }
-/* Etiquetas e insignias que en modo día usan tonos oscuros */
+/* Etiquetas que en modo día usan tonos oscuros */
 html.noche .text-cafe-700 {
   color: #ffb4a6 !important;
-}
-html.noche .text-oro-700 {
-  color: var(--color-oro-300) !important;
-}
-html.noche .bg-oro-300\/35 {
-  background: rgb(239 212 136 / 0.16) !important;
-}
-html.noche .bg-cafe-600\/15 {
-  background: rgb(255 138 122 / 0.16) !important;
-}
-html.noche #programa .bg-verde-100 {
-  background: #1b4a38 !important;
 }
 html.noche .fila:hover {
   background: rgb(20 150 104 / 0.16) !important;
@@ -148,45 +131,39 @@ html.noche main[data-vistas='on'] > section > svg:first-child {
   color: var(--color-verde-900);
 }
 
-/* Botón flotante de Modo Noche (reemplaza el ícono anterior de sonido en esquina inferior izquierda) */
+/* Botón de Modo noche: solo ícono, esquina inferior izquierda */
 .modo-noche-btn {
   position: fixed; left: 1rem; bottom: 1rem; z-index: 45;
-  display: inline-flex; align-items: center; gap: 0.45rem;
-  height: 2.85rem; padding: 0 0.9rem; border-radius: 9999px;
+  display: grid; place-items: center;
+  width: 2.75rem; height: 2.75rem; border-radius: 9999px;
   color: var(--color-oro-300); background: var(--color-verde-900);
-  border: 2px solid var(--color-oro-500);
-  font-size: 0.82rem; font-weight: 700;
-  box-shadow: 0 8px 20px rgb(0 0 0 / 0.35);
-  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.25s ease, color 0.25s ease;
+  border: 1.5px solid var(--color-oro-500);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
-.modo-noche-btn:hover { transform: translateY(-2px) scale(1.04); }
+.modo-noche-btn:hover { background: var(--color-verde-700); }
 .modo-noche-btn:active { transform: scale(0.94); }
 html.noche .modo-noche-btn {
   background: var(--color-oro-300);
   color: var(--color-verde-950);
-  border-color: #fff;
+  border-color: var(--color-oro-300);
 }
 .modo-noche-btn .ico-sol { display: none; }
 html.noche .modo-noche-btn .ico-sol { display: block; }
 html.noche .modo-noche-btn .ico-luna { display: none; }
 
-/* Botón Salva de 21 camaretazos en la portada */
+/* Salva de 21 camaretazos */
 .salva {
-  align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: 9999px; font-weight: 700;
-  color: var(--color-oro-300); border: 2px solid var(--color-oro-300); background: rgb(6 48 31 / 0.55);
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  align-items: center; justify-content: center; padding: 0.7rem 1.4rem; border-radius: 9999px; font-weight: 700; font-size: 1.05rem;
+  color: #fff; border: 1.5px solid rgb(255 255 255 / 0.55); background: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-.salva:hover:not(:disabled) { background: var(--color-oro-300); color: var(--color-verde-950); }
-.salva:active:not(:disabled) { transform: scale(0.96); }
+.salva:hover:not(:disabled) { background: rgb(255 255 255 / 0.14); border-color: #fff; }
+.salva:active:not(:disabled) { transform: scale(0.97); }
 .salva:disabled { opacity: 0.85; cursor: progress; }
 .destello { position: absolute; opacity: 0; animation: estallar 1.6s ease-out 1 forwards; transform-origin: 50% 50%; }
 
-/* Textura suave de la portada */
-.fondo-portada {
-  background:
-    radial-gradient(60rem 28rem at 50% -8rem, rgb(20 150 104 / 0.55), transparent 70%),
-    var(--color-verde-900);
-}
+/* Número ordinal de la portada: 42º */
+.ord { font-size: 0.3em; vertical-align: top; line-height: 1.15; margin-left: 0.06em; }
 
 /* ───────── Navegación por secciones (evita scroll infinito) y efecto slide ("slay") del menú ───────── */
 .nav-link {
@@ -197,9 +174,8 @@ html.noche .modo-noche-btn .ico-luna { display: none; }
 .nav-pill {
   position: absolute; top: 0.15rem; bottom: 0.15rem; left: 0; z-index: 0;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgb(239 212 136 / 0.22), rgb(20 150 104 / 0.45));
-  border: 1px solid rgb(239 212 136 / 0.45);
-  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+  background: rgb(239 212 136 / 0.14);
+  border: 1px solid rgb(239 212 136 / 0.4);
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), width 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
   pointer-events: none;
 }
@@ -232,27 +208,11 @@ main[data-vistas='on'] > section.vista-activa {
   0%, 100% { transform: rotate(-0.7deg); }
   50% { transform: rotate(0.7deg); }
 }
-@keyframes parpadeo {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
-@keyframes titilar {
-  0%, 100% { opacity: 0.15; transform: scale(0.6) rotate(0deg); }
-  50% { opacity: 1; transform: scale(1) rotate(45deg); }
-}
 @keyframes estallar {
   0% { opacity: 0; transform: scale(0.15); }
   12% { opacity: 1; }
   70% { opacity: 0.85; transform: scale(1); }
   100% { opacity: 0; transform: scale(1.18); }
-}
-@keyframes flotar {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -7px, 0); }
-}
-@keyframes latir {
-  0%, 100% { transform: scale(1); opacity: 0.7; }
-  50% { transform: scale(1.12); opacity: 1; }
 }
 @keyframes progreso {
   from { transform: scaleX(0); }
@@ -266,19 +226,6 @@ main[data-vistas='on'] > section.vista-activa {
   0%, 100% { transform: scaleY(0.28); }
   50% { transform: scaleY(1); }
 }
-@keyframes rebote-pelota {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  45% { transform: translateY(-7px) rotate(22deg); }
-  70% { transform: translateY(-2px) rotate(-10deg); }
-}
-@keyframes fluir-rio {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-@keyframes ondear-bandera {
-  0%, 100% { transform: skewY(0deg) scaleX(1); }
-  50% { transform: skewY(-3deg) scaleX(0.96); }
-}
 @keyframes pulso-anillo {
   0% { transform: scale(0.92); opacity: 0.85; }
   70% { transform: scale(1.25); opacity: 0; }
@@ -287,48 +234,31 @@ main[data-vistas='on'] > section.vista-activa {
 
 .entra { animation: subir 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0s); }
 
-/* Portada */
-.cae { animation: caer linear infinite; will-change: transform; }
-.balanceo { animation: balancear ease-in-out infinite; transform-origin: 50% 0; opacity: 0.8; }
-.titila { animation: titilar 2.6s ease-in-out infinite; }
-.fuego { animation: estallar 4.2s ease-out infinite; transform-origin: 50% 50%; opacity: 0; }
+/* Portada: cacao y hojas que caen, banderines que se mecen */
+.cae { animation: caer linear infinite; will-change: transform; opacity: 0.55; }
+.balanceo { animation: balancear ease-in-out infinite; transform-origin: 50% 0; }
 .capa-bandera { animation: mecer 3.4s ease-in-out infinite; transform-origin: 50% 0; }
-.capa-foco { animation: parpadeo 1.8s ease-in-out infinite; }
-.flota { animation: flotar 5s ease-in-out infinite; }
-.halo {
-  position: absolute; inset: -1.8rem; border-radius: 9999px;
-  background: radial-gradient(circle, rgb(239 212 136 / 0.55), transparent 65%);
-  animation: latir 3.6s ease-in-out infinite;
-}
-.latido { animation: latir 2.4s ease-in-out infinite; }
-.fuera .cae, .fuera .balanceo, .fuera .titila, .fuera .fuego,
-.fuera .capa-bandera, .fuera .capa-foco, .fuera .flota, .fuera .halo { animation-play-state: paused; }
-.brillo { color: var(--color-oro-300); text-shadow: 0 2px 0 rgb(0 0 0 / 0.25), 0 0 28px rgb(239 212 136 / 0.35); }
+.fuera .cae, .fuera .balanceo, .fuera .capa-bandera { animation-play-state: paused; }
 
-/* Motion graphics por sección */
-.mg-rebote { animation: rebote-pelota 2.1s ease-in-out infinite; }
-.mg-onda { animation: ondear-bandera 2.8s ease-in-out infinite; transform-origin: left center; }
-.mg-flota { animation: flotar 3.6s ease-in-out infinite; }
 .mg-anillo { animation: pulso-anillo 2.2s ease-out infinite; }
-.rio-onda { animation: fluir-rio 16s linear infinite; }
 
-/* Filas interactivas del Programa: sonido al pasar el mouse o tocar + barra lateral animada */
+/* Filas del cronograma: barra lateral al pasar el mouse y en la actividad en curso */
 .fila {
   position: relative;
-  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  transition: background-color 0.2s ease;
 }
 .fila::before {
   content: '';
-  position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem; width: 4px;
-  border-radius: 0 4px 4px 0;
+  position: absolute; left: 0; top: 0.6rem; bottom: 0.6rem; width: 3px;
+  border-radius: 0 3px 3px 0;
   background: var(--color-verde-500);
   transform: scaleY(0);
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .fila:hover::before,
-.fila.sonando::before {
-  transform: scaleY(1);
-}
+.fila.en-curso::before { transform: scaleY(1); }
+.fila.en-curso { background: rgb(20 150 104 / 0.08); }
+.fila.en-curso::before { background: var(--color-cafe-600); }
 .fila.sonando {
   background: rgb(20 150 104 / 0.1) !important;
   box-shadow: inset 0 0 0 1px rgb(20 150 104 / 0.3);
@@ -352,7 +282,7 @@ main[data-vistas='on'] > section.vista-activa {
 .disco-vinilo { animation: girar 9s linear infinite; animation-play-state: paused; }
 .spotify-card.reproduciendo .disco-vinilo { animation-play-state: running; }
 .espectro-barra {
-  width: 4px; border-radius: 9999px; background: #1db954;
+  width: 4px; border-radius: 9999px; background: var(--color-oro-300);
   transform-origin: bottom; transform: scaleY(0.22); transition: transform 0.2s ease;
 }
 .spotify-card.reproduciendo .espectro-barra { animation: eq-barra var(--dur, 0.6s) ease-in-out var(--del, 0s) infinite; }
@@ -362,20 +292,25 @@ main[data-vistas='on'] > section.vista-activa {
 }
 .spotify-range::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 9999px;
-  background: #1db954; border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
+  background: var(--color-oro-300); border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
 }
 .spotify-range::-moz-range-thumb {
   width: 14px; height: 14px; border-radius: 9999px;
-  background: #1db954; border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
+  background: var(--color-oro-300); border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
 }
 
-/* Botones y atajos */
-.boton-oro { transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, box-shadow 0.2s ease; }
-.boton-oro:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 24px rgb(0 0 0 / 0.3); }
-.boton-oro:active { transform: translateY(0) scale(0.97); }
-.atajo-dia { transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, color 0.2s ease; }
-.atajo-dia:hover { background: var(--color-oro-300); color: var(--color-verde-950); transform: translateY(-3px); }
-.atajo-dia:active { transform: scale(0.94); }
+/* Botones */
+.boton-oro { transition: background-color 0.2s ease, transform 0.15s ease; }
+.boton-oro:hover { background: #fff; }
+.boton-oro:active { transform: scale(0.97); }
+
+/* Acciones del día (compartir, calendario, PDF) */
+.enlace-accion {
+  display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700;
+  color: var(--color-verde-700); text-underline-offset: 4px; cursor: pointer;
+  transition: color 0.2s ease;
+}
+.enlace-accion:hover { color: var(--color-cafe-700); text-decoration: underline; }
 
 /* Aparecer al hacer scroll */
 .js .reveal {
@@ -394,38 +329,27 @@ main[data-vistas='on'] > section.vista-activa {
 .dia { scroll-margin-top: 8.5rem; }
 .chip {
   display: grid; place-items: center; width: 100%; gap: 0.1rem; padding: 0.45rem 0 0.35rem;
-  border: 2px solid var(--color-verde-700); border-radius: 0.95rem; line-height: 1;
+  border: 1.5px solid var(--color-verde-700); border-radius: 0.75rem; line-height: 1;
   color: var(--color-verde-900); background: #fff; font-weight: 700;
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-.chip:hover { background: var(--color-verde-100); transform: translateY(-2px); }
-.chip:active { transform: scale(0.95); }
+.chip:hover { background: var(--color-verde-100); }
+.chip:active { transform: scale(0.96); }
 .chip.central { border-color: var(--color-cafe-600); }
-.chip[aria-current='true'] {
-  background: var(--color-verde-900); border-color: var(--color-verde-900); color: #fff;
-  transform: translateY(-3px); box-shadow: 0 6px 14px rgb(8 64 45 / 0.35);
-}
-.chip.central[aria-current='true'] { background: var(--color-cafe-600); border-color: var(--color-cafe-600); box-shadow: 0 6px 14px rgb(174 50 50 / 0.35); }
+.chip[aria-current='true'] { background: var(--color-verde-900); border-color: var(--color-verde-900); color: #fff; }
+.chip.central[aria-current='true'] { background: var(--color-cafe-700); border-color: var(--color-cafe-700); }
 .chip[aria-current='true'] span:last-child { color: var(--color-oro-300); }
 
-/* Galería: efecto editorial distinto (elevación + borde dorado suave) */
-.foto {
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease, border-color 0.32s ease;
-}
-.foto:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-oro-500);
-  box-shadow: 0 14px 28px rgb(8 64 45 / 0.14);
-}
-.foto img { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-.foto:hover img { transform: scale(1.04); }
+/* Galería: la foto se aclara un poco al pasar el mouse */
+.foto img { transition: opacity 0.25s ease; }
+.foto:hover img { opacity: 0.92; }
 
 /* Barra de avance de lectura */
 .barra-progreso { display: none; }
 @supports (animation-timeline: scroll()) {
   .barra-progreso {
     display: block; position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 60;
-    background: linear-gradient(90deg, var(--color-oro-500), var(--color-cafe-600));
+    background: var(--color-oro-500);
     transform-origin: 0 50%; animation: progreso linear both; animation-timeline: scroll(root);
   }
 }
@@ -444,5 +368,31 @@ main[data-vistas='on'] > section.vista-activa {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .reveal { opacity: 1; transform: none; }
-  .cae, .fuego { display: none; }
+  .cae { display: none; }
+}
+
+/* ───────── Ahora y a continuación ───────── */
+html.noche .ahora { background: rgb(239 212 136 / 0.2); border-color: rgb(239 212 136 / 0.25); }
+html.noche .ahora > div { background: #102a1f !important; }
+html.noche .ahora p[class*='font-display'] { color: var(--color-oro-300) !important; }
+html.noche .enlace-accion { color: #8ee5be; }
+html.noche .enlace-accion:hover { color: var(--color-oro-300); }
+
+/* ───────── Impresión: el programa completo en papel o PDF ───────── */
+@media print {
+  @page { margin: 14mm; }
+  html, body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+  header.sticky, .barra-progreso, .modo-noche-btn, .subir, #mini-spotify, .acciones-dia, #dias-nav, #ahora,
+  #inicio, footer, video, .video-card, #reproductor-dia-5, .destacado-915, aside,
+  .dia-fondo, .programa-velo, main > section:not(#programa), #programa > div:first-of-type,
+  #programa svg[aria-hidden='true'] { display: none !important; }
+  #programa { background: #fff !important; padding: 0 !important; }
+  #programa .dia { display: block !important; break-inside: avoid-page; margin: 0 0 8mm; }
+  #programa .dia header { background: #fff !important; color: #000 !important; border-bottom: 1.5px solid #000; border-radius: 0 !important; padding: 0 0 2mm !important; }
+  #programa .dia header * { color: #000 !important; }
+  #programa .dia > div { border: 0 !important; background: #fff !important; padding: 2mm 0 0 !important; }
+  #programa .fila { break-inside: avoid; }
+  #programa .fila::before { display: none; }
+  #programa h2 { color: #000 !important; font-size: 18pt; }
+  #programa a { color: #000 !important; text-decoration: none !important; }
 }

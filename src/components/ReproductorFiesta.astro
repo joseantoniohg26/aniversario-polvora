@@ -27,22 +27,22 @@ const barras = [
 <section
   id="reproductor-dia-5"
   aria-label={titulo}
-  class="spotify-card mt-8 overflow-hidden rounded-3xl border border-[#1db954]/35 bg-gradient-to-br from-[#0e1914] via-[#121212] to-[#082419] p-5 text-white shadow-2xl sm:p-7"
+  class="spotify-card mt-8 overflow-hidden rounded-2xl border border-oro-300/30 bg-[#0c1812] p-5 text-white shadow-2xl sm:p-7"
 >
   <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
     <div class="flex items-center gap-3">
       <span class="relative flex h-3.5 w-3.5">
-        <span class="mg-anillo absolute inline-flex h-full w-full rounded-full bg-[#1db954]"></span>
-        <span class="relative inline-flex h-3.5 w-3.5 rounded-full bg-[#1db954]"></span>
+        <span class="mg-anillo absolute inline-flex h-full w-full rounded-full bg-oro-300"></span>
+        <span class="relative inline-flex h-3.5 w-3.5 rounded-full bg-oro-300"></span>
       </span>
       <div>
-        <p class="text-xs font-bold uppercase tracking-widest text-[#1db954]">En vivo · Fiesta Social 7:00 p.m.</p>
+        <p class="text-sm font-bold text-oro-300">Fiesta social · 7:00 p.m.</p>
         <h4 class="font-display text-xl text-white sm:text-2xl">{titulo}</h4>
       </div>
     </div>
 
     <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filtrar por grupo">
-      <button type="button" data-filtro="todos" class="filtro-grupo rounded-full bg-[#1db954] px-3.5 py-1 text-xs font-bold text-black transition">Todos</button>
+      <button type="button" data-filtro="todos" class="filtro-grupo rounded-full bg-oro-300 px-3.5 py-1 text-xs font-bold text-black transition">Todos</button>
       <button type="button" data-filtro="tempestad" class="filtro-grupo rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs font-bold text-white/90 transition hover:bg-white/15">Orquesta Tempestad</button>
       <button type="button" data-filtro="chino-montalvo" class="filtro-grupo rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs font-bold text-white/90 transition hover:bg-white/15">Chino Montalvo</button>
     </div>
@@ -73,7 +73,7 @@ const barras = [
         </div>
 
         <div class="min-w-0 flex-1">
-          <p class="text-xs font-bold uppercase tracking-wider text-oro-300" data-estado>Listo para reproducir</p>
+          <p class="text-sm font-bold text-oro-300" data-estado>Listo para reproducir</p>
           <p class="mt-0.5 truncate font-display text-xl text-white sm:text-2xl" data-titulo>{canciones[0].titulo}</p>
           <p class="truncate text-sm font-bold text-white/75" data-artista>{canciones[0].artista}</p>
 
@@ -113,7 +113,7 @@ const barras = [
           type="button"
           data-toggle
           aria-label="Reproducir o pausar"
-          class="grid h-12 w-12 place-items-center rounded-full bg-[#1db954] text-black shadow-lg transition hover:scale-105 hover:bg-[#1ed760] active:scale-95"
+          class="grid h-12 w-12 place-items-center rounded-full bg-oro-300 text-black shadow-lg transition hover:bg-white active:scale-95"
         >
           <svg class="ico-play" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
           <svg class="ico-pause hidden" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z" /></svg>
@@ -139,7 +139,7 @@ const barras = [
             data-duracion={c.duracion}
             class:list={[
               'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition',
-              idx === 0 ? 'bg-[#1db954]/20 ring-1 ring-[#1db954]/60' : 'bg-white/5 hover:bg-white/10',
+              idx === 0 ? 'bg-oro-300/15 ring-1 ring-oro-300/60' : 'bg-white/5 hover:bg-white/10',
             ]}
           >
             <span class="w-5 text-center text-xs font-bold tabular-nums text-white/60" data-num>{idx + 1}</span>
@@ -157,7 +157,7 @@ const barras = [
               <p class="truncate font-bold text-white">{c.titulo}</p>
               <p class="truncate text-xs text-white/70">{c.artista}</p>
             </div>
-            <span class="eq-mini text-[#1db954]" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="eq-mini text-oro-300" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
             <span class="text-xs font-bold tabular-nums text-white/60">{c.duracion}</span>
           </button>
         </li>
@@ -226,9 +226,9 @@ const barras = [
       covers.forEach((c) => c.classList.toggle('hidden', c.dataset.coverId !== id));
       btns.forEach((b) => {
         const activo = b.dataset.trackBtn === id;
-        b.classList.toggle('bg-[#1db954]/20', activo);
+        b.classList.toggle('bg-oro-300/15', activo);
         b.classList.toggle('ring-1', activo);
-        b.classList.toggle('ring-[#1db954]/60', activo);
+        b.classList.toggle('ring-oro-300/60', activo);
         b.classList.toggle('bg-white/5', !activo);
       });
 
@@ -319,7 +319,7 @@ const barras = [
         const g = f.dataset.filtro ?? 'todos';
         filtros.forEach((x) => {
           const on = x === f;
-          x.classList.toggle('bg-[#1db954]', on);
+          x.classList.toggle('bg-oro-300', on);
           x.classList.toggle('text-black', on);
           x.classList.toggle('bg-white/5', !on);
           x.classList.toggle('text-white/90', !on);
