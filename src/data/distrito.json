@@ -1,8 +1,8 @@
 {
   "_nota": "Datos del distrito. Fuentes indicadas en cada bloque. Lo que dice PENDIENTE no se publica hasta confirmar con la municipalidad.",
   "sitio": {
-    "titulo": "42.° Aniversario del Distrito de Pólvora · Programa del 2 al 6 de diciembre de 2026",
-    "descripcion": "Programa completo del 42.° aniversario del distrito de Pólvora, Tocache, San Martín: actividades del 2 al 6 de diciembre de 2026, música de los artistas invitados, historia y cómo llegar.",
+    "titulo": "42.º Aniversario del Distrito de Pólvora · Programa del 2 al 6 de diciembre de 2026",
+    "descripcion": "Programa completo del 42.º aniversario del distrito de Pólvora, Tocache, San Martín: actividades del 2 al 6 de diciembre de 2026, música de los artistas invitados, historia y cómo llegar.",
     "url": "https://aniversario-polvora.vercel.app/"
   },
   "aniversario": 42,
@@ -71,62 +71,55 @@
         "pie": "Río Huallaga a su paso por la provincia de Tocache, San Martín"
       }
     ],
-    "fuentes": "Wikipedia (Distrito de Pólvora) y tríptico del 31.° aniversario de la municipalidad (2015). El texto de la ley está en el Congreso de la República."
+    "fuentes": "Wikipedia (Distrito de Pólvora) y tríptico del 31.º aniversario de la municipalidad (2015). El texto de la ley está en el Congreso de la República."
   },
   "galeria": [
     {
       "archivo": "09-feria-vocacional",
-      "etiqueta": "Educación · 2026",
       "alt": "Estudiantes de 5.º de secundaria reunidos con representantes de instituciones educativas y fuerzas policiales durante la Feria de Orientación Vocacional en Pólvora",
-      "pie": "La educación como prioridad: Gran Feria de Orientación Vocacional para estudiantes de 5.º de secundaria, con instituciones educativas, fuerzas policiales y premiación deportiva en fútbol y vóley (gestión Hugo Ventura Sánchez)."
+      "pie": "Gran Feria de Orientación Vocacional para estudiantes de 5.º de secundaria"
     },
     {
       "archivo": "01-plaza",
-      "etiqueta": "Distrito",
       "alt": "Vista aérea de la Plaza de Armas de Pólvora, con sus senderos, jardines y la pileta al centro",
-      "pie": "La Plaza de Armas de Pólvora vista desde arriba"
+      "pie": "La Plaza de Armas vista desde arriba"
     },
     {
       "archivo": "02-carretera-discurso",
-      "etiqueta": "Obras · 2026",
       "alt": "El alcalde Hugo Ventura Sánchez hablando con micrófono frente a vecinos y autoridades durante la inauguración de la carretera Nuevo Horizonte – Cañuto",
       "pie": "Inauguración de la carretera Nuevo Horizonte – Cañuto, octubre de 2026"
     },
     {
       "archivo": "03-carretera-cinta",
-      "etiqueta": "Obras · 2026",
       "alt": "Autoridades y vecinos cortan juntos la cinta de inauguración en la carretera Nuevo Horizonte – Cañuto",
-      "pie": "Corte de cinta en la inauguración de la carretera, octubre de 2026"
+      "pie": "Corte de cinta de la carretera, octubre de 2026"
     },
     {
       "archivo": "04-puente-lajas",
-      "etiqueta": "Obras · 2026",
       "alt": "El alcalde y agricultores reunidos sobre el puente de la quebrada Lajas al atardecer en Puerto Rico",
-      "pie": "Puente sobre la quebrada Lajas, caserío Puerto Rico, octubre de 2026"
+      "pie": "Puente sobre la quebrada Lajas, caserío Puerto Rico"
     },
     {
       "archivo": "05-afiche-gastronomia",
-      "etiqueta": "Aniversario · 2026",
       "alt": "Afiche del concurso gastronómico Platos Típicos 2026 por el 42° Aniversario, con premios de 350, 200 y 100 soles",
-      "pie": "Afiche del concurso Platos Típicos 2026, jueves 3 de diciembre"
+      "pie": "Concurso Platos Típicos 2026, jueves 3 de diciembre",
+      "ajuste": "contener"
     },
     {
       "archivo": "06-senorita-polvora",
-      "etiqueta": "Certamen · 2026",
       "alt": "Afiche de la convocatoria oficial Señorita Pólvora 2026 por el aniversario del distrito",
-      "pie": "Convocatoria oficial Señorita Pólvora 2026, noviembre de 2026"
+      "pie": "Convocatoria Señorita Pólvora 2026",
+      "ajuste": "contener"
     },
     {
       "archivo": "07-transferencia",
-      "etiqueta": "Gestión · 2026",
       "alt": "Instalación de la mesa de transferencia de gestión 2023-2026 con presencia del alcalde Hugo Ventura Sánchez",
-      "pie": "Mesa de transferencia de gestión 2023–2026, noviembre de 2026"
+      "pie": "Transferencia de gestión 2023–2026, noviembre de 2026"
     },
     {
       "archivo": "08-cascadas-canuto",
-      "etiqueta": "Turismo · 2026",
       "alt": "Cascadas y quebrada de aguas limpias en Alto Cañuto, distrito de Pólvora",
-      "pie": "Cascadas de Alto Cañuto, atractivo natural de Pólvora, 2026"
+      "pie": "Cascadas de Alto Cañuto"
     }
   ],
   "videos": [
@@ -263,13 +256,12 @@
     "nombre": "José",
     "url": "https://github.com/joseantoniohg26"
   },
-  "_confirmacion": "Aniversario 42.° y día central 6/12/2026: confirmados por el desarrollador el 25/11/2026 (coinciden con los afiches de la municipalidad). Falta el visto bueno escrito de la municipalidad.",
+  "_confirmacion": "Aniversario 42.º y día central 6/12/2026: confirmados por el desarrollador el 25/11/2026 (coinciden con los afiches de la municipalidad). Falta el visto bueno escrito de la municipalidad.",
   "textos": {
     "portada": {
       "etiqueta": "Distrito de Pólvora",
       "diaCentral": "Día central: domingo 6 de diciembre",
-      "botonPrograma": "Ver el programa",
-      "verDia": "Ir directo al día"
+      "botonPrograma": "Ver el programa"
     },
     "contador": {
       "faltan": "Faltan",
