@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import escudo from '../assets/escudo.webp';
+import escudo from '../assets/escudo-sticker.png';
 import Bunting from './Bunting.astro';
 import Luces from './Luces.astro';
 import Fiesta from './Fiesta.astro';
@@ -24,8 +24,8 @@ const objetivo = `${fechaCentral}T00:00:00${zonaHoraria}`;
         src={escudo}
         alt={`Escudo de la ${distrito.municipalidad.nombre}`}
         width={240}
-        height={198}
-        class="flota relative mx-auto h-auto w-44 rounded-2xl bg-white/95 p-3 shadow-xl sm:w-56"
+        height={196}
+        class="flota relative mx-auto h-auto w-44 drop-shadow-[0_12px_24px_rgba(0,0,0,0.45)] sm:w-56"
         loading="eager"
         fetchpriority="high"
       />

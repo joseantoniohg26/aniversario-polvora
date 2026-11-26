@@ -31,7 +31,6 @@ const eventoLd = {
   description: sitio.descripcion,
 };
 
-// Rayos del camaretazo: 12 líneas que salen del centro, con punto al final de las pares.
 const rayos = Array.from({ length: 12 }, (_, i) => {
   const a = (i * Math.PI) / 6;
   const largo = 34 + (i % 2) * 9;
@@ -63,7 +62,10 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
     <meta property="og:image" content={urlFinal ? new URL('/og.jpg', urlFinal).href : '/og.jpg'} />
     <meta name="twitter:card" content="summary_large_image" />
     <script type="application/ld+json" set:html={JSON.stringify(eventoLd)} />
-    <script is:inline>document.documentElement.classList.add('js')</script>
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      try { if (localStorage.getItem('polvora-modo-noche') === '1') document.documentElement.classList.add('noche'); } catch {}
+    </script>
   </head>
   <body>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -98,15 +100,222 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
       class="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-oro-300 focus:px-4 focus:py-2 focus:font-bold focus:text-verde-950"
     >Ir al programa</a>
     <slot />
+    <!-- Mini barra flotante persistente para seguir escuchando música al cambiar de sección -->
+    <div
+      id="mini-spotify"
+      hidden
+      class="fixed bottom-[4.9rem] left-4 z-45 max-w-[18.5rem] items-center gap-2.5 rounded-full border border-[#1db954]/60 bg-[#0d1d15]/95 px-3 py-1.5 text-white shadow-xl backdrop-blur-md [&:not([hidden])]:flex"
+    >
+      <span class="h-2.5 w-2.5 shrink-0 rounded-full bg-[#1db954] animate-pulse"></span>
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-xs font-bold" data-mini-titulo></p>
+        <p class="truncate text-[0.68rem] text-white/70" data-mini-artista></p>
+      </div>
+      <button type="button" data-mini-toggle aria-label="Pausar o reanudar música" class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#1db954] text-xs font-bold text-black">
+        ❚❚
+      </button>
+    </div>
+    <audio id="spotify-audio-global" preload="none"></audio>
     <Sonido />
     <a href="#inicio" id="subir" aria-label="Volver arriba" class="subir">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
     </a>
 
     <script>
-      // Aparición suave al hacer scroll, pausa de las animaciones de la portada
-      // cuando no se ve, y botón de volver arriba. Todo es opcional: sin JS el
-      // contenido se ve igual.
+      // 1. Navegación por secciones (evita cansancio de scroll largo) + pill deslizante ("slay" slide) en el menú
+      const main = document.querySelector('main');
+      const secciones = main ? [...main.querySelectorAll<HTMLElement>(':scope > section')] : [];
+      const navTrack = document.querySelector<HTMLElement>('[data-nav-track]');
+      const navPill = document.querySelector<HTMLElement>('[data-nav-pill]');
+      const navLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-vista-link]')];
+
+      const moverPill = (el: HTMLElement | null) => {
+        if (!navTrack || !navPill || !el) return;
+        const left = el.offsetLeft;
+        navPill.style.width = `${el.offsetWidth}px`;
+        navPill.style.transform = `translate3d(${left}px, 0, 0)`;
+        navPill.style.opacity = '1';
+      };
+
+      const vistasValidas = new Set(['programa', 'historia', 'galeria', 'invitados', 'ubicacion']);
+      let vistaActual = 'programa';
+
+      const activarVista = (id: string, hacerScroll = false) => {
+        const destino = vistasValidas.has(id) ? id : 'programa';
+        vistaActual = destino;
+        if (main) main.dataset.vistas = 'on';
+
+        secciones.forEach((sec) => {
+          if (sec.id === 'inicio') return;
+          const esActiva = sec.id === destino;
+          sec.classList.toggle('vista-activa', esActiva);
+          sec.classList.toggle('vista-oculta', !esActiva);
+          if (esActiva) {
+            sec.querySelectorAll('.reveal').forEach((r) => r.classList.add('visible'));
+          } else {
+            sec.querySelectorAll<HTMLVideoElement>('video').forEach((v) => { if (!v.paused) { v.dataset.auto = '1'; v.pause(); } });
+          }
+        });
+
+        let linkActivo: HTMLElement | null = null;
+        navLinks.forEach((lnk) => {
+          const on = lnk.dataset.vistaLink === destino;
+          lnk.setAttribute('aria-current', on ? 'page' : 'false');
+          if (on) linkActivo = lnk;
+        });
+        moverPill(linkActivo);
+        window.dispatchEvent(new CustomEvent('polvora:cambio-vista'));
+
+        if (hacerScroll) {
+          document.getElementById(destino)?.scrollIntoView({
+            behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'start',
+          });
+        }
+      };
+
+      if (main && secciones.length > 0) {
+        const hash = location.hash.slice(1);
+        const inicial = hash.startsWith('dia-') ? 'programa' : (vistasValidas.has(hash) ? hash : 'programa');
+        activarVista(inicial, vistasValidas.has(hash));
+
+        navLinks.forEach((lnk) => {
+          lnk.addEventListener('pointerenter', () => moverPill(lnk));
+          lnk.addEventListener('click', (e) => {
+            e.preventDefault();
+            const v = lnk.dataset.vistaLink ?? 'programa';
+            activarVista(v, true);
+            history.replaceState(null, '', `#${v}`);
+          });
+        });
+        navTrack?.addEventListener('pointerleave', () => {
+          const cur = navLinks.find((l) => l.dataset.vistaLink === vistaActual) ?? navLinks[0];
+          moverPill(cur);
+        });
+        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+          if (a.hasAttribute('data-vista-link') || a.getAttribute('href')?.startsWith('#dia-')) return;
+          a.addEventListener('click', (e) => {
+            const targetId = a.getAttribute('href')!.slice(1);
+            if (vistasValidas.has(targetId)) {
+              e.preventDefault();
+              activarVista(targetId, true);
+              history.replaceState(null, '', `#${targetId}`);
+            }
+          });
+        });
+        addEventListener('hashchange', () => {
+          const h = location.hash.slice(1);
+          if (h.startsWith('dia-')) activarVista('programa', false);
+          else if (vistasValidas.has(h) && h !== vistaActual) activarVista(h, true);
+        });
+        window.addEventListener('polvora:ir-vista', (e: Event) => {
+          const det = (e as CustomEvent).detail;
+          if (det?.vista) activarVista(det.vista, false);
+        });
+        addEventListener('resize', () => {
+          const cur = navLinks.find((l) => l.dataset.vistaLink === vistaActual) ?? navLinks[0];
+          moverPill(cur);
+        });
+      }
+
+      // 2. Videos con data-auto-video: se reproducen en silencio al entrar en pantalla y se
+      //    pausan al salir. Nunca suenan a la vez que la música del día 5 ni entre sí.
+      const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-auto-video]')];
+      const musica = () => document.getElementById('spotify-audio-global') as HTMLAudioElement | null;
+      const actualizarBotonVideo = (v: HTMLVideoElement) => {
+        const btn = v.closest('.video-card')?.querySelector<HTMLButtonElement>('[data-video-audio]');
+        if (btn) btn.textContent = v.muted ? 'Tocar para activar audio' : 'Audio activado (silenciar)';
+      };
+      const silenciar = (v: HTMLVideoElement) => {
+        if (!v.muted) v.muted = true;
+        actualizarBotonVideo(v);
+      };
+      // Pausa hecha por el script (no por la persona): así sabemos distinguirlas.
+      const pausarAuto = (v: HTMLVideoElement) => {
+        if (v.paused) return;
+        v.dataset.auto = '1';
+        v.pause();
+      };
+      // Con datos ahorrados o conexión lenta no se descarga video solo: queda el poster y el botón de play.
+      const conexion = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+      const lenta = Boolean(conexion && (conexion.saveData || /^(slow-2g|2g|3g)$/.test(conexion.effectiveType ?? '')));
+
+      videos.forEach((v) => {
+        const btn = v.closest('.video-card')?.querySelector<HTMLButtonElement>('[data-video-audio]');
+        btn?.addEventListener('click', () => {
+          v.muted = !v.muted;
+          if (!v.muted) {
+            videos.forEach((otro) => { if (otro !== v) silenciar(otro); });
+            window.dispatchEvent(new CustomEvent('polvora:video-audio-on'));
+            if (v.paused) void v.play().catch(() => {});
+          }
+          actualizarBotonVideo(v);
+        });
+        v.addEventListener('play', () => {
+          delete v.dataset.manual;
+          videos.forEach((otro) => { if (otro !== v) pausarAuto(otro); });
+          if (!v.muted) window.dispatchEvent(new CustomEvent('polvora:video-audio-on'));
+        });
+        v.addEventListener('pause', () => {
+          if (v.dataset.auto) delete v.dataset.auto;
+          else if (!v.ended) v.dataset.manual = '1';
+        });
+        v.addEventListener('volumechange', () => {
+          if (!v.muted && !v.paused) {
+            videos.forEach((otro) => { if (otro !== v) silenciar(otro); });
+            window.dispatchEvent(new CustomEvent('polvora:video-audio-on'));
+          }
+          actualizarBotonVideo(v);
+        });
+        v.addEventListener('polvora:sync-mute', () => actualizarBotonVideo(v));
+      });
+
+      // Si empieza la música del día 5 (o la salva), todo video con sonido se silencia.
+      const silenciarTodos = () => videos.forEach(silenciar);
+      window.addEventListener('polvora:spotify-play', silenciarTodos);
+      window.addEventListener('polvora:sfx-play', silenciarTodos);
+
+      if ('IntersectionObserver' in window && videos.length > 0) {
+        const vio = new IntersectionObserver(
+          (entradas) => {
+            entradas.forEach((ent) => {
+              const v = ent.target as HTMLVideoElement;
+              const oculto = Boolean(v.closest('.vista-oculta, .dia:not(.activo)'));
+              if (ent.isIntersecting && ent.intersectionRatio >= 0.42 && !oculto) {
+                if (lenta || v.dataset.manual) return;
+                const sp = musica();
+                if (sp && !sp.paused) silenciar(v);
+                void v.play().catch(() => {
+                  silenciar(v);
+                  void v.play().catch(() => {});
+                });
+              } else if (!ent.isIntersecting || ent.intersectionRatio < 0.25) {
+                pausarAuto(v);
+                if (!ent.isIntersecting) delete v.dataset.manual;
+              }
+            });
+          },
+          { threshold: [0, 0.25, 0.45, 0.75] },
+        );
+        videos.forEach((v) => vio.observe(v));
+      }
+
+      // Los videos secundarios traen su portada solo cuando están cerca de la pantalla.
+      const pegarPortada = (v: HTMLVideoElement) => {
+        if (v.dataset.poster) { v.poster = v.dataset.poster; delete v.dataset.poster; }
+      };
+      const conPortada = document.querySelectorAll<HTMLVideoElement>('video[data-poster]');
+      if ('IntersectionObserver' in window) {
+        const ip = new IntersectionObserver(
+          (es) => es.forEach((e) => { if (e.isIntersecting) { pegarPortada(e.target as HTMLVideoElement); ip.unobserve(e.target); } }),
+          { rootMargin: '300px 0px' },
+        );
+        conPortada.forEach((v) => ip.observe(v));
+      } else {
+        conPortada.forEach(pegarPortada);
+      }
+
+      // 3. Aparición al scroll y pausa de animaciones de portada fuera de vista
       const revelar = (el: Element) => el.classList.add('visible');
       const items = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window) {
@@ -118,7 +327,7 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
                 io.unobserve(e.target);
               }
             }),
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+          { rootMargin: '0px 0px -6% 0px', threshold: 0.05 },
         );
         items.forEach((el) => io.observe(el));
         const portada = document.getElementById('inicio');
@@ -132,23 +341,7 @@ const rayos = Array.from({ length: 12 }, (_, i) => {
       } else {
         items.forEach(revelar);
       }
-      setTimeout(() => items.forEach(revelar), 6000);
-
-      // Los videos no traen su imagen de portada hasta que están cerca de la pantalla
-      // (o se abre el <details> que los contiene), para no gastar datos en la primera carga.
-      const pegarPortada = (v: HTMLVideoElement) => {
-        if (v.dataset.poster) { v.poster = v.dataset.poster; delete v.dataset.poster; }
-      };
-      const portadas = document.querySelectorAll<HTMLVideoElement>('video[data-poster]');
-      if ('IntersectionObserver' in window) {
-        const ip = new IntersectionObserver(
-          (es) => es.forEach((e) => { if (e.isIntersecting) { pegarPortada(e.target as HTMLVideoElement); ip.unobserve(e.target); } }),
-          { rootMargin: '300px 0px' },
-        );
-        portadas.forEach((v) => ip.observe(v));
-      } else {
-        portadas.forEach(pegarPortada);
-      }
+      setTimeout(() => items.forEach(revelar), 3000);
     </script>
   </body>
 </html>

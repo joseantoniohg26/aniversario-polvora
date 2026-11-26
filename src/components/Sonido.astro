@@ -1,232 +1,94 @@
 ---
-import distrito from '../data/distrito.json';
-const t = distrito.textos.sonido;
+// Modo noche flotante + Salva de 21 camaretazos en la portada (sin sonidos intrusivos en actividades)
 ---
 <button
-  id="sonido"
+  id="modo-noche"
   type="button"
-  hidden
-  class="sonido"
+  class="modo-noche-btn"
   aria-pressed="false"
-  aria-label={t.activar}
-  data-textos={JSON.stringify(t)}
+  aria-label="Cambiar a modo noche"
+  title="Cambiar entre modo día y modo noche"
 >
-  <svg class="ico-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M11 5L6 9H3v6h3l5 4z" /><path d="M16 9l5 6M21 9l-5 6" />
+  <svg class="ico-luna" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
   </svg>
-  <svg class="ico-on" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M11 5L6 9H3v6h3l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+  <svg class="ico-sol" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
   </svg>
+  <span data-noche-txt>Modo noche</span>
 </button>
-<audio id="sfx-player" preload="none"></audio>
+
+<audio id="sfx-salva" preload="none" src="/audio/camaretazos.m4a"></audio>
 
 <script>
-  const boton = document.getElementById('sonido') as HTMLButtonElement | null;
-  const salva = document.getElementById('salva') as HTMLButtonElement | null;
-  const sfxPlayer = document.getElementById('sfx-player') as HTMLAudioElement | null;
-  const AC: typeof AudioContext | undefined = window.AudioContext ?? (window as any).webkitAudioContext;
-
-  const pistas: Record<string, string> = {
-    camaretazos: '/audio/camaretazos.m4a',
-    banda: '/audio/banda-folklore.m4a',
-    futbol: '/audio/futbol-silbato.m4a',
-    misa: '/audio/campanas-misa.m4a',
-    marcha: '/audio/marcha-banderas.m4a',
-    hunsha: '/audio/pandilla-hunsha.m4a',
+  // ───────── 1. Modo Noche persistente ─────────
+  const btnNoche = document.getElementById('modo-noche') as HTMLButtonElement | null;
+  const txtNoche = btnNoche?.querySelector('[data-noche-txt]');
+  const aplicarNoche = (on: boolean) => {
+    document.documentElement.classList.toggle('noche', on);
+    if (btnNoche) {
+      btnNoche.setAttribute('aria-pressed', String(on));
+      btnNoche.setAttribute('aria-label', on ? 'Cambiar a modo día' : 'Cambiar a modo noche');
+    }
+    if (txtNoche) txtNoche.textContent = on ? 'Modo día' : 'Modo noche';
   };
+  try {
+    if (localStorage.getItem('polvora-modo-noche') === '1') aplicarNoche(true);
+  } catch {}
+  btnNoche?.addEventListener('click', () => {
+    const siguiente = !document.documentElement.classList.contains('noche');
+    aplicarNoche(siguiente);
+    try { localStorage.setItem('polvora-modo-noche', siguiente ? '1' : '0'); } catch {}
+  });
 
-  if (boton) {
-    const t = JSON.parse(boton.dataset.textos ?? '{}');
-    boton.hidden = false;
-    if (salva) salva.hidden = false;
+  // ───────── 2. Salva de 21 camaretazos en la portada (#salva) ─────────
+  const salva = document.getElementById('salva') as HTMLButtonElement | null;
+  const sfxSalva = document.getElementById('sfx-salva') as HTMLAudioElement | null;
+  if (salva) salva.hidden = false;
 
-    let ctx: AudioContext | null = null;
-    let ruido: AudioBuffer | null = null;
-    let activo = false;
-    let sfxActual = '';
+  const detenerSalva = () => {
+    if (sfxSalva && !sfxSalva.paused) sfxSalva.pause();
+  };
+  window.addEventListener('polvora:spotify-play', detenerSalva);
+  window.addEventListener('polvora:video-audio-on', detenerSalva);
 
-    const audio = () => {
-      if (!AC) return null;
-      if (!ctx) {
-        ctx = new AC();
-        const n = Math.floor(ctx.sampleRate * 1.2);
-        ruido = ctx.createBuffer(1, n, ctx.sampleRate);
-        const d = ruido.getChannelData(0);
-        for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
-      }
-      if (ctx.state === 'suspended') void ctx.resume();
-      return ctx;
-    };
-
-    const boom = (vol = 1) => {
-      if (!activo) return;
-      const c = audio();
-      if (!c || !ruido) return;
-      const t0 = c.currentTime;
-      const fuente = c.createBufferSource();
-      fuente.buffer = ruido;
-      const pasabajos = c.createBiquadFilter();
-      pasabajos.type = 'lowpass';
-      pasabajos.frequency.setValueAtTime(1800, t0);
-      pasabajos.frequency.exponentialRampToValueAtTime(120, t0 + 0.6);
-      const g = c.createGain();
-      g.gain.setValueAtTime(0.0001, t0);
-      g.gain.exponentialRampToValueAtTime(0.9 * vol, t0 + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.9);
-      fuente.connect(pasabajos).connect(g).connect(c.destination);
-      fuente.start(t0);
-      fuente.stop(t0 + 1);
-
-      const o = c.createOscillator();
-      o.type = 'sine';
-      o.frequency.setValueAtTime(120, t0);
-      o.frequency.exponentialRampToValueAtTime(38, t0 + 0.35);
-      const og = c.createGain();
-      og.gain.setValueAtTime(0.9 * vol, t0);
-      og.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.45);
-      o.connect(og).connect(c.destination);
-      o.start(t0);
-      o.stop(t0 + 0.5);
-    };
-
-    const campana = (f = 660, vol = 0.35, demora = 0) => {
-      if (!activo) return;
-      const c = audio();
-      if (!c) return;
-      const t0 = c.currentTime + demora;
-      [[1, 1], [2.76, 0.45], [5.4, 0.2]].forEach(([mult, peso]) => {
-        const o = c.createOscillator();
-        o.type = 'sine';
-        o.frequency.value = f * mult;
-        const g = c.createGain();
-        g.gain.setValueAtTime(0.0001, t0);
-        g.gain.exponentialRampToValueAtTime(vol * peso, t0 + 0.01);
-        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.6);
-        o.connect(g).connect(c.destination);
-        o.start(t0);
-        o.stop(t0 + 1.7);
-      });
-    };
-
-    const tic = () => {
-      if (!activo) return;
-      const c = audio();
-      if (!c) return;
-      const t0 = c.currentTime;
-      const o = c.createOscillator();
-      o.type = 'triangle';
-      o.frequency.setValueAtTime(1100, t0);
-      o.frequency.exponentialRampToValueAtTime(700, t0 + 0.05);
-      const g = c.createGain();
-      g.gain.setValueAtTime(0.0001, t0);
-      g.gain.exponentialRampToValueAtTime(0.16, t0 + 0.005);
-      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.07);
-      o.connect(g).connect(c.destination);
-      o.start(t0);
-      o.stop(t0 + 0.08);
-    };
-
-    const actualizarBotonesSfx = (idActivo: string) => {
-      document.querySelectorAll<HTMLElement>('[data-sonido-id]').forEach((el) => {
-        el.classList.toggle('is-playing', idActivo !== '' && el.dataset.sonidoId === idActivo);
-      });
-    };
-
-    const detenerSfx = () => {
-      if (sfxPlayer && !sfxPlayer.paused) sfxPlayer.pause();
-      sfxActual = '';
-      actualizarBotonesSfx('');
-    };
-
-    const alternar = () => {
-      activo = !activo;
-      boton.setAttribute('aria-pressed', String(activo));
-      boton.setAttribute('aria-label', activo ? t.silenciar : t.activar);
-      boton.classList.toggle('on', activo);
-      if (activo) {
-        audio();
-        campana(784, 0.35);
-      } else {
-        detenerSfx();
-      }
-    };
-    boton.addEventListener('click', alternar);
-
-    const reproducirSfx = (id: string) => {
-      const ruta = pistas[id];
-      if (!ruta || !sfxPlayer) return;
-      if (sfxActual === id && !sfxPlayer.paused) {
-        detenerSfx();
-        return;
-      }
-      if (!activo) {
-        activo = true;
-        boton.setAttribute('aria-pressed', 'true');
-        boton.setAttribute('aria-label', t.silenciar);
-        boton.classList.add('on');
-      }
-      window.dispatchEvent(new CustomEvent('polvora:sfx-play'));
-      sfxActual = id;
-      sfxPlayer.src = ruta;
-      sfxPlayer.currentTime = 0;
-      actualizarBotonesSfx(id);
-      void sfxPlayer.play().catch(() => {
-        if (id === 'camaretazos') boom(0.8);
-        else if (id === 'misa') campana(660, 0.45);
-        else tic();
-        detenerSfx();
-      });
-    };
-
-    sfxPlayer?.addEventListener('ended', () => detenerSfx());
-    window.addEventListener('polvora:spotify-play', () => detenerSfx());
-
-    document.addEventListener('click', (e) => {
-      const target = e.target as Element;
-      const sfxBtn = target.closest<HTMLElement>('[data-sonido-id]');
-      if (sfxBtn) {
-        e.preventDefault();
-        reproducirSfx(sfxBtn.dataset.sonidoId ?? '');
-        return;
-      }
-      const dia = target.closest<HTMLAnchorElement>('a[href^="#dia-"]');
-      if (dia) {
-        const central = dia.matches('.central') || dia.getAttribute('href') === '#dia-6';
-        if (central) [523, 659, 784].forEach((f, i) => campana(f, 0.25, i * 0.13));
-        else tic();
-      } else if (target.closest('.boton-oro, #subir')) {
-        tic();
+  salva?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('polvora:sfx-play'));
+    document.querySelectorAll<HTMLVideoElement>('video').forEach((v) => {
+      if (!v.muted) {
+        v.muted = true;
+        v.dispatchEvent(new CustomEvent('polvora:sync-mute'));
       }
     });
+    if (sfxSalva) {
+      sfxSalva.currentTime = 0;
+      void sfxSalva.play().catch(() => {});
+    }
 
-    // Salva de 21 camaretazos: audio real + 21 destellos visuales en la portada.
-    salva?.addEventListener('click', () => {
-      reproducirSfx('camaretazos');
-      const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const capa = document.querySelector('#inicio .fiesta');
-      const colores = ['#efd488', '#ff8a7a', '#7de0b4', '#6cc4ff'];
-      const etiqueta = salva.textContent ?? '';
-      salva.disabled = true;
-      let n = 0;
-      const siguiente = () => {
-        n++;
-        salva.textContent = `${n} / 21`;
-        if (capa && !reducido) {
-          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-          svg.setAttribute('viewBox', '-50 -50 100 100');
-          svg.setAttribute('class', 'destello');
-          const tam = 90 + Math.random() * 90;
-          svg.style.cssText = `width:${tam}px;height:${tam}px;left:${Math.random() * 85}%;top:${Math.random() * 70}%;color:${colores[n % 4]}`;
-          const uso = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-          uso.setAttribute('href', '#estallido');
-          svg.appendChild(uso);
-          svg.addEventListener('animationend', () => svg.remove());
-          capa.appendChild(svg);
-        }
-        if (n < 21) setTimeout(siguiente, 160 + Math.random() * 260);
-        else setTimeout(() => { salva.textContent = etiqueta; salva.disabled = false; }, 1500);
-      };
-      siguiente();
-    });
-  }
+    const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const capa = document.querySelector('#inicio .fiesta');
+    const colores = ['#efd488', '#ff8a7a', '#7de0b4', '#6cc4ff'];
+    const etiqueta = salva.textContent ?? '';
+    salva.disabled = true;
+    let n = 0;
+    const siguiente = () => {
+      n++;
+      salva.textContent = `${n} / 21`;
+      if (capa && !reducido) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '-50 -50 100 100');
+        svg.setAttribute('class', 'destello');
+        const tam = 90 + Math.random() * 90;
+        svg.style.cssText = `width:${tam}px;height:${tam}px;left:${Math.random() * 85}%;top:${Math.random() * 70}%;color:${colores[n % 4]}`;
+        const uso = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        uso.setAttribute('href', '#estallido');
+        svg.appendChild(uso);
+        svg.addEventListener('animationend', () => svg.remove());
+        capa.appendChild(svg);
+      }
+      if (n < 21) setTimeout(siguiente, 160 + Math.random() * 260);
+      else setTimeout(() => { salva.textContent = etiqueta; salva.disabled = false; }, 1500);
+    };
+    siguiente();
+  });
 </script>

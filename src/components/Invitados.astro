@@ -23,7 +23,7 @@ const invitados = distrito.invitados as Invitado[];
 const posters: Record<string, string> = {};
 for (const inv of invitados) {
   if (inv.videoPoster && imagenDe[inv.videoPoster]) {
-    const img = await getImage({ src: imagenDe[inv.videoPoster], width: 480, format: 'webp', quality: 70 });
+    const img = await getImage({ src: imagenDe[inv.videoPoster], width: 480, format: 'webp', quality: 75 });
     posters[inv.nombre] = img.src;
   }
 }
@@ -46,7 +46,7 @@ for (const inv of invitados) {
 
       <ul class="mt-8 grid gap-6 md:grid-cols-2">
         {invitados.map((inv) => (
-          <li class="reveal min-w-0 rounded-2xl border border-oro-500/40 bg-verde-950/65 p-4 shadow-lg">
+          <li class="reveal min-w-0 rounded-2xl border border-oro-500/40 bg-verde-950/65 p-4 shadow-lg transition hover:-translate-y-1 hover:border-oro-300">
             <div class="flex items-center gap-4">
               {inv.portada && imagenDe[inv.portada] && (
                 <Image
@@ -68,23 +68,31 @@ for (const inv of invitados) {
             </div>
 
             {inv.videoSrc && (
-              <details class="mt-4 rounded-xl border border-oro-300/40 bg-black/25">
-                <summary class="flex cursor-pointer list-none items-center gap-2 px-3 py-2.5 font-bold">
-                  <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-oro-300 text-verde-950" aria-hidden="true">▶</span>
-                  <span class="min-w-0">Ver el video del afiche</span>
-                  {inv.videoDuracion && <span class="ml-auto text-xs font-normal text-white/75">{inv.videoDuracion}</span>}
-                </summary>
+              <div class="video-card mt-4 overflow-hidden rounded-xl border border-oro-300/40 bg-black/35">
+                <div class="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+                  <span class="text-sm font-bold text-oro-300">Video del afiche {inv.videoDuracion && `· ${inv.videoDuracion}`}</span>
+                  <button
+                    type="button"
+                    data-video-audio
+                    class="rounded-full border border-oro-300/70 bg-black/60 px-2.5 py-1 text-xs font-bold text-oro-300 transition hover:bg-oro-300 hover:text-verde-950"
+                  >
+                    Tocar para activar audio
+                  </button>
+                </div>
                 <video
+                  data-auto-video
                   controls
-                  preload="none"
+                  muted
+                  loop
                   playsinline
+                  preload="metadata"
                   data-poster={posters[inv.nombre]}
                   aria-label={inv.videoTitulo}
-                  class="mx-auto block max-h-[26rem] w-full rounded-b-xl bg-black object-contain"
+                  class="mx-auto block max-h-[28rem] w-full bg-black object-contain"
                 >
                   <source src={inv.videoSrc} type="video/mp4" />
                 </video>
-              </details>
+              </div>
             )}
           </li>
         ))}

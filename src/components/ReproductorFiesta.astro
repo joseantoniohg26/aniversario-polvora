@@ -51,7 +51,6 @@ const barras = [
   <p class="mt-3 text-sm text-white/75">{subtitulo}</p>
 
   <div class="mt-5 grid gap-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1.15fr)] md:items-center">
-    <!-- Escenario principal del reproductor -->
     <div class="min-w-0 rounded-2xl border border-white/10 bg-black/40 p-4 sm:p-5">
       <div class="flex items-center gap-4">
         <div class="relative h-24 w-24 shrink-0 sm:h-28 sm:w-28">
@@ -86,7 +85,6 @@ const barras = [
         </div>
       </div>
 
-      <!-- Barra de progreso para adelantar / retroceder -->
       <div class="mt-5">
         <input
           type="range"
@@ -104,7 +102,6 @@ const barras = [
         </div>
       </div>
 
-      <!-- Controles de reproducción -->
       <div class="mt-4 flex items-center justify-center gap-2 sm:gap-3">
         <button type="button" data-prev aria-label="Canción anterior" class="grid h-10 w-10 place-items-center rounded-full text-white/85 transition hover:bg-white/10 hover:text-white">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" /></svg>
@@ -130,7 +127,6 @@ const barras = [
       </div>
     </div>
 
-    <!-- Lista de canciones -->
     <ul class="min-w-0 space-y-2" data-lista>
       {canciones.map((c, idx) => (
         <li class="min-w-0" data-grupo={c.grupo} data-track-item={c.id}>
@@ -168,14 +164,13 @@ const barras = [
       ))}
     </ul>
   </div>
-
-  <audio preload="none" data-audio></audio>
 </section>
 
 <script>
   const card = document.getElementById('reproductor-dia-5');
-  if (card) {
-    const audio = card.querySelector<HTMLAudioElement>('[data-audio]')!;
+  const audio = document.getElementById('spotify-audio-global') as HTMLAudioElement | null;
+  const mini = document.getElementById('mini-spotify');
+  if (card && audio) {
     const seek = card.querySelector<HTMLInputElement>('[data-seek]')!;
     const lblActual = card.querySelector<HTMLElement>('[data-actual]')!;
     const lblTotal = card.querySelector<HTMLElement>('[data-total]')!;
@@ -189,6 +184,10 @@ const barras = [
     const items = [...card.querySelectorAll<HTMLElement>('[data-track-item]')];
     const btns = [...card.querySelectorAll<HTMLButtonElement>('[data-track-btn]')];
     const filtros = [...card.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
+
+    const miniTitulo = mini?.querySelector('[data-mini-titulo]');
+    const miniArtista = mini?.querySelector('[data-mini-artista]');
+    const miniToggle = mini?.querySelector<HTMLButtonElement>('[data-mini-toggle]');
 
     let actualId = btns[0]?.dataset.trackBtn ?? '';
     let cargada = false;
@@ -206,14 +205,20 @@ const barras = [
       icoPause.classList.toggle('hidden', !sonando);
       lblEstado.textContent = sonando ? 'Sonando ahora' : 'En pausa';
       btns.forEach((b) => b.classList.toggle('is-playing', sonando && b.dataset.trackBtn === actualId));
+      if (mini) mini.hidden = !sonando;
+      if (miniToggle) miniToggle.textContent = sonando ? '❚❚' : '▶';
     };
 
     const seleccionar = (id: string, autoPlay = false) => {
       const btn = btns.find((b) => b.dataset.trackBtn === id);
       if (!btn) return;
       actualId = id;
-      lblTitulo.textContent = btn.dataset.titulo ?? '';
-      lblArtista.textContent = btn.dataset.artista ?? '';
+      const t = btn.dataset.titulo ?? '';
+      const a = btn.dataset.artista ?? '';
+      lblTitulo.textContent = t;
+      lblArtista.textContent = a;
+      if (miniTitulo) miniTitulo.textContent = t;
+      if (miniArtista) miniArtista.textContent = a;
       lblTotal.textContent = btn.dataset.duracion ?? '0:30';
       lblActual.textContent = '0:00';
       seek.value = '0';
@@ -240,16 +245,7 @@ const barras = [
       }
     };
 
-    btns.forEach((b) => b.addEventListener('click', () => {
-      if (b.dataset.trackBtn === actualId && cargada && !audio.paused) {
-        audio.pause();
-        pintarBotonPlay(false);
-      } else {
-        seleccionar(b.dataset.trackBtn!, true);
-      }
-    }));
-
-    btnToggle.addEventListener('click', () => {
+    const alternarReproduccion = () => {
       if (!cargada) {
         seleccionar(actualId, true);
         return;
@@ -261,7 +257,19 @@ const barras = [
         audio.pause();
         pintarBotonPlay(false);
       }
-    });
+    };
+
+    btns.forEach((b) => b.addEventListener('click', () => {
+      if (b.dataset.trackBtn === actualId && cargada && !audio.paused) {
+        audio.pause();
+        pintarBotonPlay(false);
+      } else {
+        seleccionar(b.dataset.trackBtn!, true);
+      }
+    }));
+
+    btnToggle.addEventListener('click', alternarReproduccion);
+    miniToggle?.addEventListener('click', alternarReproduccion);
 
     const visibles = () => btns.filter((b) => !b.closest('li')?.classList.contains('hidden'));
     card.querySelector('[data-prev]')?.addEventListener('click', () => {
@@ -320,11 +328,13 @@ const barras = [
       });
     });
 
-    window.addEventListener('polvora:sfx-play', () => {
+    const pausarSiSuena = () => {
       if (!audio.paused) {
         audio.pause();
         pintarBotonPlay(false);
       }
-    });
+    };
+    window.addEventListener('polvora:sfx-play', pausarSiSuena);
+    window.addEventListener('polvora:video-audio-on', pausarSiSuena);
   }
 </script>
