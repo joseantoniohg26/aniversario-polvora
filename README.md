@@ -23,6 +23,10 @@ npm run build    # genera dist/
 - `@astrojs/check` y `typescript` (solo desarrollo): `npm run check` revisa errores de tipos y de Astro antes de publicar.
 - `@fontsource/bree-serif` y `@fontsource/source-sans-3`: las dos únicas tipografías, alojadas en el mismo sitio (sin pedir nada a Google Fonts).
 
+## Calendario y programa para imprimir
+- `/calendario-aniversario-polvora.ics` se genera al compilar desde `src/data/programa.json`: si cambia un horario, se actualiza solo.
+- El botón «Guardar el programa en PDF» abre la impresión con los cinco días (estilos al final de `src/styles/global.css`).
+
 ## Audio y video
 - Los videos van en `public/video/`, en H.264, de 854 px de ancho como máximo y de unos 10 MB cada uno.
 - Los audios van en `public/audio/`, cortos, en `.m4a`.
