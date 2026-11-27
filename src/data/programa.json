@@ -86,10 +86,10 @@
       "numero": 3,
       "central": false,
       "subtitulo": "Feria agraria, concursos tradicionales, platos típicos y verbena artística",
-      "bannerFoto": "platos-tipicos",
+      "bannerFoto": "concurso-platanero",
       "destacado915": {
-        "fondo": "platos-tipicos",
-        "alt": "Afiche oficial del Concurso Gastronómico Platos Típicos 2026 del 42° Aniversario",
+        "fondo": "concurso-platanero",
+        "alt": "Vecinos participando en los concursos tradicionales plataneros durante la feria distrital de Pólvora",
         "badge": "Feria y gastronomía · 9:00 a.m.",
         "titulo": "Feria distrital y Concurso Platos Típicos 2026",
         "nota": "Premios en Plaza de Armas y concursos tradicionales plataneros",
@@ -162,7 +162,7 @@
       "bannerFoto": "futbol",
       "destacado915": {
         "fondo": "futbol",
-        "alt": "Balón de fútbol sobre césped verde para el campeonato intercentros poblados",
+        "alt": "Equipo campeón con su trofeo y medallas tras ganar el campeonato de fútbol en Pólvora",
         "badge": "Jornada deportiva · 9:00 a.m.",
         "titulo": "Campeonato de mini fútbol intercentros poblados",
         "nota": "Caseríos y sectores del distrito compiten en la cancha",
@@ -203,7 +203,7 @@
       "tieneReproductor": true,
       "destacado915": {
         "fondo": "hunsha-castillo",
-        "alt": "Quema de castillo y celebración tradicional previa al día central en Pólvora",
+        "alt": "Quema de castillo con fuegos artificiales iluminando la noche en Pólvora",
         "badge": "Noche estelar · 7:00 p.m.",
         "titulo": "Fiesta social y quema de castillo",
         "nota": "Orquesta Tempestad y Chino Montalvo y La Montalveña en vivo",
@@ -255,7 +255,7 @@
       "bannerFoto": "desfile",
       "destacado915": {
         "fondo": "desfile",
-        "alt": "Bandera Nacional del Perú flameando en lo alto por el 42° aniversario de Pólvora",
+        "alt": "Izamiento oficial de la bandera distrital de Pólvora durante la ceremonia cívica",
         "badge": "Día Central · 6 de diciembre",
         "titulo": "Desfile cívico, Sesión solemne y Hunsha",
         "nota": "42 años de creación política del distrito de Pólvora (1984–2026)",
