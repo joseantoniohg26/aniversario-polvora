@@ -304,7 +304,7 @@ main[data-vistas='on'] > section.vista-activa {
 .boton-oro:hover { background: #fff; }
 .boton-oro:active { transform: scale(0.97); }
 
-/* Acciones del día (compartir, calendario, PDF) */
+/* Acciones del día (compartir, PDF) */
 .enlace-accion {
   display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700;
   color: var(--color-verde-700); text-underline-offset: 4px; cursor: pointer;
