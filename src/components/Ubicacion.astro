@@ -1,11 +1,35 @@
 ---
+import { Image } from 'astro:assets';
+import gobpe from '../assets/iconos/gobpe-escudo.png';
+import whatsappSvg from '../assets/iconos/whatsapp.svg?raw';
+import facebookSvg from '../assets/iconos/facebook.svg?raw';
 import distrito from '../data/distrito.json';
 import Ola from './Ola.astro';
+
 const { ubicacion, contacto, textos } = distrito;
 const t = textos.ubicacion;
+// Logos oficiales (WhatsApp y Facebook: Simple Icons, CC0; Gob.pe: el escudo que publica su propio portal)
+const sinTitulo = (svg: string) => svg.replace(/<title>[\s\S]*?<\/title>/, '');
 const d = 0.045;
 const bbox = [ubicacion.lng - d, ubicacion.lat - d * 0.7, ubicacion.lng + d, ubicacion.lat + d * 0.7].join('%2C');
 const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${ubicacion.lat}%2C${ubicacion.lng}`;
+
+// Una sola lista para todos los medios de contacto: el logo cambia, el diseño no.
+interface Red { red?: string; descripcion?: string; etiqueta: string; url: string; icono?: string }
+const filas = [
+  ...contacto.whatsapp.map((w) => ({
+    icono: 'whatsapp',
+    href: `https://wa.me/${w.wa}`,
+    rotulo: w.etiqueta,
+    valor: `WhatsApp ${w.numero}`,
+  })),
+  ...(contacto.redes as Red[]).map((r) => ({
+    icono: r.icono ?? 'web',
+    href: r.url,
+    rotulo: r.red ?? 'Redes',
+    valor: r.descripcion ?? r.etiqueta,
+  })),
+];
 ---
 <section id="ubicacion" class="relative bg-verde-900 px-4 pb-14 pt-16 text-white">
   <Ola class="text-crema" />
@@ -37,60 +61,31 @@ const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=
     <div class="reveal" style="--i:2">
       <h2 class="text-4xl text-oro-300 sm:text-5xl">{t.tituloContacto}</h2>
       <p class="mt-4 text-lg">{t.introContacto}</p>
-      <ul class="mt-4 space-y-3">
-        {contacto.whatsapp.map((w) => (
-          <li>
+
+      <!-- Directorio: filas separadas por una línea fina, cada una con su logo -->
+      <ul class="mt-5 border-b border-oro-300/25">
+        {filas.map((f) => (
+          <li class="border-t border-oro-300/25">
             <a
-              href={`https://wa.me/${w.wa}`}
+              href={f.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="group flex items-center gap-4 rounded-2xl border border-white/30 px-5 py-3.5 transition-colors hover:border-oro-300/60 hover:bg-white/10"
+              class="fila-contacto group flex items-center gap-4 px-1 py-4"
             >
-              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-400/35 transition-transform group-hover:scale-105" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                  <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.6 14.1c-.2.7-1.4 1.3-1.9 1.3-.5 0-1.1.2-3.7-.8-3.1-1.2-5.1-4.3-5.3-4.5-.2-.2-1.3-1.7-1.3-3.2s.8-2.3 1.1-2.6c.3-.3.6-.4.8-.4h.6c.2 0 .5 0 .7.6.3.6.9 2.2 1 2.4.1.2.1.4 0 .6-.1.2-.2.3-.4.5l-.5.6c-.2.2-.3.4-.1.7.2.4.8 1.4 1.8 2.2 1.2 1.1 2.3 1.4 2.7 1.6.3.1.6.1.8-.1.2-.3.9-1 1.1-1.4.2-.3.5-.3.8-.2.3.1 2 .9 2.3 1.1.3.2.6.3.7.4.1.2.1.8-.1 1.4Z" />
-                </svg>
+              <span class:list={['logo', `logo-${f.icono}`]} aria-hidden="true">
+                {f.icono === 'whatsapp' && <Fragment set:html={sinTitulo(whatsappSvg)} />}
+                {f.icono === 'facebook' && <Fragment set:html={sinTitulo(facebookSvg)} />}
+                {f.icono === 'gobpe' && <Image src={gobpe} alt="" width={104} height={104} loading="lazy" />}
               </span>
-              <span class="min-w-0">
-                <span class="block text-sm text-white/80">{w.etiqueta}</span>
-                <span class="text-xl font-bold">WhatsApp {w.numero}</span>
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm text-white/80">{f.rotulo}</span>
+                <span class="block font-display text-xl leading-snug">{f.valor}</span>
               </span>
+              <svg class="flecha-contacto h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+              <span class="sr-only">(se abre en otra pestaña)</span>
             </a>
           </li>
         ))}
-        {contacto.redes.map((r) => {
-          const esFacebook = r.url.includes('facebook') || r.etiqueta.toLowerCase().includes('facebook');
-          return (
-            <li>
-              <a
-                href={r.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group flex items-center gap-4 rounded-2xl border border-white/30 px-5 py-3.5 transition-colors hover:border-oro-300/60 hover:bg-white/10"
-              >
-                <span
-                  class:list={[
-                    'grid h-11 w-11 shrink-0 place-items-center rounded-xl ring-1 transition-transform group-hover:scale-105',
-                    esFacebook ? 'bg-sky-500/20 text-sky-300 ring-sky-400/35' : 'bg-oro-300/15 text-oro-300 ring-oro-300/35',
-                  ]}
-                  aria-hidden="true"
-                >
-                  {esFacebook ? (
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                      <path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.6V5a21 21 0 0 0-2.4-.1c-2.4 0-4 1.5-4 4.1V11H7.6v3h2.7v8h3.2Z" />
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="9.5" />
-                      <path d="M2.8 9.5h18.4M2.8 14.5h18.4M12 2.5a13.5 13.5 0 0 1 0 19M12 2.5a13.5 13.5 0 0 0 0 19" />
-                    </svg>
-                  )}
-                </span>
-                <span class="min-w-0 text-xl font-bold">{r.etiqueta}</span>
-              </a>
-            </li>
-          );
-        })}
       </ul>
     </div>
   </div>

@@ -238,11 +238,17 @@
     "redes": [
       {
         "etiqueta": "Facebook oficial (Gestión 2023–2026)",
-        "url": "https://web.facebook.com/p/Municipalidad-Distrital-de-Polvora-2023-2026-61573782732110/"
+        "url": "https://web.facebook.com/p/Municipalidad-Distrital-de-Polvora-2023-2026-61573782732110/",
+        "red": "Facebook",
+        "descripcion": "Municipalidad Distrital de Pólvora",
+        "icono": "facebook"
       },
       {
         "etiqueta": "Página institucional en Gob.pe",
-        "url": "https://www.gob.pe/munipolvora"
+        "url": "https://www.gob.pe/munipolvora",
+        "red": "Gob.pe",
+        "descripcion": "Página institucional",
+        "icono": "gobpe"
       }
     ]
   },
