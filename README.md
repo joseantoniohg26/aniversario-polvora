@@ -31,6 +31,10 @@ npm run build    # genera dist/
 - Los audios van en `public/audio/`, cortos, en `.m4a`.
 - Todos llevan `preload="none"`: no se descargan hasta que alguien los reproduce.
 
+## Créditos de logos
+- Logos de WhatsApp y Facebook: [Simple Icons](https://simpleicons.org/) (licencia CC0). Son marcas registradas de sus dueños y se usan solo para enlazar a sus páginas oficiales.
+- Escudo de Gob.pe: archivo publicado por el portal [gob.pe](https://www.gob.pe/).
+
 ## Notas
 - `contenido/` (materiales de la municipalidad) no se sube al repo.
 - `npm audit` marca avisos en Astro 5 que solo se corrigen con Astro 7. Aquí no aplican porque el sitio es estático, sin servidor.
